@@ -57,24 +57,66 @@ def parse_target_breweries(path: Path) -> list[dict]:
 
 
 def build_indexes(raw: dict) -> dict:
-    """把 raw JSON 整理成快速查找的索引。"""
-    areas_by_id = {a["id"]: a for a in raw["areas"]["areas"]}
-    breweries_by_id = {b["id"]: b for b in raw["breweries"]["breweries"]}
-    breweries_by_name = {b["name"]: b for b in raw["breweries"]["breweries"]}
-    brands_by_id = {b["id"]: b for b in raw["brands"]["brands"]}
+    """把 raw JSON 整理成快速查找的索引。
+
+    Sakenowa 各端點回傳的 JSON 結構都是 {外層 key: [...資料]}。
+    但外層 key 的命名不一致 (有的駝峰、有的連字號),所以這裡用容錯方式
+    自動找出第一個 list 型別的 value 來用。
+    """
+    def first_list(payload, hint_keys=None):
+        """從 dict 中找出第一個 list 型別的 value。
+        hint_keys 是優先嘗試的 key 名稱清單。"""
+        if isinstance(payload, list):
+            return payload
+        if not isinstance(payload, dict):
+            return []
+        # 先試提示的 key
+        if hint_keys:
+            for k in hint_keys:
+                if k in payload and isinstance(payload[k], list):
+                    return payload[k]
+        # 退而求其次:找第一個是 list 的 value
+        for v in payload.values():
+            if isinstance(v, list):
+                return v
+        return []
+
+    areas_list = first_list(raw["areas"], ["areas"])
+    breweries_list = first_list(raw["breweries"], ["breweries"])
+    brands_list = first_list(raw["brands"], ["brands"])
+    flavor_charts_list = first_list(raw["flavor-charts"], ["flavorCharts"])
+    flavor_tags_list = first_list(raw["flavor-tags"], ["tags", "flavorTags"])
+    brand_flavor_tags_list = first_list(
+        raw["brand-flavor-tags"],
+        ["brandFlavorTags", "flavorTags", "tags"],
+    )
+
+    areas_by_id = {a["id"]: a for a in areas_list}
+    breweries_by_id = {b["id"]: b for b in breweries_list}
+    breweries_by_name = {b["name"]: b for b in breweries_list}
+    brands_by_id = {b["id"]: b for b in brands_list}
     brands_by_name = {}
-    for b in raw["brands"]["brands"]:
+    for b in brands_list:
         brands_by_name.setdefault(b["name"], []).append(b)
 
     flavor_charts_by_brand = {
-        fc["brandId"]: fc for fc in raw["flavor-charts"]["flavorCharts"]
+        fc["brandId"]: fc for fc in flavor_charts_list if "brandId" in fc
     }
 
-    flavor_tags_by_id = {t["id"]: t["tag"] for t in raw["flavor-tags"]["tags"]}
+    # flavor tags: 主表是 {id, tag} 或 {id, name},兩個都支援
+    flavor_tags_by_id = {}
+    for t in flavor_tags_list:
+        tag_name = t.get("tag") or t.get("name") or ""
+        flavor_tags_by_id[t["id"]] = tag_name
 
+    # brand-flavor-tags: 每筆是 {brandId, tagIds} 或變體
     brand_flavor_tags = {}
-    for entry in raw["brand-flavor-tags"]["brandFlavorTags"]:
-        brand_flavor_tags[entry["brandId"]] = entry.get("tagIds", [])
+    for entry in brand_flavor_tags_list:
+        if "brandId" not in entry:
+            continue
+        # tagIds 也可能叫別的名字
+        tag_ids = entry.get("tagIds") or entry.get("tags") or []
+        brand_flavor_tags[entry["brandId"]] = tag_ids
 
     return {
         "areas_by_id": areas_by_id,
