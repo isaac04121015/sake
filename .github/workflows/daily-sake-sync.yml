@@ -1,0 +1,135 @@
+name: Daily Sake Data Sync
+
+on:
+  schedule:
+    # 每天 UTC 02:00 = 台灣時間 10:00
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+    inputs:
+      skip_specs:
+        description: "Skip brewery website spec fetching"
+        required: false
+        type: boolean
+        default: false
+      skip_content:
+        description: "Skip Claude content generation"
+        required: false
+        type: boolean
+        default: false
+      skip_publish:
+        description: "Skip WordPress publishing"
+        required: false
+        type: boolean
+        default: true   # 預設跳過 WP (你目前不用)
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# 確保不會同時跑兩次部署
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # ===== Step 1: 抓 Sakenowa API =====
+      - name: Fetch Sakenowa API
+        run: python scripts/fetch_sakenowa.py
+
+      # ===== Step 2: 正規化 + 過濾目標清單 =====
+      - name: Normalize data
+        run: python scripts/normalize.py
+
+      # ===== Step 3: (可選) 從酒造官網補規格 =====
+      - name: Fetch brewery specs
+        if: ${{ !inputs.skip_specs }}
+        run: python scripts/fetch_brewery_specs.py --max 50
+        continue-on-error: true
+
+      # ===== Step 4: (可選) Claude API 生成繁中內容 =====
+      - name: Generate content with Claude
+        if: ${{ !inputs.skip_content && env.ANTHROPIC_API_KEY != '' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/generate_content.py --max 30
+        continue-on-error: true
+
+      # ===== Step 5: 建置靜態網站 =====
+      - name: Build static site
+        run: python scripts/build_static_site.py --output-dir dist
+
+      # ===== Step 6: (可選) 發布到 WordPress =====
+      - name: Publish to WordPress
+        if: ${{ !inputs.skip_publish && env.WP_BASE_URL != '' }}
+        env:
+          WP_BASE_URL: ${{ secrets.WP_BASE_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: python scripts/publish_to_wordpress.py --status draft
+        continue-on-error: true
+
+      # ===== Step 7: Commit 變更回 repo =====
+      - name: Commit data changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: daily sync $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      # ===== Step 8: 上傳 artifacts (備援下載) =====
+      - name: Upload data artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sake-data-${{ github.run_number }}
+          path: |
+            data/breweries.csv
+            data/breweries.json
+            data/products.csv
+            data/products.json
+            data/products_with_content.csv
+            data/products_with_content.json
+            data/_match_report.txt
+          retention-days: 30
+
+      # ===== Step 9: 上傳靜態網站 artifact (供 Pages 部署) =====
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  # ===== 部署到 GitHub Pages =====
+  deploy:
+    needs: sync
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

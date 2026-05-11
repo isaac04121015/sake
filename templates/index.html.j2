@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本酒造資料庫｜Sakego</title>
+<meta name="description" content="日本酒造與產品資料庫,按地區瀏覽 {{ total_breweries }} 家酒造與 {{ total_products }} 款日本酒。">
+<link rel="stylesheet" href="{{ page_path }}styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <h1 class="site-title"><a href="{{ page_path }}index.html">日本酒造資料庫</a></h1>
+    <p class="site-tagline">Sakego ｜ 探索 {{ total_breweries }} 家酒造、{{ total_products }} 款日本酒</p>
+  </div>
+</header>
+
+<main class="container">
+
+<section class="search-section">
+  <input type="search" id="search-input" placeholder="搜尋酒造、銘柄或地區⋯" autocomplete="off">
+  <div id="search-results" class="search-results" hidden></div>
+</section>
+
+<section class="stats">
+  <div class="stat">
+    <span class="stat-num">{{ total_breweries }}</span>
+    <span class="stat-label">酒造</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">{{ total_products }}</span>
+    <span class="stat-label">酒款</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">{{ regions|length }}</span>
+    <span class="stat-label">地區</span>
+  </div>
+</section>
+
+{% for region in regions %}
+<section class="region-block">
+  <header class="region-header">
+    <h2><a href="{{ page_path }}regions/{{ region.name | safe_id }}/">{{ region.name }}</a></h2>
+    <span class="region-count">{{ region.brewery_count }} 家酒造</span>
+  </header>
+
+  {% for area, breweries in region.areas.items() %}
+  <div class="area-block">
+    <h3 class="area-name">{{ area }}</h3>
+    <ul class="brewery-list">
+      {% for brewery in breweries %}
+      <li>
+        <a href="{{ page_path }}breweries/{{ brewery.brewery_id | safe_id }}.html">
+          {{ brewery.name_zhtw or brewery.name_jp }}
+          {% if brewery.name_zhtw and brewery.name_zhtw != brewery.name_jp %}
+          <span class="brewery-jp">{{ brewery.name_jp }}</span>
+          {% endif %}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+</section>
+{% endfor %}
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>資料來源:<a href="https://sakenowa.com/" rel="noopener" target="_blank">Sakenowa Data Project</a>｜事實規格欄位來自各酒造官網</p>
+    <p class="footer-meta">最後更新:{{ generated_at }}</p>
+  </div>
+</footer>
+
+<script src="{{ page_path }}search.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ region.name }}｜日本酒造資料庫</title>
+<link rel="stylesheet" href="{{ page_path }}styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <h1 class="site-title"><a href="{{ page_path }}index.html">日本酒造資料庫</a></h1>
+  </div>
+</header>
+
+<main class="container">
+
+<nav class="breadcrumb">
+  <a href="{{ page_path }}index.html">首頁</a>
+  <span class="sep">›</span>
+  <span class="current">{{ region.name }}</span>
+</nav>
+
+<header class="page-header">
+  <h1>{{ region.name }}</h1>
+  <p class="subtitle">{{ region.brewery_count }} 家酒造</p>
+</header>
+
+{% for area, breweries in region.areas.items() %}
+<section class="area-section">
+  <h2 class="area-name">{{ area }}</h2>
+
+  <div class="brewery-grid">
+    {% for brewery in breweries %}
+    <article class="brewery-card">
+      <h3>
+        <a href="{{ page_path }}breweries/{{ brewery.brewery_id | safe_id }}.html">
+          {{ brewery.name_zhtw or brewery.name_jp }}
+        </a>
+      </h3>
+      {% if brewery.name_zhtw and brewery.name_zhtw != brewery.name_jp %}
+      <p class="brewery-jp">{{ brewery.name_jp }}</p>
+      {% endif %}
+
+      {% set bp = products_by_brewery.get(brewery.brewery_id, []) %}
+      {% if bp %}
+      <p class="product-count">{{ bp|length }} 款銘柄</p>
+      <ul class="product-preview">
+        {% for p in bp[:3] %}
+        <li>
+          <a href="{{ page_path }}products/{{ p.product_id | safe_id }}.html">
+            {{ p.name_zhtw or p.name_jp }}
+          </a>
+        </li>
+        {% endfor %}
+        {% if bp|length > 3 %}
+        <li class="more">⋯ 還有 {{ bp|length - 3 }} 款</li>
+        {% endif %}
+      </ul>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><a href="{{ page_path }}index.html">← 返回首頁</a></p>
+    <p class="footer-meta">最後更新:{{ generated_at }}</p>
+  </div>
+</footer>
+</body>
+</html>

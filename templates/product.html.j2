@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ product.name_zhtw or product.name_jp }}｜{{ product.brewery_name_jp }}</title>
+{% if product.description %}
+<meta name="description" content="{{ product.description[:140] }}">
+{% endif %}
+<link rel="stylesheet" href="{{ page_path }}styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <h1 class="site-title"><a href="{{ page_path }}index.html">日本酒造資料庫</a></h1>
+  </div>
+</header>
+
+<main class="container product-page">
+
+<nav class="breadcrumb">
+  <a href="{{ page_path }}index.html">首頁</a>
+  <span class="sep">›</span>
+  {% if brewery.region_zhtw %}
+  <a href="{{ page_path }}regions/{{ brewery.region_zhtw | safe_id }}/">{{ brewery.region_zhtw }}</a>
+  <span class="sep">›</span>
+  {% endif %}
+  <a href="{{ page_path }}breweries/{{ product.brewery_id | safe_id }}.html">{{ product.brewery_name_jp }}</a>
+  <span class="sep">›</span>
+  <span class="current">{{ product.name_zhtw or product.name_jp }}</span>
+</nav>
+
+<article class="product-detail">
+
+<header class="product-header">
+  <h1>{{ product.name_zhtw or product.name_jp }}</h1>
+  {% if product.name_zhtw and product.name_zhtw != product.name_jp %}
+  <p class="title-jp">{{ product.name_jp }}</p>
+  {% endif %}
+  <p class="product-brewery">
+    <a href="{{ page_path }}breweries/{{ product.brewery_id | safe_id }}.html">{{ product.brewery_name_jp }}</a>
+    <span class="sep">·</span>
+    {{ product.area_zhtw or product.area_jp }}
+  </p>
+</header>
+
+{% if product.description %}
+<section class="product-section">
+  <h2>關於這款酒</h2>
+  <p>{{ product.description }}</p>
+</section>
+{% endif %}
+
+{% if product.tasting_note %}
+<section class="product-section">
+  <h2>品飲建議</h2>
+  <p>{{ product.tasting_note }}</p>
+</section>
+{% endif %}
+
+{% if product.pairing %}
+<section class="product-section">
+  <h2>搭餐建議</h2>
+  <p>{{ product.pairing }}</p>
+</section>
+{% endif %}
+
+<section class="product-section">
+  <h2>規格</h2>
+  <table class="sake-specs">
+    <tbody>
+      <tr><th>酒造</th><td>{{ product.brewery_name_jp | dash }}</td></tr>
+      <tr><th>產地</th><td>{{ product.area_zhtw or product.area_jp | dash }}</td></tr>
+      {% if product.sake_type %}<tr><th>酒類型</th><td>{{ product.sake_type }}</td></tr>{% endif %}
+      {% if product.rice_variety %}<tr><th>使用米</th><td>{{ product.rice_variety }}</td></tr>{% endif %}
+      {% if product.rice_origin %}<tr><th>米產地</th><td>{{ product.rice_origin }}</td></tr>{% endif %}
+      {% if product.seimaibuai %}<tr><th>精米步合</th><td>{{ product.seimaibuai }}%</td></tr>{% endif %}
+      {% if product.yeast %}<tr><th>酵母</th><td>{{ product.yeast }}</td></tr>{% endif %}
+      {% if product.abv %}<tr><th>酒精度</th><td>{{ product.abv }}%</td></tr>{% endif %}
+      {% if product.smv %}<tr><th>日本酒度 (SMV)</th><td>{{ product.smv }}</td></tr>{% endif %}
+      {% if product.acidity %}<tr><th>酸度</th><td>{{ product.acidity }}</td></tr>{% endif %}
+      {% if product.amino_acid %}<tr><th>氨基酸度</th><td>{{ product.amino_acid }}</td></tr>{% endif %}
+    </tbody>
+  </table>
+</section>
+
+{% set f1 = product.flavor_f1_華やか or product['flavor_f1_華やか'] %}
+{% set has_flavor = product.flavor_f1_華やか and product.flavor_f1_華やか|float(0) > 0 %}
+{% if has_flavor %}
+<section class="product-section">
+  <h2>風味輪廓</h2>
+  <div class="flavor-chart">
+    {% set axes = [
+      ('華麗', product.flavor_f1_華やか),
+      ('芳醇', product.flavor_f2_芳醇),
+      ('厚重', product.flavor_f3_重厚),
+      ('穩重', product.flavor_f4_穏やか),
+      ('辛口', product.flavor_f5_ドライ),
+      ('輕快', product.flavor_f6_軽快)
+    ] %}
+    {% for label, value in axes %}
+    {% set pct = (value|float(0) * 100)|int %}
+    <div class="flavor-bar">
+      <span class="flavor-label">{{ label }}</span>
+      <div class="flavor-track">
+        <div class="flavor-fill" style="width: {{ pct }}%"></div>
+      </div>
+      <span class="flavor-value">{{ "%.2f"|format(value|float(0)) }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  <p class="flavor-note">資料來源:Sakenowa 用戶評分整體</p>
+</section>
+{% endif %}
+
+{% if product.flavor_tags %}
+<section class="product-section">
+  <h2>風味標籤</h2>
+  <div class="flavor-tags">
+    {% for tag in product.flavor_tags.split(',') %}
+    {% if tag.strip() %}
+    <span class="tag">{{ tag.strip() }}</span>
+    {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>
+      <a href="{{ page_path }}breweries/{{ product.brewery_id | safe_id }}.html">← 返回 {{ product.brewery_name_jp }}</a>
+    </p>
+    {% if product.sakenowa_brand_url %}
+    <p class="footer-meta">
+      <a href="{{ product.sakenowa_brand_url }}" rel="noopener" target="_blank">在 Sakenowa 查看更多資訊 →</a>
+    </p>
+    {% endif %}
+    <p class="footer-meta">最後更新:{{ generated_at }}</p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ brewery.name_zhtw or brewery.name_jp }}｜日本酒造資料庫</title>
+<link rel="stylesheet" href="{{ page_path }}styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <h1 class="site-title"><a href="{{ page_path }}index.html">日本酒造資料庫</a></h1>
+  </div>
+</header>
+
+<main class="container">
+
+<nav class="breadcrumb">
+  <a href="{{ page_path }}index.html">首頁</a>
+  <span class="sep">›</span>
+  <a href="{{ page_path }}regions/{{ brewery.region_zhtw | safe_id }}/">{{ brewery.region_zhtw }}</a>
+  <span class="sep">›</span>
+  <span class="current">{{ brewery.area_zhtw or brewery.area_jp }}</span>
+</nav>
+
+<header class="page-header brewery-header">
+  <h1>{{ brewery.name_zhtw or brewery.name_jp }}</h1>
+  {% if brewery.name_zhtw and brewery.name_zhtw != brewery.name_jp %}
+  <p class="title-jp">{{ brewery.name_jp }}</p>
+  {% endif %}
+  <div class="brewery-meta">
+    <span class="meta-item">📍 {{ brewery.area_zhtw or brewery.area_jp }}</span>
+    {% if brewery.founded_year %}
+    <span class="meta-item">🏯 創業 {{ brewery.founded_year }}</span>
+    {% endif %}
+    {% if brewery.website %}
+    <span class="meta-item">🔗 <a href="{{ brewery.website }}" rel="noopener" target="_blank">官網</a></span>
+    {% endif %}
+  </div>
+</header>
+
+{% if products %}
+<section class="products-section">
+  <h2>旗下銘柄 ({{ products|length }})</h2>
+
+  <div class="product-grid">
+    {% for product in products %}
+    <article class="product-card">
+      <h3>
+        <a href="{{ page_path }}products/{{ product.product_id | safe_id }}.html">
+          {{ product.name_zhtw or product.name_jp }}
+        </a>
+      </h3>
+      {% if product.name_zhtw and product.name_zhtw != product.name_jp %}
+      <p class="product-jp">{{ product.name_jp }}</p>
+      {% endif %}
+
+      <dl class="product-quickspec">
+        {% if product.sake_type %}
+        <div><dt>類型</dt><dd>{{ product.sake_type }}</dd></div>
+        {% endif %}
+        {% if product.rice_variety %}
+        <div><dt>米</dt><dd>{{ product.rice_variety }}</dd></div>
+        {% endif %}
+        {% if product.seimaibuai %}
+        <div><dt>精米步合</dt><dd>{{ product.seimaibuai }}%</dd></div>
+        {% endif %}
+      </dl>
+
+      {% if product.flavor_tags %}
+      <div class="flavor-tags">
+        {% for tag in product.flavor_tags.split(',')[:4] %}
+        {% if tag.strip() %}
+        <span class="tag">{{ tag.strip() }}</span>
+        {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% else %}
+<section class="empty-state">
+  <p>此酒造目前尚無銘柄資料</p>
+</section>
+{% endif %}
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><a href="{{ page_path }}index.html">← 返回首頁</a></p>
+    {% if brewery.sakenowa_brewery_url %}
+    <p class="footer-meta"><a href="{{ brewery.sakenowa_brewery_url }}" rel="noopener" target="_blank">在 Sakenowa 查看此酒造 →</a></p>
+    {% endif %}
+    <p class="footer-meta">最後更新:{{ generated_at }}</p>
+  </div>
+</footer>
+</body>
+</html>

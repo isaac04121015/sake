@@ -1,0 +1,782 @@
+/* ============================================================
+ * Sakego 靜態網站樣式表
+ * 風格:和風摩登
+ * 配色:深酒紅 / 墨黑 / 古金 / 米白
+ * ============================================================ */
+
+:root {
+    --primary: #722F37;
+    --secondary: #1A1A1A;
+    --accent: #C9A961;
+    --bg: #FAF7F0;
+    --bg-card: #FFFFFF;
+    --text: #2C2C2C;
+    --text-muted: #6B6B6B;
+    --border: #E5E0D5;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.08);
+    --font-serif: "Noto Serif TC", "蘋方-繁", "PingFang TC", serif;
+    --font-sans: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ===== Header ===== */
+.site-header {
+    background: var(--secondary);
+    color: #FFF;
+    padding: 28px 0;
+    border-bottom: 3px solid var(--accent);
+}
+
+.site-title {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.08em;
+}
+
+.site-title a {
+    color: #FFF;
+    text-decoration: none;
+}
+
+.site-tagline {
+    margin: 6px 0 0;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.05em;
+}
+
+/* ===== Breadcrumb ===== */
+.breadcrumb {
+    padding: 20px 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: var(--primary);
+}
+
+.breadcrumb .sep {
+    margin: 0 8px;
+    color: var(--border);
+}
+
+.breadcrumb .current {
+    color: var(--text);
+    font-weight: 500;
+}
+
+/* ===== Search ===== */
+.search-section {
+    margin: 32px 0;
+    position: relative;
+}
+
+#search-input {
+    width: 100%;
+    padding: 16px 24px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-card);
+    font-size: 1rem;
+    font-family: var(--font-sans);
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(114, 47, 55, 0.1);
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow-hover);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.search-results a {
+    display: block;
+    padding: 12px 20px;
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+}
+
+.search-results a:last-child {
+    border-bottom: none;
+}
+
+.search-results a:hover {
+    background: var(--bg);
+    color: var(--primary);
+}
+
+.search-result-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* ===== Stats (首頁) ===== */
+.stats {
+    display: flex;
+    gap: 24px;
+    margin: 40px 0;
+    justify-content: center;
+}
+
+.stat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px 36px;
+    text-align: center;
+    min-width: 120px;
+    box-shadow: var(--shadow);
+}
+
+.stat-num {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.stat-label {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+}
+
+/* ===== Region block (首頁) ===== */
+.region-block {
+    margin: 48px 0;
+}
+
+.region-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+}
+
+.region-header h2 {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--secondary);
+    position: relative;
+    padding-left: 16px;
+}
+
+.region-header h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 4px;
+    background: var(--primary);
+}
+
+.region-header h2 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.region-header h2 a:hover {
+    color: var(--primary);
+}
+
+.region-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+.area-block {
+    margin: 24px 0;
+}
+
+.area-name {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text);
+    margin: 16px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed var(--border);
+}
+
+.brewery-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px 16px;
+}
+
+.brewery-list a {
+    display: block;
+    padding: 8px 0;
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.15s;
+}
+
+.brewery-list a:hover {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.brewery-jp {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* ===== Page header (地區/酒造頁) ===== */
+.page-header {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+}
+
+.page-header h1 {
+    font-family: var(--font-serif);
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--secondary);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.page-header .subtitle {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.title-jp {
+    margin: 6px 0 0;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+/* ===== Brewery header ===== */
+.brewery-header .brewery-meta {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.brewery-header .meta-item a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.brewery-header .meta-item a:hover {
+    text-decoration: underline;
+}
+
+/* ===== Area section (地區頁) ===== */
+.area-section {
+    margin: 40px 0;
+}
+
+.area-section .area-name {
+    font-size: 1.3rem;
+    color: var(--primary);
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+    border-bottom: none;
+    margin-bottom: 20px;
+}
+
+/* ===== Brewery grid (地區頁) ===== */
+.brewery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.brewery-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+}
+
+.brewery-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent);
+}
+
+.brewery-card h3 {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    margin: 0 0 4px;
+    line-height: 1.4;
+}
+
+.brewery-card h3 a {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+.brewery-card h3 a:hover {
+    color: var(--primary);
+}
+
+.brewery-card .brewery-jp {
+    display: block;
+    margin: 0 0 12px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.product-count {
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin: 8px 0 4px;
+    letter-spacing: 0.05em;
+}
+
+.product-preview {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+    font-size: 0.9rem;
+}
+
+.product-preview li {
+    padding: 3px 0;
+    color: var(--text-muted);
+}
+
+.product-preview a {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.product-preview a:hover {
+    color: var(--primary);
+}
+
+.product-preview .more {
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.85rem;
+}
+
+/* ===== Product grid (酒造頁) ===== */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent);
+}
+
+.product-card h3 {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    margin: 0 0 4px;
+    line-height: 1.4;
+}
+
+.product-card h3 a {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+.product-card h3 a:hover {
+    color: var(--primary);
+}
+
+.product-jp {
+    margin: 0 0 14px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.product-quickspec {
+    margin: 12px 0 0;
+    font-size: 0.85rem;
+}
+
+.product-quickspec > div {
+    display: flex;
+    padding: 4px 0;
+    border-top: 1px dotted var(--border);
+}
+
+.product-quickspec dt {
+    flex: 0 0 80px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.product-quickspec dd {
+    margin: 0;
+    color: var(--text);
+}
+
+/* ===== Product detail page ===== */
+.product-page {
+    max-width: 760px;
+}
+
+.product-detail {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 48px;
+    box-shadow: var(--shadow);
+    margin-bottom: 40px;
+}
+
+.product-header {
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+}
+
+.product-header h1 {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    margin: 0;
+    color: var(--secondary);
+    line-height: 1.3;
+}
+
+.product-brewery {
+    margin: 12px 0 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.product-brewery a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.product-brewery a:hover {
+    text-decoration: underline;
+}
+
+.product-brewery .sep {
+    margin: 0 8px;
+    color: var(--border);
+}
+
+.product-section {
+    margin: 32px 0;
+}
+
+.product-section h2 {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    color: var(--primary);
+    margin: 0 0 16px;
+    padding-left: 12px;
+    border-left: 4px solid var(--accent);
+    line-height: 1.4;
+}
+
+.product-section p {
+    text-align: justify;
+    color: var(--text);
+    margin: 0;
+}
+
+/* ===== Sake specs table ===== */
+.sake-specs {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 0.95rem;
+}
+
+.sake-specs th {
+    background: var(--bg);
+    color: var(--secondary);
+    padding: 12px 20px;
+    text-align: left;
+    width: 32%;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+}
+
+.sake-specs td {
+    padding: 12px 20px;
+    color: var(--text);
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+}
+
+.sake-specs tr:last-child th,
+.sake-specs tr:last-child td {
+    border-bottom: none;
+}
+
+/* ===== Flavor chart ===== */
+.flavor-chart {
+    background: var(--bg);
+    padding: 20px 24px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.flavor-bar {
+    display: grid;
+    grid-template-columns: 60px 1fr 50px;
+    gap: 12px;
+    align-items: center;
+    margin: 12px 0;
+    font-size: 0.9rem;
+}
+
+.flavor-label {
+    color: var(--text);
+    font-weight: 500;
+}
+
+.flavor-track {
+    height: 8px;
+    background: var(--bg-card);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.flavor-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--primary));
+    border-radius: 4px;
+    transition: width 0.4s;
+}
+
+.flavor-value {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.flavor-note {
+    margin: 16px 0 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* ===== Flavor tags ===== */
+.flavor-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0 0;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--bg);
+    color: var(--primary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+}
+
+/* ===== Empty state ===== */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+}
+
+/* ===== Footer ===== */
+.site-footer {
+    background: var(--secondary);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 32px 0;
+    margin-top: 80px;
+    font-size: 0.85rem;
+}
+
+.site-footer p {
+    margin: 4px 0;
+}
+
+.site-footer a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    text-decoration: underline;
+}
+
+.footer-meta {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+}
+
+/* ===== Mobile RWD ===== */
+@media (max-width: 700px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .site-header {
+        padding: 20px 0;
+    }
+
+    .site-title {
+        font-size: 1.3rem;
+    }
+
+    .stats {
+        gap: 12px;
+    }
+
+    .stat {
+        padding: 16px 20px;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .stat-num {
+        font-size: 1.8rem;
+    }
+
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .product-detail {
+        padding: 28px 20px;
+    }
+
+    .product-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .region-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .brewery-list {
+        grid-template-columns: 1fr;
+    }
+
+    /* 規格表手機版 */
+    .sake-specs th,
+    .sake-specs td {
+        display: block;
+        width: 100%;
+        border-right: none;
+    }
+
+    .sake-specs th {
+        background: var(--secondary);
+        color: #FFF;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        letter-spacing: 0.08em;
+    }
+
+    .sake-specs td {
+        padding: 12px 16px 16px;
+        font-weight: 500;
+    }
+
+    .flavor-bar {
+        grid-template-columns: 50px 1fr 40px;
+        font-size: 0.85rem;
+    }
+}
