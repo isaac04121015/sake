@@ -1,0 +1,14 @@
+Match report (generated 2026-05-11T09:00:08.189542+00:00)
+============================================================
+Targets: 166
+Matched: 166
+Unique breweries: 163
+Total products: 169
+Unmatched: 0
+
+── Unmatched targets (need manual review) ──
+
+── Match method breakdown ──
+  brand_name_exact: 161
+  brand_name_fallback: 1
+  brewery_name_exact: 4
