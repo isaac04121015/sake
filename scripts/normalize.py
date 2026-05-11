@@ -319,7 +319,45 @@ def write_json(path: Path, rows: list[dict]) -> None:
     )
 
 
+def build_all_rows(idx: dict, regions: dict) -> tuple[list[dict], list[dict]]:
+    """全抓模式:遍歷 Sakenowa 全部資料,產出 breweries + products。"""
+    brewery_rows = []
+    product_rows = []
+
+    # 全部酒造
+    for brewery in idx["breweries_by_id"].values():
+        area = idx["areas_by_id"].get(brewery["areaId"])
+        if not area:
+            continue
+        # 建 match 結構讓既有 build_brewery_row / build_product_rows 能用
+        all_brands = [
+            b for b in idx["brands_by_id"].values()
+            if b["breweryId"] == brewery["id"]
+        ]
+        match = {
+            "brand": all_brands[0] if all_brands else None,
+            "brewery": brewery,
+            "area": area,
+            "all_brands": all_brands,
+            "match_method": "all_mode",
+        }
+        brewery_rows.append(build_brewery_row(match, regions))
+        product_rows.extend(build_product_rows(match, idx, regions))
+
+    return brewery_rows, product_rows
+
+
 def main() -> int:
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--mode",
+        choices=["all", "targets"],
+        default="all",
+        help="all = 抓 Sakenowa 全部資料 (預設); targets = 只抓 config/target_breweries.txt 清單",
+    )
+    args = parser.parse_args()
+
     print(f"Loading raw data from {RAW_DIR}")
     try:
         raw = {
@@ -339,35 +377,42 @@ def main() -> int:
     print(f"Loading regions translation: {DATA_DIR / 'regions_zhtw.json'}")
     regions = load_json(DATA_DIR / "regions_zhtw.json")
 
-    print(f"Loading targets: {CONFIG_DIR / 'target_breweries.txt'}")
-    targets = parse_target_breweries(CONFIG_DIR / "target_breweries.txt")
-    print(f"  {len(targets)} targets")
+    if args.mode == "all":
+        print("\nMode: ALL (抓取 Sakenowa 全部資料)")
+        brewery_rows, product_rows = build_all_rows(idx, regions)
+        unmatched = []
+        matched_count = len(brewery_rows)
+        targets_count = len(brewery_rows)
+    else:
+        print(f"Loading targets: {CONFIG_DIR / 'target_breweries.txt'}")
+        targets = parse_target_breweries(CONFIG_DIR / "target_breweries.txt")
+        print(f"  {len(targets)} targets")
 
-    brewery_rows = []
-    product_rows = []
-    seen_brewery_ids = set()
-    matched = []
-    unmatched = []
+        brewery_rows = []
+        product_rows = []
+        seen_brewery_ids = set()
+        matched = []
+        unmatched = []
 
-    print("\nMatching...")
-    for target in targets:
-        match = match_target(target, idx)
-        if not match:
-            unmatched.append(target)
-            continue
+        print("\nMatching...")
+        for target in targets:
+            match = match_target(target, idx)
+            if not match:
+                unmatched.append(target)
+                continue
+            matched.append((target, match))
+            bid = match["brewery"]["id"]
+            if bid not in seen_brewery_ids:
+                seen_brewery_ids.add(bid)
+                brewery_rows.append(build_brewery_row(match, regions))
+            product_rows.extend(build_product_rows(match, idx, regions))
 
-        matched.append((target, match))
-        bid = match["brewery"]["id"]
-        if bid not in seen_brewery_ids:
-            seen_brewery_ids.add(bid)
-            brewery_rows.append(build_brewery_row(match, regions))
+        matched_count = len(matched)
+        targets_count = len(targets)
 
-        product_rows.extend(build_product_rows(match, idx, regions))
-
-    print(f"  matched: {len(matched)} targets → "
-          f"{len(brewery_rows)} unique breweries / "
-          f"{len(product_rows)} products")
-    print(f"  unmatched: {len(unmatched)}")
+    print(f"\n  produced: {len(brewery_rows)} breweries / {len(product_rows)} products")
+    if unmatched:
+        print(f"  unmatched: {len(unmatched)}")
 
     # 輸出
     DATA_DIR.mkdir(exist_ok=True)
@@ -379,25 +424,21 @@ def main() -> int:
     # match report
     report_lines = [
         f"Match report (generated {datetime.now(timezone.utc).isoformat()})",
+        f"Mode: {args.mode}",
         "=" * 60,
-        f"Targets: {len(targets)}",
-        f"Matched: {len(matched)}",
-        f"Unique breweries: {len(brewery_rows)}",
-        f"Total products: {len(product_rows)}",
-        f"Unmatched: {len(unmatched)}",
-        "",
-        "── Unmatched targets (need manual review) ──",
+        f"Sakenowa total: {len(idx['breweries_by_id'])} breweries / {len(idx['brands_by_id'])} brands",
+        f"Produced: {len(brewery_rows)} breweries / {len(product_rows)} products",
     ]
-    for t in unmatched:
-        report_lines.append(f"  {t['brand_jp']:20s} | {t['brewery_jp']:20s} | {t['area_jp']}")
-
-    report_lines.append("")
-    report_lines.append("── Match method breakdown ──")
-    methods = {}
-    for _, m in matched:
-        methods[m["match_method"]] = methods.get(m["match_method"], 0) + 1
-    for method, count in sorted(methods.items()):
-        report_lines.append(f"  {method}: {count}")
+    if args.mode == "targets":
+        report_lines += [
+            f"Targets: {targets_count}",
+            f"Matched: {matched_count}",
+            f"Unmatched: {len(unmatched)}",
+            "",
+            "── Unmatched targets (need manual review) ──",
+        ]
+        for t in unmatched:
+            report_lines.append(f"  {t['brand_jp']:20s} | {t['brewery_jp']:20s} | {t['area_jp']}")
 
     (DATA_DIR / "_match_report.txt").write_text("\n".join(report_lines), encoding="utf-8")
 

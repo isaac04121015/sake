@@ -55,6 +55,133 @@ def safe_id(s: str) -> str:
     return str(s).strip().replace("/", "-").replace(" ", "_")
 
 
+# ===== 情境圖 / CSS 卡片配色邏輯 =====
+# 用 Unsplash 的「日本酒/酒場/和食」情境圖 (CC0 / Unsplash License,可商用)
+# 注意:這些不是「特定酒款的圖片」,只是視覺氛圍素材
+UNSPLASH_HERO_IMAGES = {
+    "default": "https://images.unsplash.com/photo-1579952516518-12c1d8f3a05a?w=1600&q=80",  # 酒杯特寫
+    "sake_bottle": "https://images.unsplash.com/photo-1627042942554-23bdac68f5f9?w=1200&q=80",  # 酒瓶
+    "izakaya": "https://images.unsplash.com/photo-1554998171-89445e31c52b?w=1200&q=80",  # 居酒屋
+    "tasting": "https://images.unsplash.com/photo-1607301406259-dfb186e15de8?w=1200&q=80",  # 品飲
+}
+
+
+def classify_sake_visual(product: dict) -> dict:
+    """根據酒類型 + 風味雷達,決定卡片的配色主題。
+    完全基於規格資料,不抓任何外部圖片(避開著作權)。"""
+    sake_type = (product.get("sake_type") or "").strip()
+
+    # 主題色系優先級:酒類型 > 風味雷達主軸 > 預設
+    themes = {
+        "daiginjo": {  # 大吟釀類 - 金 / 米白系
+            "primary": "#C9A961",
+            "secondary": "#8B7355",
+            "bg_gradient": "linear-gradient(135deg, #FAF6E8 0%, #E8D9B0 100%)",
+            "accent": "#722F37",
+            "label": "大吟釀",
+        },
+        "ginjo": {  # 吟釀類 - 淡綠 / 春芽
+            "primary": "#6B8E5A",
+            "secondary": "#4A6741",
+            "bg_gradient": "linear-gradient(135deg, #F0F4E8 0%, #C8D4B0 100%)",
+            "accent": "#3D5233",
+            "label": "吟釀",
+        },
+        "junmai": {  # 純米 - 深紅 / 米色
+            "primary": "#8B3A3A",
+            "secondary": "#5C2828",
+            "bg_gradient": "linear-gradient(135deg, #F5E8E0 0%, #D4B5A8 100%)",
+            "accent": "#3D1818",
+            "label": "純米",
+        },
+        "honjozo": {  # 本釀造 - 藍 / 清爽
+            "primary": "#2C5F7C",
+            "secondary": "#1E4258",
+            "bg_gradient": "linear-gradient(135deg, #E8F0F5 0%, #B0C8D8 100%)",
+            "accent": "#0F2A3D",
+            "label": "本釀造",
+        },
+        "namazake": {  # 生酒 - 翠綠 / 清新
+            "primary": "#5BA85B",
+            "secondary": "#3D7A3D",
+            "bg_gradient": "linear-gradient(135deg, #E8F5E8 0%, #B0D8B0 100%)",
+            "accent": "#1F4D1F",
+            "label": "生酒",
+        },
+        "koshu": {  # 古酒 - 深褐 / 琥珀
+            "primary": "#8B4513",
+            "secondary": "#5C2E0D",
+            "bg_gradient": "linear-gradient(135deg, #F0E5D0 0%, #C9A878 100%)",
+            "accent": "#3D1E08",
+            "label": "古酒",
+        },
+        "default": {  # 預設 - 和風摩登
+            "primary": "#722F37",
+            "secondary": "#5C2528",
+            "bg_gradient": "linear-gradient(135deg, #FAF7F0 0%, #E5D5C5 100%)",
+            "accent": "#1A1A1A",
+            "label": "日本酒",
+        },
+    }
+
+    # 偵測類型 (日文漢字匹配)
+    theme_key = "default"
+    if any(k in sake_type for k in ["大吟醸", "大吟釀"]):
+        theme_key = "daiginjo"
+    elif any(k in sake_type for k in ["吟醸", "吟釀"]):
+        theme_key = "ginjo"
+    elif "古酒" in sake_type:
+        theme_key = "koshu"
+    elif any(k in sake_type for k in ["生酒", "生原酒", "無濾過"]):
+        theme_key = "namazake"
+    elif "純米" in sake_type:
+        theme_key = "junmai"
+    elif "本醸造" in sake_type or "本釀造" in sake_type:
+        theme_key = "honjozo"
+    else:
+        # 沒有酒類型?用風味雷達推斷
+        try:
+            f1 = float(product.get("flavor_f1_華やか", 0) or 0)
+            f3 = float(product.get("flavor_f3_重厚", 0) or 0)
+            f5 = float(product.get("flavor_f5_ドライ", 0) or 0)
+            if f1 > 0.6:
+                theme_key = "daiginjo"
+            elif f3 > 0.5:
+                theme_key = "junmai"
+            elif f5 > 0.6:
+                theme_key = "honjozo"
+        except (ValueError, TypeError):
+            pass
+
+    return themes[theme_key]
+
+
+def get_hero_image(brewery_id: str, region: str = "") -> str:
+    """為酒造/地區頁挑一張情境圖 (用 ID 雜湊穩定挑選)。"""
+    # 用 brewery_id 做穩定雜湊,讓同一個酒造每次都拿到同一張圖
+    images = list(UNSPLASH_HERO_IMAGES.values())
+    if not brewery_id:
+        return images[0]
+    try:
+        h = int(brewery_id) % len(images)
+    except (ValueError, TypeError):
+        h = hash(brewery_id) % len(images)
+    return images[h]
+
+
+def has_authorized_image(product_id: str) -> str | None:
+    """檢查是否有手動上傳的授權圖片 (放在 static/sake-images/{product_id}.jpg)。
+    回傳相對路徑或 None。"""
+    if not product_id:
+        return None
+    # 檢查多種格式
+    for ext in ["jpg", "jpeg", "png", "webp"]:
+        path = STATIC_DIR / "sake-images" / f"{product_id}.{ext}"
+        if path.exists():
+            return f"sake-images/{product_id}.{ext}"
+    return None
+
+
 def build_data_model() -> dict:
     """從 CSV 建立巢狀資料結構: region → area → brewery → products"""
     breweries = load_csv(DATA_DIR / "breweries.csv")
@@ -74,11 +201,17 @@ def build_data_model() -> dict:
     brewery_by_id = {b["brewery_id"]: b for b in breweries}
     products_by_brewery = defaultdict(list)
     for p in products:
+        # 為每個 product 附加視覺主題 + 授權圖檢查
+        p["_theme"] = classify_sake_visual(p)
+        p["_authorized_image"] = has_authorized_image(p.get("product_id", ""))
+        p["_hero_image"] = get_hero_image(p.get("brewery_id", ""))
         products_by_brewery[p["brewery_id"]].append(p)
 
     # 按 region 分組
     regions = defaultdict(lambda: defaultdict(list))
     for brewery in breweries:
+        # 為每個酒造附加 hero image
+        brewery["_hero_image"] = get_hero_image(brewery.get("brewery_id", ""))
         region = brewery.get("region_zhtw", "其他")
         area = brewery.get("area_zhtw") or brewery.get("area_jp", "未分類")
         regions[region][area].append(brewery)

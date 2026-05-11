@@ -18,12 +18,21 @@
   </div>
 </header>
 
-<main class="container">
-
-<section class="search-section">
-  <input type="search" id="search-input" placeholder="搜尋酒造、銘柄或地區⋯" autocomplete="off">
-  <div id="search-results" class="search-results" hidden></div>
+{# Hero 區 - 用 Unsplash 情境圖當背景 #}
+<section class="home-hero">
+  <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1579952516518-12c1d8f3a05a?w=1600&q=80');"></div>
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <h2 class="hero-title">探索日本酒的世界</h2>
+    <p class="hero-sub">從北海道到九州,{{ total_breweries }} 家酒造、{{ total_products }} 款銘柄一次掌握</p>
+    <div class="hero-search">
+      <input type="search" id="search-input" placeholder="搜尋酒造、銘柄或地區⋯" autocomplete="off">
+      <div id="search-results" class="search-results" hidden></div>
+    </div>
+  </div>
 </section>
+
+<main class="container">
 
 <section class="stats">
   <div class="stat">
@@ -40,8 +49,18 @@
   </div>
 </section>
 
+{# 地區快速導覽 #}
+<nav class="region-nav">
+  {% for region in regions %}
+  <a href="{{ page_path }}regions/{{ region.name | safe_id }}/" class="region-pill">
+    <span class="region-pill-name">{{ region.name }}</span>
+    <span class="region-pill-count">{{ region.brewery_count }}</span>
+  </a>
+  {% endfor %}
+</nav>
+
 {% for region in regions %}
-<section class="region-block">
+<section class="region-block" id="region-{{ region.name | safe_id }}">
   <header class="region-header">
     <h2><a href="{{ page_path }}regions/{{ region.name | safe_id }}/">{{ region.name }}</a></h2>
     <span class="region-count">{{ region.brewery_count }} 家酒造</span>
@@ -72,6 +91,7 @@
 <footer class="site-footer">
   <div class="container">
     <p>資料來源:<a href="https://sakenowa.com/" rel="noopener" target="_blank">Sakenowa Data Project</a>｜事實規格欄位來自各酒造官網</p>
+    <p class="footer-meta">情境圖片來自 <a href="https://unsplash.com/" rel="noopener" target="_blank">Unsplash</a>(CC0/Unsplash License)</p>
     <p class="footer-meta">最後更新:{{ generated_at }}</p>
   </div>
 </footer>

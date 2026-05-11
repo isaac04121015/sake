@@ -37,7 +37,7 @@ ROOT = Path(__file__).parent.parent
 DATA_DIR = ROOT / "data"
 CONFIG_DIR = ROOT / "config"
 
-MODEL = "claude-opus-4-7"
+MODEL = "claude-haiku-4-5-20251001"
 MAX_TOKENS = 1500
 
 

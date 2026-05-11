@@ -17,33 +17,73 @@
   </div>
 </header>
 
+{% set theme = product._theme %}
+<section class="product-hero" style="background: {{ theme.bg_gradient }};">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-visual">
+        {% if product._authorized_image %}
+          <img src="{{ page_path }}{{ product._authorized_image }}" alt="{{ product.name_zhtw or product.name_jp }}" class="product-image">
+        {% else %}
+          <div class="sake-card" style="background: linear-gradient(180deg, {{ theme.primary }} 0%, {{ theme.secondary }} 100%);">
+            <div class="sake-card-inner">
+              <div class="sake-card-label">{{ theme.label }}</div>
+              <div class="sake-card-name">{{ product.name_zhtw or product.name_jp }}</div>
+              {% if product.name_zhtw and product.name_zhtw != product.name_jp %}
+              <div class="sake-card-jp">{{ product.name_jp }}</div>
+              {% endif %}
+              <div class="sake-card-divider"></div>
+              <div class="sake-card-brewery">{{ product.brewery_name_jp }}</div>
+              <div class="sake-card-area">{{ product.area_zhtw or product.area_jp }}</div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="hero-info">
+        <nav class="breadcrumb">
+          <a href="{{ page_path }}index.html">首頁</a>
+          <span class="sep">›</span>
+          {% if brewery.region_zhtw %}
+          <a href="{{ page_path }}regions/{{ brewery.region_zhtw | safe_id }}/">{{ brewery.region_zhtw }}</a>
+          <span class="sep">›</span>
+          {% endif %}
+          <a href="{{ page_path }}breweries/{{ product.brewery_id | safe_id }}.html">{{ product.brewery_name_jp }}</a>
+        </nav>
+
+        <h1 class="product-title">{{ product.name_zhtw or product.name_jp }}</h1>
+        {% if product.name_zhtw and product.name_zhtw != product.name_jp %}
+        <p class="product-title-jp">{{ product.name_jp }}</p>
+        {% endif %}
+
+        <p class="product-brewery-line">
+          <a href="{{ page_path }}breweries/{{ product.brewery_id | safe_id }}.html">{{ product.brewery_name_jp }}</a>
+          <span class="sep">·</span>
+          <span>{{ product.area_zhtw or product.area_jp }}</span>
+        </p>
+
+        <div class="quick-badges">
+          {% if product.sake_type %}
+          <span class="badge badge-primary">{{ product.sake_type }}</span>
+          {% endif %}
+          {% if product.rice_variety %}
+          <span class="badge">{{ product.rice_variety }}</span>
+          {% endif %}
+          {% if product.seimaibuai %}
+          <span class="badge">精米 {{ product.seimaibuai }}%</span>
+          {% endif %}
+          {% if product.abv %}
+          <span class="badge">{{ product.abv }}% ABV</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <main class="container product-page">
 
-<nav class="breadcrumb">
-  <a href="{{ page_path }}index.html">首頁</a>
-  <span class="sep">›</span>
-  {% if brewery.region_zhtw %}
-  <a href="{{ page_path }}regions/{{ brewery.region_zhtw | safe_id }}/">{{ brewery.region_zhtw }}</a>
-  <span class="sep">›</span>
-  {% endif %}
-  <a href="{{ page_path }}breweries/{{ product.brewery_id | safe_id }}.html">{{ product.brewery_name_jp }}</a>
-  <span class="sep">›</span>
-  <span class="current">{{ product.name_zhtw or product.name_jp }}</span>
-</nav>
-
 <article class="product-detail">
-
-<header class="product-header">
-  <h1>{{ product.name_zhtw or product.name_jp }}</h1>
-  {% if product.name_zhtw and product.name_zhtw != product.name_jp %}
-  <p class="title-jp">{{ product.name_jp }}</p>
-  {% endif %}
-  <p class="product-brewery">
-    <a href="{{ page_path }}breweries/{{ product.brewery_id | safe_id }}.html">{{ product.brewery_name_jp }}</a>
-    <span class="sep">·</span>
-    {{ product.area_zhtw or product.area_jp }}
-  </p>
-</header>
 
 {% if product.description %}
 <section class="product-section">
@@ -85,30 +125,57 @@
   </table>
 </section>
 
-{% set f1 = product.flavor_f1_華やか or product['flavor_f1_華やか'] %}
 {% set has_flavor = product.flavor_f1_華やか and product.flavor_f1_華やか|float(0) > 0 %}
 {% if has_flavor %}
 <section class="product-section">
   <h2>風味輪廓</h2>
-  <div class="flavor-chart">
-    {% set axes = [
-      ('華麗', product.flavor_f1_華やか),
-      ('芳醇', product.flavor_f2_芳醇),
-      ('厚重', product.flavor_f3_重厚),
-      ('穩重', product.flavor_f4_穏やか),
-      ('辛口', product.flavor_f5_ドライ),
-      ('輕快', product.flavor_f6_軽快)
-    ] %}
-    {% for label, value in axes %}
-    {% set pct = (value|float(0) * 100)|int %}
-    <div class="flavor-bar">
-      <span class="flavor-label">{{ label }}</span>
-      <div class="flavor-track">
-        <div class="flavor-fill" style="width: {{ pct }}%"></div>
+  {% set axes = [
+    ('華麗', product.flavor_f1_華やか),
+    ('芳醇', product.flavor_f2_芳醇),
+    ('厚重', product.flavor_f3_重厚),
+    ('穩重', product.flavor_f4_穏やか),
+    ('辛口', product.flavor_f5_ドライ),
+    ('輕快', product.flavor_f6_軽快)
+  ] %}
+  <div class="flavor-radar-container">
+    <svg viewBox="0 0 300 300" class="flavor-radar" xmlns="http://www.w3.org/2000/svg">
+      {% set xs = [0, 0.866, 0.866, 0, -0.866, -0.866] %}
+      {% set ys = [-1, -0.5, 0.5, 1, 0.5, -0.5] %}
+      {% for r in [30, 60, 90, 120] %}
+      <polygon points="{% for i in range(6) %}{{ 150 + r * xs[i] }},{{ 150 + r * ys[i] }} {% endfor %}"
+               fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+      {% endfor %}
+      {% for i in range(6) %}
+      <line x1="150" y1="150"
+            x2="{{ 150 + 120 * xs[i] }}"
+            y2="{{ 150 + 120 * ys[i] }}"
+            stroke="rgba(0,0,0,0.1)" stroke-width="1"/>
+      {% endfor %}
+      <polygon points="{% for i in range(6) %}{% set v = axes[i][1]|float(0) %}{{ 150 + 120 * v * xs[i] }},{{ 150 + 120 * v * ys[i] }} {% endfor %}"
+               fill="{{ theme.primary }}" fill-opacity="0.3"
+               stroke="{{ theme.primary }}" stroke-width="2"/>
+      {% for i in range(6) %}
+      {% set v = axes[i][1]|float(0) %}
+      <circle cx="{{ 150 + 120 * v * xs[i] }}"
+              cy="{{ 150 + 120 * v * ys[i] }}"
+              r="4" fill="{{ theme.primary }}"/>
+      {% endfor %}
+      {% for i in range(6) %}
+      <text x="{{ 150 + 145 * xs[i] }}"
+            y="{{ 150 + 145 * ys[i] }}"
+            text-anchor="middle" dominant-baseline="middle"
+            font-size="14" font-weight="500" fill="#2C2C2C"
+            font-family="Noto Sans TC, sans-serif">{{ axes[i][0] }}</text>
+      {% endfor %}
+    </svg>
+    <div class="flavor-legend">
+      {% for label, value in axes %}
+      <div class="flavor-legend-item">
+        <span class="flavor-legend-label">{{ label }}</span>
+        <span class="flavor-legend-value">{{ "%.2f"|format(value|float(0)) }}</span>
       </div>
-      <span class="flavor-value">{{ "%.2f"|format(value|float(0)) }}</span>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
   <p class="flavor-note">資料來源:Sakenowa 用戶評分整體</p>
 </section>

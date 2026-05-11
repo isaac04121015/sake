@@ -58,7 +58,7 @@ jobs:
 
       # ===== Step 2: 正規化 + 過濾目標清單 =====
       - name: Normalize data
-        run: python scripts/normalize.py
+        run: python scripts/normalize.py --mode all
 
       # ===== Step 3: (可選) 從酒造官網補規格 =====
       - name: Fetch brewery specs
