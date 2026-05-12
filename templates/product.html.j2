@@ -25,16 +25,23 @@
         {% if product._authorized_image %}
           <img src="{{ page_path }}{{ product._authorized_image }}" alt="{{ product.name_zhtw or product.name_jp }}" class="product-image">
         {% else %}
-          <div class="sake-card" style="background: linear-gradient(180deg, {{ theme.primary }} 0%, {{ theme.secondary }} 100%);">
-            <div class="sake-card-inner">
-              <div class="sake-card-label">{{ theme.label }}</div>
-              <div class="sake-card-name">{{ product.name_zhtw or product.name_jp }}</div>
-              {% if product.name_zhtw and product.name_zhtw != product.name_jp %}
-              <div class="sake-card-jp">{{ product.name_jp }}</div>
-              {% endif %}
-              <div class="sake-card-divider"></div>
-              <div class="sake-card-brewery">{{ product.brewery_name_jp }}</div>
-              <div class="sake-card-area">{{ product.area_zhtw or product.area_jp }}</div>
+          <div class="sake-card-wrapper">
+            <div class="sake-card" style="background: linear-gradient(180deg, {{ theme.primary }} 0%, {{ theme.secondary }} 100%);">
+              <div class="sake-card-inner">
+                <div class="sake-card-label">{{ theme.label }}</div>
+                <div class="sake-card-name">{{ product.name_zhtw or product.name_jp }}</div>
+                {% if product.name_zhtw and product.name_zhtw != product.name_jp %}
+                <div class="sake-card-jp">{{ product.name_jp }}</div>
+                {% endif %}
+                <div class="sake-card-divider"></div>
+                <div class="sake-card-brewery">{{ product.brewery_name_jp }}</div>
+                <div class="sake-card-area">{{ product.area_zhtw or product.area_jp }}</div>
+              </div>
+            </div>
+            {# 圖片上傳提示 - 僅供管理者參考,使用 data-attribute 隱藏,正常訪客看不到 #}
+            <div class="image-placeholder-hint" title="上傳圖檔到 static/sake-images/{{ product.product_id }}.jpg 即可自動替換">
+              <span class="hint-id">{{ product.product_id }}</span>
+              <span class="hint-spec">建議 600×800px</span>
             </div>
           </div>
         {% endif %}
