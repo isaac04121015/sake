@@ -88,18 +88,31 @@ jobs:
         run: python scripts/publish_to_wordpress.py --status draft
         continue-on-error: true
 
-      # ===== Step 7: Commit 變更回 repo =====
+      # ===== Step 7: Commit 變更回 repo (有衝突會自動 rebase + retry) =====
       - name: Commit data changes
+        continue-on-error: true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/
           if git diff --staged --quiet; then
             echo "No changes to commit"
-          else
-            git commit -m "data: daily sync $(date -u +%Y-%m-%d)"
-            git push
+            exit 0
           fi
+          git commit -m "data: daily sync $(date -u +%Y-%m-%d)"
+
+          # 重試 3 次,每次先 pull rebase 再 push (處理多人/多次 push 衝突)
+          for i in 1 2 3; do
+            echo "Push attempt $i..."
+            git pull --rebase origin main || echo "pull failed, continuing"
+            if git push origin main; then
+              echo "Push successful"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Push failed after 3 attempts, but continuing (Pages deploy will still work)"
+          exit 0
 
       # ===== Step 8: 上傳 artifacts (備援下載) =====
       - name: Upload data artifacts
