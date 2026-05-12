@@ -633,28 +633,38 @@ body {
     margin: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 6px 16px;
+    gap: 10px;
+}
+
+.brewery-list li {
+    list-style: none;
 }
 
 .brewery-list a {
     display: block;
-    padding: 8px 0;
+    padding: 14px 16px;
+    background: var(--bg-card);
     color: var(--text);
     text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: all 0.15s;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    line-height: 1.4;
 }
 
 .brewery-list a:hover {
     color: var(--primary);
-    border-bottom-color: var(--primary);
-    padding-left: 4px;
+    border-color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(114, 47, 55, 0.12);
 }
 
 .brewery-jp {
-    display: inline-block;
-    margin-left: 8px;
-    font-size: 0.8rem;
+    display: block;
+    margin-top: 4px;
+    margin-left: 0;
+    font-size: 0.75rem;
     color: var(--text-muted);
 }
 
@@ -1363,13 +1373,18 @@ body {
         font-size: 1.4rem;
     }
 
-    /* Brewery list - 手機改單欄 */
+    /* Brewery list - 手機改 2 欄並排卡片 */
     .brewery-list {
-        grid-template-columns: 1fr;
-        gap: 4px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
     }
     .brewery-list a {
-        padding: 10px 0;
+        padding: 12px;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+    .brewery-jp {
+        font-size: 0.7rem;
     }
 
     /* Product detail */
@@ -1633,6 +1648,19 @@ body {
         flex-wrap: wrap;
         line-height: 1.8;
         font-size: 0.8rem;
+    }
+
+    /* 小手機酒造卡片更緊湊 */
+    .brewery-list {
+        gap: 6px;
+    }
+    .brewery-list a {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+    .brewery-jp {
+        font-size: 0.65rem;
+        margin-top: 2px;
     }
 }
 
