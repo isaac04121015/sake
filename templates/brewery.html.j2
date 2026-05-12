@@ -14,10 +14,12 @@
   </div>
 </header>
 
-{# 酒造 Hero 區 - 用情境圖當背景 #}
+{# ===== 酒造 Hero ===== #}
 <section class="brewery-hero">
   <div class="hero-bg" style="background-image: url('{{ brewery._hero_image }}');"></div>
   <div class="hero-overlay"></div>
+  <div class="hero-vignette"></div>
+
   <div class="container hero-content">
     <nav class="breadcrumb breadcrumb-light">
       <a href="{{ page_path }}index.html">首頁</a>
@@ -33,12 +35,12 @@
     {% endif %}
 
     <div class="brewery-meta-row">
-      <span class="meta-item">📍 {{ brewery.area_zhtw or brewery.area_jp }}</span>
+      <span>📍 {{ brewery.area_zhtw or brewery.area_jp }}</span>
       {% if brewery.founded_year %}
-      <span class="meta-item">🏯 創業 {{ brewery.founded_year }}</span>
+      <span>🏯 創業 {{ brewery.founded_year }}</span>
       {% endif %}
       {% if brewery.website %}
-      <span class="meta-item">🔗 <a href="{{ brewery.website }}" rel="noopener" target="_blank">官網</a></span>
+      <span>🔗 <a href="{{ brewery.website }}" rel="noopener" target="_blank">官網</a></span>
       {% endif %}
     </div>
   </div>
@@ -53,53 +55,39 @@
   <div class="product-grid">
     {% for product in products %}
     {% set theme = product._theme %}
-    <article class="product-card-v2" style="--card-primary: {{ theme.primary }}; --card-secondary: {{ theme.secondary }};">
-      <a href="{{ page_path }}products/{{ product.product_id | safe_id }}.html" class="product-card-link">
-        {# 卡片頂部視覺區 #}
-        <div class="product-card-visual" style="background: {{ theme.bg_gradient }};">
-          {% if product._authorized_image %}
-            <img src="{{ page_path }}{{ product._authorized_image }}" alt="{{ product.name_zhtw or product.name_jp }}" class="product-card-img">
-          {% else %}
-            <div class="mini-sake-card" style="background: linear-gradient(180deg, {{ theme.primary }} 0%, {{ theme.secondary }} 100%);">
-              <div class="mini-sake-label">{{ theme.label }}</div>
-              <div class="mini-sake-name">{{ product.name_zhtw or product.name_jp }}</div>
-              <div class="mini-sake-divider"></div>
-              <div class="mini-sake-brewery">{{ product.brewery_name_jp }}</div>
-            </div>
-          {% endif %}
-        </div>
-
-        {# 卡片內容 #}
-        <div class="product-card-body">
-          <h3 class="product-card-name">{{ product.name_zhtw or product.name_jp }}</h3>
-          {% if product.name_zhtw and product.name_zhtw != product.name_jp %}
-          <p class="product-card-jp">{{ product.name_jp }}</p>
-          {% endif %}
-
-          <dl class="product-quickspec">
-            {% if product.sake_type %}
-            <div><dt>類型</dt><dd>{{ product.sake_type }}</dd></div>
-            {% endif %}
-            {% if product.rice_variety %}
-            <div><dt>米</dt><dd>{{ product.rice_variety }}</dd></div>
-            {% endif %}
-            {% if product.seimaibuai %}
-            <div><dt>精米</dt><dd>{{ product.seimaibuai }}%</dd></div>
-            {% endif %}
-          </dl>
-
-          {% if product.flavor_tags %}
-          <div class="flavor-tags-mini">
-            {% for tag in product.flavor_tags.split(',')[:3] %}
-            {% if tag.strip() %}
-            <span class="tag-mini">{{ tag.strip() }}</span>
-            {% endif %}
-            {% endfor %}
+    <a href="{{ page_path }}products/{{ product.product_id | safe_id }}.html" class="product-card">
+      <div class="product-card-visual" style="background: {{ theme.bg_gradient }};">
+        {% if product._authorized_image %}
+          <img src="{{ page_path }}{{ product._authorized_image }}" alt="{{ product.name_zhtw or product.name_jp }}" class="product-card-img">
+        {% else %}
+          <div class="mini-sake-card" style="background: linear-gradient(180deg, {{ theme.primary }} 0%, {{ theme.secondary }} 100%);">
+            <div class="mini-sake-label">{{ theme.label }}</div>
+            <div class="mini-sake-name">{{ product.name_zhtw or product.name_jp }}</div>
+            <div class="mini-sake-divider"></div>
+            <div class="mini-sake-brewery">{{ product.brewery_name_jp }}</div>
           </div>
-          {% endif %}
+        {% endif %}
+      </div>
+
+      <div class="product-card-body">
+        <h3 class="product-card-name">{{ product.name_zhtw or product.name_jp }}</h3>
+        <p class="product-card-jp">{% if product.name_zhtw and product.name_zhtw != product.name_jp %}{{ product.name_jp }}{% else %}&nbsp;{% endif %}</p>
+
+        <dl class="product-quickspec">
+          {% if product.sake_type %}<div><dt>類型</dt><dd>{{ product.sake_type }}</dd></div>{% endif %}
+          {% if product.rice_variety %}<div><dt>米</dt><dd>{{ product.rice_variety }}</dd></div>{% endif %}
+          {% if product.seimaibuai %}<div><dt>精米</dt><dd>{{ product.seimaibuai }}%</dd></div>{% endif %}
+        </dl>
+
+        {% if product.flavor_tags %}
+        <div class="flavor-tags-mini">
+          {% for tag in product.flavor_tags.split(',')[:3] %}
+          {% if tag.strip() %}<span class="tag-mini">{{ tag.strip() }}</span>{% endif %}
+          {% endfor %}
         </div>
-      </a>
-    </article>
+        {% endif %}
+      </div>
+    </a>
     {% endfor %}
   </div>
 </section>
@@ -120,5 +108,7 @@
     <p class="footer-meta">最後更新:{{ generated_at }}</p>
   </div>
 </footer>
+
+{% include '_warning_bar.html.j2' %}
 </body>
 </html>
