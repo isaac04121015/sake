@@ -660,6 +660,24 @@ body {
     box-shadow: 0 4px 12px rgba(114, 47, 55, 0.12);
 }
 
+.brewery-list .brewery-name {
+    display: block;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.brewery-list a:hover .brewery-name {
+    color: var(--primary);
+}
+
+.brewery-list .brewery-product-count {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+}
+
 .brewery-jp {
     display: block;
     margin-top: 4px;
@@ -1070,15 +1088,15 @@ body {
 
 .brewery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
 }
 
 .brewery-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 20px;
+    padding: 18px;
     box-shadow: var(--shadow-card);
     transition: all 0.2s;
 }
@@ -1385,6 +1403,33 @@ body {
     }
     .brewery-jp {
         font-size: 0.7rem;
+    }
+
+    /* Brewery grid (地區頁) - 手機改 2 欄並排,內容更緊湊 */
+    .brewery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .brewery-card {
+        padding: 14px 12px;
+    }
+    .brewery-card h3 {
+        font-size: 1rem;
+        line-height: 1.3;
+    }
+    .brewery-card .brewery-jp {
+        font-size: 0.7rem;
+        margin-bottom: 8px;
+    }
+    .product-count {
+        font-size: 0.75rem;
+        margin: 6px 0 2px;
+    }
+    .product-preview {
+        font-size: 0.8rem;
+    }
+    .product-preview li {
+        padding: 2px 0;
     }
 
     /* Product detail */
