@@ -31,37 +31,22 @@
 <section class="area-section">
   <h2 class="area-name">{{ area }}</h2>
 
-  <div class="brewery-grid">
+  <ul class="brewery-list">
     {% for brewery in breweries %}
-    <article class="brewery-card">
-      <h3>
-        <a href="{{ page_path }}breweries/{{ brewery.brewery_id | safe_id }}.html">
-          {{ brewery.name_zhtw or brewery.name_jp }}
-        </a>
-      </h3>
-      {% if brewery.name_zhtw and brewery.name_zhtw != brewery.name_jp %}
-      <p class="brewery-jp">{{ brewery.name_jp }}</p>
-      {% endif %}
-
-      {% set bp = products_by_brewery.get(brewery.brewery_id, []) %}
-      {% if bp %}
-      <p class="product-count">{{ bp|length }} 款銘柄</p>
-      <ul class="product-preview">
-        {% for p in bp[:3] %}
-        <li>
-          <a href="{{ page_path }}products/{{ p.product_id | safe_id }}.html">
-            {{ p.name_zhtw or p.name_jp }}
-          </a>
-        </li>
-        {% endfor %}
-        {% if bp|length > 3 %}
-        <li class="more">⋯ 還有 {{ bp|length - 3 }} 款</li>
+    <li>
+      <a href="{{ page_path }}breweries/{{ brewery.brewery_id | safe_id }}.html">
+        <span class="brewery-name">{{ brewery.name_zhtw or brewery.name_jp }}</span>
+        {% if brewery.name_zhtw and brewery.name_zhtw != brewery.name_jp %}
+        <span class="brewery-jp">{{ brewery.name_jp }}</span>
         {% endif %}
-      </ul>
-      {% endif %}
-    </article>
+        {% set bp = products_by_brewery.get(brewery.brewery_id, []) %}
+        {% if bp %}
+        <span class="brewery-product-count">{{ bp|length }} 款銘柄</span>
+        {% endif %}
+      </a>
+    </li>
     {% endfor %}
-  </div>
+  </ul>
 </section>
 {% endfor %}
 
