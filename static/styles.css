@@ -290,6 +290,45 @@ body {
 }
 
 /* ===== CSS 設計卡片 (產品 Hero 替代圖) ===== */
+.sake-card-wrapper {
+    position: relative;
+}
+
+/* 圖片上傳提示 - 管理用,平常不顯示 */
+.image-placeholder-hint {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.75);
+    color: #FFF;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* hover 卡片時才出現提示 (按 Alt 鍵也會出現,方便管理) */
+.sake-card-wrapper:hover .image-placeholder-hint {
+    opacity: 0.9;
+}
+
+.image-placeholder-hint .hint-id {
+    color: var(--accent);
+    font-family: monospace;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.image-placeholder-hint .hint-spec {
+    color: rgba(255, 255, 255, 0.75);
+}
+
 .sake-card {
     width: 240px;
     height: 340px;
@@ -1133,103 +1172,490 @@ body {
     margin-top: 2px;
 }
 
-/* ===== Mobile RWD ===== */
+/* ============================================================
+ * RWD 響應式設計
+ * 斷點:
+ *   1024px - 平板橫向 / 小桌機
+ *   768px  - 平板直向
+ *   600px  - 大手機
+ *   380px  - 小手機
+ * ============================================================ */
+
+/* ===== 平板橫向 / 小桌機 (≤ 1024px) ===== */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 20px;
+    }
+
+    .product-hero .hero-grid {
+        grid-template-columns: 240px 1fr;
+        gap: 32px;
+    }
+
+    .sake-card {
+        width: 220px;
+        height: 300px;
+    }
+
+    .hero-title {
+        font-size: 2.4rem;
+    }
+
+    .brewery-hero-title {
+        font-size: 2.2rem;
+    }
+
+    .product-hero .product-title {
+        font-size: 2rem;
+    }
+
+    .flavor-radar-container {
+        grid-template-columns: 1fr 180px;
+        gap: 20px;
+    }
+}
+
+/* ===== 平板直向 (≤ 768px) ===== */
 @media (max-width: 768px) {
     .container {
         padding: 0 16px;
     }
 
-    .hero-title {
-        font-size: 2rem;
+    /* Site header */
+    .site-header {
+        padding: 18px 0;
+    }
+    .site-title {
+        font-size: 1.3rem;
+    }
+    .site-tagline {
+        font-size: 0.8rem;
     }
 
-    .hero-sub {
-        font-size: 0.95rem;
-    }
-
+    /* Home hero */
     .home-hero {
         min-height: 380px;
     }
-
     .home-hero .hero-content {
-        padding: 60px 16px;
+        padding: 56px 16px;
+    }
+    .hero-title {
+        font-size: 2rem;
+    }
+    .hero-sub {
+        font-size: 0.95rem;
+        margin-bottom: 28px;
+    }
+    .hero-search #search-input {
+        padding: 14px 20px;
+        font-size: 0.95rem;
     }
 
+    /* Brewery hero */
+    .brewery-hero {
+        min-height: 260px;
+        margin-bottom: 28px;
+    }
+    .brewery-hero .hero-content {
+        padding: 40px 16px;
+    }
     .brewery-hero-title {
         font-size: 1.8rem;
     }
-
-    .stats {
-        gap: 10px;
+    .brewery-hero-jp {
+        font-size: 1rem;
+    }
+    .brewery-meta-row {
+        gap: 12px;
+        font-size: 0.85rem;
     }
 
-    .stat {
-        padding: 16px 20px;
-        min-width: 0;
-        flex: 1;
-    }
-
-    .stat-num {
-        font-size: 1.8rem;
-    }
-
+    /* Product hero - 改成單欄直式 */
     .product-hero {
         padding: 32px 0;
+        margin-bottom: 28px;
     }
-
     .product-hero .hero-grid {
         grid-template-columns: 1fr;
         gap: 24px;
         text-align: center;
     }
-
-    .product-hero .product-title {
-        font-size: 1.8rem;
+    .product-hero .hero-visual {
+        margin: 0 auto;
     }
-
+    .product-hero .product-title {
+        font-size: 1.7rem;
+    }
+    .product-hero .product-title-jp {
+        font-size: 1rem;
+    }
     .product-hero .quick-badges {
         justify-content: center;
     }
-
-    .product-detail {
-        padding: 28px 20px;
+    .product-hero .breadcrumb {
+        justify-content: center;
+        text-align: center;
     }
 
+    /* CSS 設計卡片在手機上適度縮放 */
+    .sake-card {
+        width: 200px;
+        height: 280px;
+    }
+    .sake-card-inner {
+        padding: 28px 18px;
+    }
+    .sake-card-name {
+        font-size: 1.2rem;
+    }
+    .sake-card-jp {
+        font-size: 0.8rem;
+    }
+    .sake-card-brewery {
+        font-size: 0.85rem;
+    }
+
+    /* 真實圖片在手機上適度縮放 */
+    .product-hero .product-image {
+        max-width: 220px;
+        max-height: 300px;
+    }
+
+    /* Stats */
+    .stats {
+        gap: 10px;
+        margin: 36px 0;
+        flex-wrap: wrap;
+    }
+    .stat {
+        padding: 18px 20px;
+        min-width: 0;
+        flex: 1 1 calc(33% - 8px);
+    }
+    .stat-num {
+        font-size: 2rem;
+    }
+    .stat-label {
+        font-size: 0.8rem;
+    }
+
+    /* Region nav pill */
+    .region-nav {
+        gap: 8px;
+        margin: 24px 0;
+    }
+    .region-pill {
+        padding: 7px 14px;
+        font-size: 0.85rem;
+    }
+
+    /* Region block */
+    .region-block {
+        margin: 40px 0;
+    }
     .region-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
+        padding-bottom: 12px;
+    }
+    .region-header h2 {
+        font-size: 1.4rem;
     }
 
+    /* Brewery list - 手機改單欄 */
     .brewery-list {
         grid-template-columns: 1fr;
+        gap: 4px;
+    }
+    .brewery-list a {
+        padding: 10px 0;
     }
 
+    /* Product detail */
+    .product-page {
+        padding: 0 16px;
+    }
+    .product-detail {
+        padding: 28px 20px;
+        border-radius: 8px;
+    }
+
+    /* Product section */
+    .product-section {
+        margin: 24px 0;
+    }
+    .product-section h2 {
+        font-size: 1.15rem;
+        padding-left: 12px;
+    }
+
+    /* Sake specs - 手機改成直式列表 */
     .sake-specs th,
     .sake-specs td {
         display: block;
         width: 100%;
         border-right: none;
+        padding: 8px 16px;
     }
-
     .sake-specs th {
         background: var(--secondary);
         color: #FFF;
-        padding: 8px 16px;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         letter-spacing: 0.08em;
+        padding-top: 10px;
+        padding-bottom: 6px;
     }
-
     .sake-specs td {
-        padding: 12px 16px 16px;
+        padding: 10px 16px 16px;
         font-weight: 500;
+        font-size: 0.95rem;
+    }
+    .sake-specs tr {
+        display: block;
+        margin-bottom: 0;
+    }
+    .sake-specs tr:last-child td {
+        border-bottom: none;
     }
 
+    /* 風味雷達 - 改成上下排列 */
     .flavor-radar-container {
         grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 20px 16px;
+    }
+    .flavor-radar {
+        max-width: 280px;
+        margin: 0 auto;
+    }
+    .flavor-legend {
+        max-width: 280px;
+        margin: 0 auto;
+        width: 100%;
     }
 
+    /* Product card grid (酒造頁) - 手機改單欄 */
     .product-grid {
         grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .product-card-visual {
+        height: 220px;
+    }
+
+    /* 圖片佔位提示 - 手機改成持續顯示 (因為手機沒有 hover) */
+    .image-placeholder-hint {
+        opacity: 0.7;
+        bottom: -10px;
+        font-size: 0.65rem;
+        padding: 4px 10px;
+    }
+
+    /* Site footer */
+    .site-footer {
+        padding: 28px 0;
+        margin-top: 60px;
+    }
+}
+
+/* ===== 大手機 (≤ 600px) ===== */
+@media (max-width: 600px) {
+    /* 縮小 hero 文字 */
+    .hero-title {
+        font-size: 1.7rem;
+        letter-spacing: 0.02em;
+    }
+    .hero-sub {
+        font-size: 0.88rem;
+    }
+    .home-hero {
+        min-height: 340px;
+    }
+    .home-hero .hero-content {
+        padding: 48px 16px;
+    }
+
+    .brewery-hero {
+        min-height: 220px;
+    }
+    .brewery-hero .hero-content {
+        padding: 32px 16px;
+    }
+    .brewery-hero-title {
+        font-size: 1.5rem;
+    }
+
+    /* 產品 hero 進一步縮 */
+    .product-hero .product-title {
+        font-size: 1.5rem;
+    }
+
+    /* CSS 卡片再縮 */
+    .sake-card {
+        width: 180px;
+        height: 250px;
+    }
+    .sake-card-inner {
+        padding: 24px 16px;
+    }
+    .sake-card-name {
+        font-size: 1.1rem;
+    }
+    .sake-card-label {
+        margin-bottom: 24px;
+        font-size: 0.7rem;
+    }
+
+    /* Stats 在小螢幕變兩排 */
+    .stat {
+        flex: 1 1 calc(50% - 8px);
+        min-width: 0;
+    }
+    .stat-num {
+        font-size: 1.7rem;
+    }
+
+    /* Region pill 更緊湊 */
+    .region-pill {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        gap: 6px;
+    }
+    .region-pill-count {
+        font-size: 0.7rem;
+        padding: 1px 8px;
+    }
+
+    /* Quick badges 縮小 */
+    .badge {
+        padding: 5px 10px;
+        font-size: 0.78rem;
+    }
+    .quick-badges {
+        gap: 6px;
+    }
+
+    /* Section title */
+    .section-title {
+        font-size: 1.3rem;
+    }
+
+    /* 產品卡內容更緊湊 */
+    .product-card-body {
+        padding: 16px;
+    }
+    .product-card-name {
+        font-size: 1.05rem;
+    }
+    .product-card-visual {
+        height: 180px;
+    }
+    .mini-sake-card {
+        width: 120px;
+        height: 160px;
+    }
+    .mini-sake-name {
+        font-size: 0.85rem;
+    }
+
+    /* 規格表更緊湊 */
+    .sake-specs th {
+        font-size: 0.75rem;
+    }
+    .sake-specs td {
+        font-size: 0.9rem;
+    }
+
+    /* Tags 緊湊化 */
+    .tag {
+        padding: 3px 10px;
+        font-size: 0.75rem;
+    }
+
+    /* Footer */
+    .site-footer {
+        font-size: 0.8rem;
+        padding: 24px 0;
+    }
+}
+
+/* ===== 小手機 (≤ 380px) ===== */
+@media (max-width: 380px) {
+    .container {
+        padding: 0 12px;
+    }
+
+    .site-title {
+        font-size: 1.15rem;
+    }
+
+    .hero-title {
+        font-size: 1.5rem;
+    }
+
+    .brewery-hero-title {
+        font-size: 1.35rem;
+    }
+
+    .product-hero .product-title {
+        font-size: 1.3rem;
+    }
+
+    .sake-card {
+        width: 160px;
+        height: 220px;
+    }
+
+    .product-detail {
+        padding: 20px 16px;
+    }
+
+    /* Stats 改成一排三個更窄 */
+    .stat {
+        padding: 14px 12px;
+    }
+    .stat-num {
+        font-size: 1.5rem;
+    }
+    .stat-label {
+        font-size: 0.7rem;
+        margin-top: 6px;
+    }
+
+    /* 雷達圖更小 */
+    .flavor-radar {
+        max-width: 240px;
+    }
+
+    /* 麵包屑可能換行 */
+    .breadcrumb {
+        flex-wrap: wrap;
+        line-height: 1.8;
+        font-size: 0.8rem;
+    }
+}
+
+/* ===== 防止橫向滾動 ===== */
+html, body {
+    overflow-x: hidden;
+}
+
+img, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ===== 觸控裝置優化 ===== */
+@media (hover: none) {
+    /* 觸控裝置沒有 hover,改用點擊或常駐顯示 */
+    .image-placeholder-hint {
+        opacity: 0.6;
+    }
+
+    /* 卡片 hover 效果在觸控時取消 transform */
+    .product-card-v2:hover,
+    .brewery-card:hover {
+        transform: none;
     }
 }
