@@ -33,10 +33,12 @@
 
   <ul class="brewery-entries">
     {% for brewery in breweries %}
+    {% set display_name = (brewery.name_zhtw or brewery.name_jp or '') | trim %}
+    {% if display_name %}
     <li>
       <a href="{{ page_path }}breweries/{{ brewery.brewery_id | safe_id }}.html" class="brewery-entry">
         <div class="brewery-entry-body">
-          <span class="brewery-entry-name">{{ brewery.name_zhtw or brewery.name_jp }}</span>
+          <span class="brewery-entry-name">{{ display_name }}</span>
           {% if brewery.name_zhtw and brewery.name_zhtw != brewery.name_jp %}
           <span class="brewery-entry-jp">{{ brewery.name_jp }}</span>
           {% endif %}
@@ -48,6 +50,7 @@
         <span class="brewery-entry-arrow">›</span>
       </a>
     </li>
+    {% endif %}
     {% endfor %}
   </ul>
 </section>
