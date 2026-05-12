@@ -28,21 +28,24 @@
 </header>
 
 {% for area, breweries in region.areas.items() %}
-<section class="area-section">
+<section class="area-block">
   <h2 class="area-name">{{ area }}</h2>
 
-  <ul class="brewery-list">
+  <ul class="brewery-entries">
     {% for brewery in breweries %}
     <li>
-      <a href="{{ page_path }}breweries/{{ brewery.brewery_id | safe_id }}.html">
-        <span class="brewery-name">{{ brewery.name_zhtw or brewery.name_jp }}</span>
-        {% if brewery.name_zhtw and brewery.name_zhtw != brewery.name_jp %}
-        <span class="brewery-jp">{{ brewery.name_jp }}</span>
-        {% endif %}
-        {% set bp = products_by_brewery.get(brewery.brewery_id, []) %}
-        {% if bp %}
-        <span class="brewery-product-count">{{ bp|length }} 款銘柄</span>
-        {% endif %}
+      <a href="{{ page_path }}breweries/{{ brewery.brewery_id | safe_id }}.html" class="brewery-entry">
+        <div class="brewery-entry-body">
+          <span class="brewery-entry-name">{{ brewery.name_zhtw or brewery.name_jp }}</span>
+          {% if brewery.name_zhtw and brewery.name_zhtw != brewery.name_jp %}
+          <span class="brewery-entry-jp">{{ brewery.name_jp }}</span>
+          {% endif %}
+          {% set bp = products_by_brewery.get(brewery.brewery_id, []) %}
+          {% if bp %}
+          <span class="brewery-entry-count">{{ bp|length }} 款銘柄</span>
+          {% endif %}
+        </div>
+        <span class="brewery-entry-arrow">›</span>
       </a>
     </li>
     {% endfor %}
@@ -58,5 +61,7 @@
     <p class="footer-meta">最後更新:{{ generated_at }}</p>
   </div>
 </footer>
+
+{% include '_warning_bar.html.j2' %}
 </body>
 </html>
