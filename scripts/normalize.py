@@ -244,8 +244,11 @@ def build_brewery_row(match: dict, regions: dict) -> dict:
     }
 
 
-def build_product_rows(match: dict, idx: dict, regions: dict) -> list[dict]:
-    """產生 products.csv 多筆 (該酒造下所有銘柄)。"""
+def build_product_rows(match: dict, idx: dict, regions: dict, tag_translations: dict = None) -> list[dict]:
+    """產生 products.csv 多筆 (該酒造下所有銘柄)。
+
+    tag_translations: 日文→繁中對照表 (dict),若有則自動翻譯 flavor_tags
+    """
     brewery = match["brewery"]
     area = match["area"]
 
@@ -255,6 +258,8 @@ def build_product_rows(match: dict, idx: dict, regions: dict) -> list[dict]:
     else:
         brands = [match["brand"]] if match["brand"] else []
 
+    tag_translations = tag_translations or {}
+
     rows = []
     for brand in brands:
         if not brand:
@@ -262,8 +267,10 @@ def build_product_rows(match: dict, idx: dict, regions: dict) -> list[dict]:
         brand_id = brand["id"]
         flavor = idx["flavor_charts_by_brand"].get(brand_id, {})
         tag_ids = idx["brand_flavor_tags"].get(brand_id, [])
-        tags = [idx["flavor_tags_by_id"].get(t, "") for t in tag_ids]
-        tags = [t for t in tags if t]
+        tags_jp = [idx["flavor_tags_by_id"].get(t, "") for t in tag_ids]
+        tags_jp = [t for t in tags_jp if t]
+        # 套用翻譯:有對照就用繁中,沒有就保留日文
+        tags_zhtw = [tag_translations.get(t, t) for t in tags_jp]
 
         rows.append({
             "product_id": f"sn_{brand_id}",
@@ -292,7 +299,8 @@ def build_product_rows(match: dict, idx: dict, regions: dict) -> list[dict]:
             "flavor_f4_穏やか": flavor.get("f4", ""),
             "flavor_f5_ドライ": flavor.get("f5", ""),
             "flavor_f6_軽快": flavor.get("f6", ""),
-            "flavor_tags": ",".join(tags),
+            "flavor_tags": ",".join(tags_zhtw),
+            "flavor_tags_jp": ",".join(tags_jp),
 
             "sakenowa_brand_id": brand_id,
             "sakenowa_brand_url": f"https://sakenowa.com/brands/{brand_id}",
@@ -319,7 +327,7 @@ def write_json(path: Path, rows: list[dict]) -> None:
     )
 
 
-def build_all_rows(idx: dict, regions: dict) -> tuple[list[dict], list[dict]]:
+def build_all_rows(idx: dict, regions: dict, tag_translations: dict = None) -> tuple[list[dict], list[dict]]:
     """全抓模式:遍歷 Sakenowa 全部資料,產出 breweries + products。"""
     brewery_rows = []
     product_rows = []
@@ -342,7 +350,7 @@ def build_all_rows(idx: dict, regions: dict) -> tuple[list[dict], list[dict]]:
             "match_method": "all_mode",
         }
         brewery_rows.append(build_brewery_row(match, regions))
-        product_rows.extend(build_product_rows(match, idx, regions))
+        product_rows.extend(build_product_rows(match, idx, regions, tag_translations))
 
     return brewery_rows, product_rows
 
@@ -377,9 +385,20 @@ def main() -> int:
     print(f"Loading regions translation: {DATA_DIR / 'regions_zhtw.json'}")
     regions = load_json(DATA_DIR / "regions_zhtw.json")
 
+    # 載入風味標籤翻譯表 (可選,沒有也不影響運作,只是會保留日文)
+    tag_translations_path = DATA_DIR / "flavor_tags_zhtw.json"
+    tag_translations = {}
+    if tag_translations_path.exists():
+        raw_translations = load_json(tag_translations_path)
+        # 跳過 _comment / _usage 等說明欄位
+        tag_translations = {k: v for k, v in raw_translations.items() if not k.startswith("_")}
+        print(f"  loaded {len(tag_translations)} flavor tag translations")
+    else:
+        print(f"  no flavor tag translations file (will keep Japanese tags)")
+
     if args.mode == "all":
         print("\nMode: ALL (抓取 Sakenowa 全部資料)")
-        brewery_rows, product_rows = build_all_rows(idx, regions)
+        brewery_rows, product_rows = build_all_rows(idx, regions, tag_translations)
         unmatched = []
         matched_count = len(brewery_rows)
         targets_count = len(brewery_rows)
@@ -405,7 +424,7 @@ def main() -> int:
             if bid not in seen_brewery_ids:
                 seen_brewery_ids.add(bid)
                 brewery_rows.append(build_brewery_row(match, regions))
-            product_rows.extend(build_product_rows(match, idx, regions))
+            product_rows.extend(build_product_rows(match, idx, regions, tag_translations))
 
         matched_count = len(matched)
         targets_count = len(targets)
