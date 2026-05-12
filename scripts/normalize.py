@@ -264,6 +264,10 @@ def build_product_rows(match: dict, idx: dict, regions: dict, tag_translations: 
     for brand in brands:
         if not brand:
             continue
+        # 跳過空名稱銘柄
+        brand_name = (brand.get("name") or "").strip()
+        if not brand_name:
+            continue
         brand_id = brand["id"]
         flavor = idx["flavor_charts_by_brand"].get(brand_id, {})
         tag_ids = idx["brand_flavor_tags"].get(brand_id, [])
@@ -328,12 +332,20 @@ def write_json(path: Path, rows: list[dict]) -> None:
 
 
 def build_all_rows(idx: dict, regions: dict, tag_translations: dict = None) -> tuple[list[dict], list[dict]]:
-    """全抓模式:遍歷 Sakenowa 全部資料,產出 breweries + products。"""
+    """全抓模式:遍歷 Sakenowa 全部資料,產出 breweries + products。
+    自動跳過名稱為空的酒造(Sakenowa 偶爾有空殼資料)。"""
     brewery_rows = []
     product_rows = []
+    skipped_empty = 0  # 跳過的空名稱酒造數
 
     # 全部酒造
     for brewery in idx["breweries_by_id"].values():
+        # 過濾掉名稱為空字串、None、或只有空白的酒造
+        name = (brewery.get("name") or "").strip()
+        if not name:
+            skipped_empty += 1
+            continue
+
         area = idx["areas_by_id"].get(brewery["areaId"])
         if not area:
             continue
@@ -351,6 +363,9 @@ def build_all_rows(idx: dict, regions: dict, tag_translations: dict = None) -> t
         }
         brewery_rows.append(build_brewery_row(match, regions))
         product_rows.extend(build_product_rows(match, idx, regions, tag_translations))
+
+    if skipped_empty:
+        print(f"  skipped {skipped_empty} brewery with empty name")
 
     return brewery_rows, product_rows
 
