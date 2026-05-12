@@ -18,137 +18,171 @@
   </div>
 </header>
 
-{# ===== 滿版奢華 Hero ===== #}
+{# ===== 滿版奢華 Hero - 完全照 Claude Design ===== #}
 <section class="home-hero">
-  <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1579952516518-12c1d8f3a05a?w=1920&q=85');"></div>
+  <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1597290282695-edc43d0e7129?w=1600&q=85');"></div>
   <div class="hero-overlay"></div>
-  <div class="hero-vignette"></div>
   <div class="hero-texture"></div>
+  <div class="hero-vignette"></div>
   <div class="hero-deco-kanji">酒</div>
-  <div class="hero-vert-text">SAKEGO · JAPAN SAKE DATABASE · 日本酒造資料庫</div>
 
-  {# 金色光點粒子 #}
-  <div class="hero-bokeh" style="left: 12%; top: 70%; width: 8px; height: 8px; --dx: 30px; --dur: 5s; --delay: 0s;"></div>
-  <div class="hero-bokeh" style="left: 22%; top: 80%; width: 5px; height: 5px; --dx: -20px; --dur: 4s; --delay: 1s;"></div>
-  <div class="hero-bokeh" style="left: 78%; top: 75%; width: 7px; height: 7px; --dx: 15px; --dur: 6s; --delay: 0.5s;"></div>
-  <div class="hero-bokeh" style="left: 88%; top: 85%; width: 4px; height: 4px; --dx: -25px; --dur: 4.5s; --delay: 2s;"></div>
-  <div class="hero-bokeh" style="left: 50%; top: 90%; width: 6px; height: 6px; --dx: 20px; --dur: 5.5s; --delay: 1.5s;"></div>
+  {# 垂直裝飾文字 - 照 Claude Design 文案 #}
+  <div class="hero-vert-text">清酒 · 純米 · 吟釀 · 大吟釀 · 本醸造 · 風土</div>
 
-  <div class="container hero-content">
-    <span class="hero-eyebrow hero-anim-1">JAPAN SAKE DATABASE</span>
+  {# 12 顆金色光點粒子 - 精準位置 #}
+  <div class="hero-bokeh" style="left: 12%; bottom: 18%; width: 8px; height: 8px; --dur: 4.2s; --delay: 0s; --dx: 18px;"></div>
+  <div class="hero-bokeh" style="left: 22%; bottom: 8%; width: 5px; height: 5px; --dur: 5.1s; --delay: 1.2s; --dx: -14px;"></div>
+  <div class="hero-bokeh" style="left: 35%; bottom: 25%; width: 10px; height: 10px; --dur: 3.8s; --delay: 2.4s; --dx: 24px;"></div>
+  <div class="hero-bokeh" style="left: 48%; bottom: 12%; width: 6px; height: 6px; --dur: 4.8s; --delay: 0.6s; --dx: -20px;"></div>
+  <div class="hero-bokeh" style="left: 58%; bottom: 30%; width: 4px; height: 4px; --dur: 6.0s; --delay: 1.8s; --dx: 12px;"></div>
+  <div class="hero-bokeh" style="left: 70%; bottom: 10%; width: 9px; height: 9px; --dur: 4.4s; --delay: 3.0s; --dx: -16px;"></div>
+  <div class="hero-bokeh" style="left: 80%; bottom: 22%; width: 5px; height: 5px; --dur: 5.5s; --delay: 0.3s; --dx: 22px;"></div>
+  <div class="hero-bokeh" style="left: 18%; bottom: 40%; width: 4px; height: 4px; --dur: 3.6s; --delay: 2.1s; --dx: -10px;"></div>
+  <div class="hero-bokeh" style="left: 42%; bottom: 45%; width: 7px; height: 7px; --dur: 5.2s; --delay: 1.5s; --dx: 18px;"></div>
+  <div class="hero-bokeh" style="left: 65%; bottom: 38%; width: 5px; height: 5px; --dur: 4.0s; --delay: 3.6s; --dx: -22px;"></div>
+  <div class="hero-bokeh" style="left: 88%; bottom: 15%; width: 6px; height: 6px; --dur: 4.9s; --delay: 0.9s; --dx: 14px;"></div>
+  <div class="hero-bokeh" style="left: 28%; bottom: 55%; width: 3px; height: 3px; --dur: 6.2s; --delay: 4.2s; --dx: -8px;"></div>
 
-    <div class="hero-ornament hero-anim-2">
-      <span class="hero-orn-line"></span>
+  {# 漂浮的酒瓶卡 - 桌機右側 #}
+  <div class="hero-float-card">
+    <div class="float-card-inner">
+      <div class="float-card-label">JUNMAI</div>
+      <div class="float-card-name">磯自慢</div>
+      <div class="float-card-jp">いそじまん</div>
+      <div class="float-card-divider"></div>
+      <div class="float-card-brewery">磯自慢酒造</div>
+      <div class="float-card-area">SHIZUOKA</div>
+    </div>
+  </div>
+
+  {# 主要內容 - 對齊 Claude Design,右側留漂浮卡空間 #}
+  <div class="container hero-content hero-content-with-card">
+    <span class="hero-eyebrow hero-anim-1">Sakego ｜ 日本酒造資料庫</span>
+    <h1 class="hero-title hero-anim-2">
+      探索<span class="hero-shimmer">日本酒</span><br>的世界
+    </h1>
+    <div class="hero-ornament hero-anim-3">
       <span class="hero-orn-dot"></span>
+      <span class="hero-orn-line"></span>
       <span class="hero-orn-dia"></span>
       <span class="hero-orn-dot"></span>
+      <span class="hero-orn-dia"></span>
       <span class="hero-orn-line r"></span>
+      <span class="hero-orn-dot"></span>
     </div>
-
-    <h1 class="hero-title hero-anim-2">探索 <span class="hero-shimmer">日本酒</span> 的世界</h1>
-    <p class="hero-sub hero-anim-3">從北海道到九州,{{ total_breweries }} 家酒造、{{ total_products }} 款銘柄一次掌握</p>
-
+    <p class="hero-sub hero-anim-3">從北海道到九州,{{ total_breweries }} 家酒造、{{ total_products }} 款銘柄,一次掌握</p>
     <div class="hero-search hero-anim-4">
       <input type="search" id="search-input" placeholder="搜尋酒造、銘柄或地區⋯" autocomplete="off">
       <div id="search-results" class="search-results" hidden></div>
     </div>
   </div>
 
-  {# 玻璃霧化統計條 (置底) #}
+  {# 玻璃霧化統計條 (置底) - 數字加 + 號 #}
   <div class="hero-stats-strip hero-anim-4">
     <div class="hero-stat">
-      <span class="hero-stat-num">{{ total_breweries }}</span>
-      <span class="hero-stat-label">家酒造</span>
+      <span class="hero-stat-num">{{ total_breweries }}+</span>
+      <span class="hero-stat-label">酒造</span>
     </div>
     <div class="hero-stat">
-      <span class="hero-stat-num">{{ total_products }}</span>
-      <span class="hero-stat-label">款銘柄</span>
+      <span class="hero-stat-num">{{ total_products }}+</span>
+      <span class="hero-stat-label">銘柄</span>
     </div>
     <div class="hero-stat">
       <span class="hero-stat-num">{{ regions|length }}</span>
-      <span class="hero-stat-label">大地區</span>
+      <span class="hero-stat-label">地區</span>
     </div>
   </div>
 </section>
 
-{# ===== 品牌宣言 ===== #}
+{# ===== 品牌宣言 - 完整版含背景巨字 + 主標 + 副標 ===== #}
 <section class="manifesto-strip">
+  <div class="manifesto-deco">酒造</div>
   <div class="container">
-    <span class="manifesto-eyebrow">OUR PHILOSOPHY</span>
-    <p class="manifesto-text">每一瓶日本酒,都承載著釀造者的心意、土地的氣息,與數百年的工藝傳承。</p>
+    <span class="manifesto-eyebrow">我們的信念</span>
+    <p class="manifesto-text">
+      「&ensp;從產地到杯中,每一滴都有故事。&ensp;」
+      <span class="manifesto-sub">
+        土壤、水、米、酵母——四者共同書寫一款清酒的風土個性。Sakego 讓你讀懂每一瓶的語言。
+      </span>
+    </p>
   </div>
 </section>
 
-{# ===== 地區排行 (rank-card) ===== #}
-<section class="rankings-section">
+<main>
+  {# ===== 地區英雄榜 - 對齊 Claude Design 文案 ===== #}
   <div class="container">
-    <span class="section-eyebrow">REGIONS</span>
-    <h2 class="section-heading">依地區探索</h2>
-    <p class="section-sub">日本九大地區,各有其風土與酒造傳統</p>
-
-    <div class="rank-grid">
-      {% for region in regions %}
-      <a href="{{ page_path }}regions/{{ region.name | safe_id }}/" class="rank-card">
-        <span class="rank-card-accent"></span>
-        <span class="rank-num-bg">{{ loop.index }}</span>
-        <span class="rank-ordinal">No. {{ "%02d"|format(loop.index) }}</span>
-        <h3 class="rank-name">{{ region.name }}</h3>
-        <p class="rank-prefectures">
-          {% set areas_list = region.areas.keys() | list %}
-          {{ areas_list[:6] | join('・') }}{% if areas_list|length > 6 %}⋯{% endif %}
-        </p>
-        <div class="rank-bar-track">
-          {% set max_count = regions | map(attribute='brewery_count') | max %}
-          <div class="rank-bar-fill" style="width: {{ (region.brewery_count / max_count * 100) | int }}%;"></div>
-        </div>
-        <span class="rank-count"><strong>{{ region.brewery_count }}</strong> 家酒造</span>
-      </a>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-{# ===== 各地區酒造速覽 ===== #}
-<main class="container">
-  {% for region in regions %}
-  <section class="region-block" id="region-{{ region.name | safe_id }}">
-    <header class="region-header">
-      <h2><a href="{{ page_path }}regions/{{ region.name | safe_id }}/">{{ region.name }}</a></h2>
-      <span class="region-count">{{ region.brewery_count }} 家酒造</span>
-    </header>
-
-    {% for area, breweries in region.areas.items() %}
-    <div class="area-block">
-      <h3 class="area-name">{{ area }}</h3>
-      <ul class="brewery-entries">
-        {% for brewery in breweries[:8] %}
-        {% set display_name = (brewery.name_zhtw or brewery.name_jp or '') | trim %}
-        {% if display_name %}
-        <li>
-          <a href="{{ page_path }}breweries/{{ brewery.brewery_id | safe_id }}.html" class="brewery-entry">
-            <div class="brewery-entry-body">
-              <span class="brewery-entry-name">{{ display_name }}</span>
-              {% if brewery.name_zhtw and brewery.name_zhtw != brewery.name_jp %}
-              <span class="brewery-entry-jp">{{ brewery.name_jp }}</span>
-              {% endif %}
-            </div>
-            <span class="brewery-entry-arrow">›</span>
-          </a>
-        </li>
-        {% endif %}
+    <section class="rankings-section">
+      <p class="section-eyebrow">地區英雄榜</p>
+      <h2 class="section-heading">各地風土,按酒造數排行</h2>
+      <p class="section-sub">點擊任一地區,深入探索當地酒造與銘柄</p>
+      <div class="rank-grid">
+        {% set max_count = regions | map(attribute='brewery_count') | max %}
+        {% for region in regions %}
+        <a href="{{ page_path }}regions/{{ region.name | safe_id }}/" class="rank-card">
+          <span class="rank-card-accent"></span>
+          <span class="rank-num-bg">{{ "%02d"|format(loop.index) }}</span>
+          <span class="rank-ordinal">No. {{ "%02d"|format(loop.index) }}</span>
+          <h3 class="rank-name">{{ region.name }}</h3>
+          <p class="rank-prefectures">
+            {% set areas_list = region.areas.keys() | list %}
+            {{ areas_list[:5] | join(' · ') }}{% if areas_list|length > 5 %} · ⋯{% endif %}
+          </p>
+          <div class="rank-bar-track">
+            <div class="rank-bar-fill" style="width: {{ (region.brewery_count / max_count * 100) | int }}%;"></div>
+          </div>
+          <p class="rank-count"><strong>{{ region.brewery_count }}</strong> 家酒造</p>
+        </a>
         {% endfor %}
-      </ul>
-      {% if breweries|length > 8 %}
-      <p style="margin-top: 12px; font-size: 0.85rem; color: var(--text-muted);">
-        <a href="{{ page_path }}regions/{{ region.name | safe_id }}/" style="color: var(--primary);">
-          查看 {{ area }} 全部 {{ breweries|length }} 家酒造 →
+      </div>
+    </section>
+  </div>
+
+  {# ===== 各地區酒造 - 統一網格 (照 Claude Design 不分 area 子組) ===== #}
+  <div class="container">
+    {% for region in regions %}
+    <section class="region-block" id="region-{{ region.name | safe_id }}">
+      <header class="region-header">
+        <h2><a href="{{ page_path }}regions/{{ region.name | safe_id }}/">{{ region.name }}</a></h2>
+        <span class="region-count">{{ region.brewery_count }} 家酒造</span>
+      </header>
+
+      {# 全部酒造放在一個統一網格,不再用 area 細分 #}
+      {# 大地區(>30家)只顯示前 30 家避免畫面太長,連結到地區頁看完整 #}
+      <div class="brewery-entries">
+        {% set all_breweries = [] %}
+        {% for area, breweries in region.areas.items() %}
+          {% for brewery in breweries %}
+            {% set display_name = (brewery.name_zhtw or brewery.name_jp or '') | trim %}
+            {% if display_name %}
+              {% set _ = all_breweries.append({'brewery': brewery, 'area': area, 'name': display_name}) %}
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+
+        {% for item in all_breweries[:30] %}
+        <a href="{{ page_path }}breweries/{{ item.brewery.brewery_id | safe_id }}.html" class="brewery-entry">
+          <div class="brewery-entry-body">
+            <span class="brewery-entry-name">{{ item.name }}</span>
+            {% if item.brewery.name_zhtw and item.brewery.name_zhtw != item.brewery.name_jp %}
+            <span class="brewery-entry-jp">{{ item.brewery.name_jp }}</span>
+            {% endif %}
+            <span class="brewery-entry-count">{{ item.brewery.area_zhtw or item.area }}</span>
+          </div>
+          <span class="brewery-entry-arrow">›</span>
+        </a>
+        {% endfor %}
+      </div>
+
+      {% if all_breweries|length > 30 %}
+      <p style="margin-top: 20px; text-align: center;">
+        <a href="{{ page_path }}regions/{{ region.name | safe_id }}/" style="color: var(--primary); font-weight: 500;">
+          查看 {{ region.name }} 全部 {{ all_breweries|length }} 家酒造 →
         </a>
       </p>
       {% endif %}
-    </div>
+    </section>
     {% endfor %}
-  </section>
-  {% endfor %}
+  </div>
 </main>
 
 <footer class="site-footer">
