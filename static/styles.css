@@ -1,598 +1,366 @@
-@import url("../../colors_and_type.css");
+/* ============================================================
+ * Sakego 靜態網站樣式表 v3 - 奢華版
+ * 整合 Claude Design 設計 + 法規警告條 + 完整 RWD
+ * ============================================================ */
+
+:root {
+    --primary: #722F37;
+    --secondary: #1A1A1A;
+    --accent: #C9A961;
+    --bg: #FAF7F0;
+    --text: #2C2C2C;
+    --text-muted: #6B6B6B;
+    --border: #E5E0D5;
+    --shadow: 0 2px 8px rgba(0,0,0,0.04);
+    --shadow-hover: 0 8px 24px rgba(0,0,0,0.12);
+    --shadow-card: 0 4px 16px rgba(0,0,0,0.06);
+    --shadow-bottle: 0 16px 40px rgba(0,0,0,0.25);
+    --hero-overlay: linear-gradient(135deg, rgba(26,10,12,0.7) 0%, rgba(114,47,55,0.5) 100%);
+    --hero-overlay-soft: linear-gradient(135deg, rgba(26,10,12,0.6) 0%, rgba(114,47,55,0.4) 100%);
+    --font-serif: "Noto Serif TC", "PingFang TC", serif;
+    --font-sans: "Noto Sans TC", -apple-system, BlinkMacSystemFont, sans-serif;
+}
 
 * { box-sizing: border-box; }
-html, body { margin: 0; }
+html, body { margin: 0; overflow-x: hidden; }
 body {
-  font-family: var(--font-sans);
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.7;
-  letter-spacing: 0.02em;
-  -webkit-font-smoothing: antialiased;
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 10vh;
 }
 a { color: inherit; text-decoration: none; }
+img, svg { max-width: 100%; height: auto; }
 .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 
-/* ===== Warning bar ===== */
-.warning-bar {
-  background: var(--secondary); color: rgba(255,255,255,.85);
-  text-align: center; padding: 10px 24px;
-  font-size: .78rem; letter-spacing: .1em;
-  border-bottom: 1px solid rgba(201,169,97,.3);
-}
-
-/* ===== Site header / footer ===== */
+/* ===== Site header ===== */
 .site-header { background: var(--secondary); color: #fff; padding: 24px 0; border-bottom: 3px solid var(--accent); }
 .site-title { font: 600 1.5rem/1.4 var(--font-serif); margin: 0; letter-spacing: 0.08em; }
 .site-title a { color: #fff; }
-.site-tagline { margin: 6px 0 0; font-size: 0.85rem; color: rgba(255,255,255,.7); letter-spacing: .05em; }
+.site-tagline { margin: 6px 0 0; font-size: 0.85rem; color: rgba(255,255,255,0.7); letter-spacing: 0.05em; }
 
-.site-footer { background: var(--secondary); color: rgba(255,255,255,.7); padding: 36px 0 0; margin-top: 80px; font-size: .85rem; }
-.site-footer .container { padding-bottom: 36px; }
-.site-footer a { color: var(--accent); }
-.footer-meta { color: rgba(255,255,255,.5); font-size: .8rem; }
-
-/* brand rank row on dark bg */
-.brand-rank-row { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
-.brand-rank-row:hover { background: rgba(255,255,255,.1); border-color: var(--accent); }
-.brand-rank-num { color: rgba(255,255,255,.2); }
-.brand-rank-row:hover .brand-rank-num { color: var(--accent); }
-.brand-rank-name { color: #fff; }
-.brand-rank-meta { color: rgba(255,255,255,.5); }
-/* ===== Fixed warning bar ===== */
-.footer-warning-bar {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
-  background: #2a2a2a;
-  border-top: 3px solid #444;
-  height: 10vh; min-height: 56px; max-height: 90px;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 clamp(16px, 5vw, 72px);
-}
-.footer-warning-text {
-  color: #fff;
-  font: 700 clamp(1rem, 2.8vw, 2.2rem)/1.2 var(--font-serif);
-  white-space: nowrap; margin: 0; flex: 1;
-  text-align: justify; text-align-last: justify;
-  text-justify: inter-character; -webkit-text-align-last: justify;
-}
-.footer-warning-icon-wrap { flex-shrink: 0; display: flex; align-items: center; padding: 0 clamp(12px,2vw,32px); }
-.footer-warning-icon-wrap svg { width: clamp(36px,5vh,68px); height: clamp(36px,5vh,68px); }
-
-/* Push page content above fixed bar */
-body { padding-bottom: 10vh; }
-
-/* ===== Star rating ===== */
-.star-row { display: flex; align-items: center; gap: 6px; margin: 14px 0 0; }
-.star { font-size: 20px; line-height: 1; }
-.star.full  { color: #C9A961; }
-.star.empty { color: rgba(0,0,0,.15); }
-.star-label { font: 500 .8rem/1 var(--font-sans); color: var(--text-muted); margin-left: 6px; letter-spacing: .06em; }
-
-/* ===== Award badges ===== */
-.awards-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-.award-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 12px; border-radius: 20px;
-  background: linear-gradient(135deg, #2a1f08, #3d2f10);
-  border: 1px solid rgba(201,169,97,.45);
-  color: #C9A961; font: 500 .78rem/1 var(--font-sans); letter-spacing: .05em;
-}
-.award-badge::before { content: "🏆"; font-size: .85em; }
-
-/* ===== Brand ranking card ===== */
-.brand-rank-grid { display: flex; flex-direction: column; gap: 14px; }
-.brand-rank-row {
-  display: grid; grid-template-columns: 56px 1fr auto;
-  align-items: center; gap: 20px;
-  padding: 20px 24px; background: #fff;
-  border: 1px solid var(--border); border-radius: 16px;
-  cursor: pointer; transition: all .25s cubic-bezier(.16,1,.3,1);
-  box-shadow: 0 2px 8px rgba(0,0,0,.04);
-  position: relative; overflow: hidden;
-}
-.brand-rank-row::before {
-  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-  background: linear-gradient(180deg, var(--accent) 0%, var(--primary) 100%);
-}
-.brand-rank-row:hover { transform: translateX(6px); box-shadow: 0 8px 28px rgba(0,0,0,.1); border-color: var(--accent); }
-.brand-rank-num { font: 700 2rem/1 var(--font-serif); color: var(--border); text-align: center; }
-.brand-rank-row:hover .brand-rank-num { color: var(--accent); }
-.brand-rank-name { font: 600 1.1rem/1.4 var(--font-serif); color: var(--secondary); margin: 0 0 4px; }
-.brand-rank-meta { font: 400 .8rem/1 var(--font-sans); color: var(--text-muted); }
-.brand-rank-stars { display: flex; gap: 3px; }
-.brand-rank-stars .star { font-size: 16px; }
-
-/* ===== Heroes ===== */
-.home-hero, .brewery-hero { position: relative; display: flex; align-items: center; overflow: hidden; }
-.home-hero { min-height: 100vh; flex-direction: column; justify-content: center; }
-.brewery-hero { min-height: 360px; margin-bottom: 40px; }
-.hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; filter: brightness(.45); z-index: 0; transition: transform 8s ease-out; }
+/* ===== 首頁 Hero - 滿版奢華 ===== */
+.home-hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+.brewery-hero { position: relative; min-height: 360px; margin-bottom: 40px; display: flex; align-items: center; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; filter: brightness(0.45); z-index: 0; transition: transform 8s ease-out; }
 .home-hero:hover .hero-bg { transform: scale(1.03); }
-.brewery-hero .hero-bg { filter: brightness(.45); }
 .hero-overlay { position: absolute; inset: 0; background: var(--hero-overlay); z-index: 1; }
 .brewery-hero .hero-overlay { background: var(--hero-overlay-soft); }
-.hero-content { position: relative; z-index: 2; color: #fff; }
-.home-hero .hero-content { text-align: center; padding: 80px 24px 120px; width: 100%; }
+.hero-vignette { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse 80% 80% at center, transparent 35%, rgba(0,0,0,0.65) 100%); }
+.hero-texture { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.045; background-image: repeating-linear-gradient(-45deg, rgba(201,169,97,1) 0, rgba(201,169,97,1) 1px, transparent 1px, transparent 32px); }
+.hero-deco-kanji { position: absolute; right: -2%; bottom: -10%; font: 700 38vw/0.8 var(--font-serif); color: rgba(255,255,255,0.028); pointer-events: none; user-select: none; z-index: 1; letter-spacing: -0.04em; }
+.hero-vert-text { position: absolute; left: clamp(14px, 2.5vw, 44px); top: 50%; transform: translateY(-50%); writing-mode: vertical-rl; text-orientation: mixed; font: 300 0.62rem/1 var(--font-serif); letter-spacing: 0.6em; color: rgba(255,255,255,0.15); z-index: 2; pointer-events: none; user-select: none; }
+.hero-content { position: relative; z-index: 2; color: #fff; width: 100%; }
+.home-hero .hero-content { text-align: center; padding: 80px 24px 120px; }
 .brewery-hero .hero-content { padding: 60px 24px; }
-.hero-eyebrow { font: 400 .72rem/1 var(--font-sans); letter-spacing: .32em; text-transform: uppercase; color: var(--accent); display: block; margin: 0 0 24px; }
-.hero-rule { width: 48px; height: 1px; background: var(--accent); margin: 28px auto; }
-.hero-title { font: 600 clamp(2.4rem, 6vw, 4.4rem)/1.1 var(--font-serif); margin: 0 0 20px; letter-spacing: .04em; text-shadow: 0 4px 24px rgba(0,0,0,.4); }
-.hero-sub { font-size: clamp(.95rem, 1.5vw, 1.15rem); margin: 0 0 44px; color: rgba(255,255,255,.82); letter-spacing: .05em; }
-.brewery-hero-title { font: 600 clamp(2rem, 5vw, 2.8rem)/1.3 var(--font-serif); margin: 16px 0 4px; letter-spacing: .03em; text-shadow: 0 2px 8px rgba(0,0,0,.4); }
-.brewery-hero-jp { margin: 0 0 24px; font-size: 1.1rem; color: rgba(255,255,255,.75); }
-.brewery-meta-row { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; font-size: .95rem; color: rgba(255,255,255,.9); }
-.brewery-meta-row a { color: var(--accent); border-bottom: 1px solid var(--accent); }
-
-.hero-search { max-width: 560px; margin: 0 auto; position: relative; }
-.hero-search input {
-  width: 100%; padding: 20px 32px; border: none; border-radius: 50px;
-  background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
-  font: 400 1rem/1 var(--font-sans); color: var(--text);
-  box-shadow: 0 12px 40px rgba(0,0,0,.25);
-  transition: box-shadow .2s, background .2s;
-}
-.hero-search input:focus { outline: none; background: #fff; box-shadow: 0 0 0 3px rgba(201,169,97,.5), 0 12px 40px rgba(0,0,0,.25); }
-
-/* ===== Breadcrumb ===== */
-.breadcrumb { padding: 16px 0; font-size: .85rem; color: var(--text-muted); }
-.breadcrumb .sep { margin: 0 8px; color: var(--border); }
-.breadcrumb .current { color: var(--text); font-weight: 500; }
-.breadcrumb a { color: var(--text-muted); cursor: pointer; }
-.breadcrumb a:hover { color: var(--primary); }
-.breadcrumb-light { padding-top: 0; }
-.breadcrumb-light a, .breadcrumb-light .sep, .breadcrumb-light .current { color: rgba(255,255,255,.85); }
-.breadcrumb-light a:hover { color: var(--accent); }
-
-/* ===== Hero stats strip (glassmorphism) ===== */
-.hero-stats-strip {
-  position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
-  background: rgba(10,6,4,.45); backdrop-filter: blur(18px) saturate(1.4);
-  border-top: 1px solid rgba(201,169,97,.22);
-  display: flex; justify-content: center; gap: 0;
-}
-.hero-stat { flex: 0 1 220px; text-align: center; padding: 22px 24px; border-right: 1px solid rgba(201,169,97,.15); }
-.hero-stat:last-child { border-right: none; }
-.hero-stat-num { display: block; font: 600 2.4rem/1 var(--font-serif); color: var(--accent); letter-spacing: -.01em; }
-.hero-stat-label { display: block; margin-top: 8px; font-size: .72rem; color: rgba(255,255,255,.6); letter-spacing: .22em; text-transform: uppercase; }
-@media (max-width: 640px) {
-  .hero-stats-strip { position: static; }
-  .hero-stat { flex: 0 0 50%; border-right: 1px solid rgba(201,169,97,.15); border-bottom: 1px solid rgba(201,169,97,.1); }
-  .hero-stat:nth-child(2) { border-right: none; }
-}
-
-/* ===== Hero luxury animations ===== */
-@keyframes bokeh-float {
-  0%   { opacity: 0; transform: translateY(0) translateX(0) scale(1); }
-  15%  { opacity: 1; }
-  85%  { opacity: .5; }
-  100% { opacity: 0; transform: translateY(-140px) translateX(var(--dx)) scale(.3); }
-}
-@keyframes card-float {
-  0%, 100% { transform: rotate(-7deg) translateY(0px); }
-  50%       { transform: rotate(-7deg) translateY(-20px); }
-}
-@keyframes shimmer-sweep {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-@keyframes hero-fade-up {
-  from { opacity: 0; transform: translateY(32px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.hero-bokeh {
-  position: absolute; border-radius: 50%; z-index: 2; pointer-events: none;
-  background: radial-gradient(circle, rgba(201,169,97,.95) 0%, rgba(201,169,97,.3) 50%, transparent 70%);
-  animation: bokeh-float var(--dur) ease-in-out infinite;
-  animation-delay: var(--delay);
-}
-
-/* Floating sake card — desktop only */
-.hero-float-card {
-  position: absolute; right: clamp(40px, 7%, 120px); top: 50%;
-  transform: translateY(-55%) rotate(-7deg);
-  animation: card-float 6s ease-in-out infinite;
-  z-index: 3; pointer-events: none;
-  filter: drop-shadow(0 40px 60px rgba(0,0,0,.65)) drop-shadow(0 0 40px rgba(201,169,97,.18));
-}
-@media (max-width: 1080px) { .hero-float-card { display: none; } }
-
-/* Vertical decorative text — left edge */
-.hero-vert-text {
-  position: absolute; left: clamp(10px, 2vw, 38px); top: 50%;
-  transform: translateY(-50%);
-  writing-mode: vertical-rl; text-orientation: mixed;
-  font: 300 .65rem/1 var(--font-serif); letter-spacing: .55em;
-  color: rgba(255,255,255,.17); z-index: 2; pointer-events: none; user-select: none;
-}
-
-/* Ornamental divider */
+.hero-eyebrow { font: 400 0.72rem/1 var(--font-sans); letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); display: block; margin: 0 0 24px; }
 .hero-ornament { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 26px auto; width: fit-content; }
-.hero-orn-line { width: 52px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent)); }
+.hero-orn-line { width: 54px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent)); }
 .hero-orn-line.r { background: linear-gradient(90deg, var(--accent), transparent); }
 .hero-orn-dia { width: 7px; height: 7px; background: var(--accent); transform: rotate(45deg); flex-shrink: 0; }
-.hero-orn-dot { width: 3px; height: 3px; background: rgba(201,169,97,.55); border-radius: 50%; flex-shrink: 0; }
+.hero-orn-dot { width: 3px; height: 3px; background: rgba(201,169,97,0.55); border-radius: 50%; flex-shrink: 0; }
+.hero-title { font: 600 clamp(2.4rem, 6vw, 4.4rem)/1.1 var(--font-serif); margin: 0 0 20px; letter-spacing: 0.04em; text-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+.hero-shimmer { background: linear-gradient(100deg, #fff 20%, var(--accent) 50%, #fff 80%); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer-sweep 3.5s linear infinite; }
+.hero-sub { font-size: clamp(0.95rem, 1.5vw, 1.15rem); margin: 0 0 44px; color: rgba(255,255,255,0.82); letter-spacing: 0.05em; }
 
-/* Shimmer effect on title highlight */
-.hero-shimmer {
-  background: linear-gradient(100deg, #fff 20%, #C9A961 50%, #fff 80%);
-  background-size: 200% auto;
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer-sweep 4s linear infinite;
-}
+@keyframes shimmer-sweep { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+@keyframes hero-fade-up { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bokeh-float { 0% { opacity: 0; transform: translateY(0) translateX(0) scale(1); } 15% { opacity: 1; } 85% { opacity: 0.5; } 100% { opacity: 0; transform: translateY(-160px) translateX(var(--dx, 20px)) scale(0.25); } }
+.hero-anim-1 { animation: hero-fade-up 0.9s ease both 0.1s; }
+.hero-anim-2 { animation: hero-fade-up 0.9s ease both 0.3s; }
+.hero-anim-3 { animation: hero-fade-up 0.9s ease both 0.55s; }
+.hero-anim-4 { animation: hero-fade-up 0.9s ease both 0.75s; }
+.hero-bokeh { position: absolute; border-radius: 50%; z-index: 2; pointer-events: none; background: radial-gradient(circle, rgba(201,169,97,0.95) 0%, rgba(201,169,97,0.25) 55%, transparent 70%); animation: bokeh-float var(--dur, 4s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
 
-/* Fade-up stagger for hero content */
-.hero-anim-1 { animation: hero-fade-up .9s ease both; animation-delay: .1s; }
-.hero-anim-2 { animation: hero-fade-up .9s ease both; animation-delay: .3s; }
-.hero-anim-3 { animation: hero-fade-up .9s ease both; animation-delay: .55s; }
-.hero-anim-4 { animation: hero-fade-up .9s ease both; animation-delay: .75s; }
-.hero-anim-5 { animation: hero-fade-up .9s ease both; animation-delay: .95s; }
+.hero-search { max-width: 560px; margin: 0 auto; position: relative; }
+.hero-search input { width: 100%; padding: 20px 32px; border: none; border-radius: 50px; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); font: 400 1rem/1 var(--font-sans); color: var(--text); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
+.hero-search input:focus { outline: none; background: #fff; box-shadow: 0 0 0 3px rgba(201,169,97,0.5), 0 12px 40px rgba(0,0,0,0.25); }
+.search-results { position: absolute; top: 100%; left: 0; right: 0; margin-top: 8px; background: #fff; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.35); max-height: 400px; overflow-y: auto; z-index: 10; text-align: left; }
+.search-results a { display: block; padding: 12px 20px; color: var(--text); border-bottom: 1px solid var(--border); }
+.search-results a:last-child { border-bottom: none; }
+.search-results a:hover { background: var(--bg); color: var(--primary); }
+.search-result-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
 
-/* Vignette corners */
-.hero-vignette {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 38%, rgba(0,0,0,.58) 100%);
-}
+/* Hero 玻璃霧化統計條 */
+.hero-stats-strip { position: absolute; bottom: 0; left: 0; right: 0; z-index: 3; background: rgba(10,6,4,0.45); backdrop-filter: blur(18px) saturate(1.4); border-top: 1px solid rgba(201,169,97,0.22); display: flex; justify-content: center; }
+.hero-stat { flex: 0 1 220px; text-align: center; padding: 22px 24px; border-right: 1px solid rgba(201,169,97,0.15); }
+.hero-stat:last-child { border-right: none; }
+.hero-stat-num { display: block; font: 600 2.4rem/1 var(--font-serif); color: var(--accent); letter-spacing: -0.01em; }
+.hero-stat-label { display: block; margin-top: 8px; font-size: 0.72rem; color: rgba(255,255,255,0.6); letter-spacing: 0.22em; text-transform: uppercase; }
 
-/* Subtle diagonal gold texture */
-.hero-texture {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .055;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    rgba(201,169,97,1) 0px, rgba(201,169,97,1) 1px,
-    transparent 1px, transparent 30px
-  );
-}
+/* 酒造 Hero */
+.brewery-hero-title { font: 600 clamp(2rem, 5vw, 2.8rem)/1.3 var(--font-serif); margin: 16px 0 4px; letter-spacing: 0.03em; text-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+.brewery-hero-jp { margin: 0 0 24px; font-size: 1.1rem; color: rgba(255,255,255,0.75); }
+.brewery-meta-row { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; font-size: 0.95rem; color: rgba(255,255,255,0.9); }
+.brewery-meta-row a { color: var(--accent); border-bottom: 1px solid var(--accent); }
 
-/* ===== Hero luxury enhancements ===== */
-@keyframes bokeh-float {
-  0%   { opacity: 0; transform: translateY(0) translateX(0) scale(1); }
-  15%  { opacity: 1; }
-  85%  { opacity: .5; }
-  100% { opacity: 0; transform: translateY(-160px) translateX(var(--dx,20px)) scale(.25); }
-}
-@keyframes card-float {
-  0%, 100% { transform: rotate(-7deg) translateY(0); }
-  50%       { transform: rotate(-7deg) translateY(-22px); }
-}
-@keyframes shimmer-sweep {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-@keyframes hero-fade-up {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Gold bokeh particles */
-.hero-bokeh {
-  position: absolute; border-radius: 50%; z-index: 2; pointer-events: none;
-  background: radial-gradient(circle, rgba(201,169,97,.95) 0%, rgba(201,169,97,.25) 55%, transparent 70%);
-  animation: bokeh-float var(--dur,4s) ease-in-out infinite;
-  animation-delay: var(--delay,0s);
-}
-
-/* Floating sake card — desktop only */
-.hero-float-card {
-  position: absolute; right: clamp(40px,8%,130px); top: 50%;
-  transform: translateY(-55%) rotate(-7deg);
-  animation: card-float 6s ease-in-out infinite;
-  z-index: 3; pointer-events: none;
-  filter: drop-shadow(0 48px 64px rgba(0,0,0,.7)) drop-shadow(0 0 48px rgba(201,169,97,.18));
-}
-@media (max-width: 1100px) { .hero-float-card { display: none; } }
-
-/* Vertical decorative side text */
-.hero-vert-text {
-  position: absolute; left: clamp(14px,2.5vw,44px); top: 50%;
-  transform: translateY(-50%);
-  writing-mode: vertical-rl; text-orientation: mixed;
-  font: 300 .62rem/1 var(--font-serif); letter-spacing: .6em;
-  color: rgba(255,255,255,.15); z-index: 2; pointer-events: none; user-select: none;
-}
-
-/* Ornamental divider */
-.hero-ornament {
-  display: flex; align-items: center; justify-content: center;
-  gap: 10px; margin: 24px auto; width: fit-content;
-}
-.hero-orn-line   { width: 54px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent)); }
-.hero-orn-line.r { background: linear-gradient(90deg, var(--accent), transparent); }
-.hero-orn-dia    { width: 7px; height: 7px; background: var(--accent); transform: rotate(45deg); flex-shrink: 0; }
-.hero-orn-dot    { width: 3px; height: 3px; background: rgba(201,169,97,.55); border-radius: 50%; flex-shrink: 0; }
-
-/* Shimmer effect on headline word */
-.hero-shimmer {
-  background: linear-gradient(100deg, #fff 20%, var(--accent) 50%, #fff 80%);
-  background-size: 200% auto;
-  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  animation: shimmer-sweep 3.5s linear infinite;
-}
-
-/* Fade-up entrance layers */
-.hero-anim-1 { animation: hero-fade-up .9s ease both .1s; }
-.hero-anim-2 { animation: hero-fade-up .9s ease both .3s; }
-.hero-anim-3 { animation: hero-fade-up .9s ease both .55s; }
-.hero-anim-4 { animation: hero-fade-up .9s ease both .75s; }
-
-/* Vignette corners */
-.hero-vignette {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: radial-gradient(ellipse 80% 80% at center, transparent 35%, rgba(0,0,0,.65) 100%);
-}
-
-/* Subtle gold diagonal texture */
-.hero-texture {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .045;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    rgba(201,169,97,1) 0px, rgba(201,169,97,1) 1px,
-    transparent 1px, transparent 32px
-  );
-}
-
-/* ===== Hero decorative kanji ===== */
-.hero-deco-kanji {
-  position: absolute; right: -2%; bottom: -10%;
-  font: 700 38vw/1 var(--font-serif); color: rgba(255,255,255,.028);
-  pointer-events: none; user-select: none; z-index: 1; letter-spacing: -.04em;
-  line-height: .8;
-}
-
-/* ===== Brand manifesto strip ===== */
-.manifesto-strip {
-  background: var(--secondary); color: #fff;
-  padding: 80px 0; text-align: center;
-  position: relative; overflow: hidden;
-}
-.manifesto-strip::before, .manifesto-strip::after {
-  content: ""; display: block; width: 60px; height: 1px;
-  background: var(--accent); margin: 0 auto 32px;
-}
+/* ===== 品牌宣言 ===== */
+.manifesto-strip { background: var(--secondary); color: #fff; padding: 80px 0; text-align: center; position: relative; overflow: hidden; }
+.manifesto-strip::before, .manifesto-strip::after { content: ""; display: block; width: 60px; height: 1px; background: var(--accent); margin: 0 auto 32px; }
 .manifesto-strip::after { margin: 32px auto 0; }
-.manifesto-eyebrow { font: 400 .7rem/1 var(--font-sans); letter-spacing: .3em; text-transform: uppercase; color: var(--accent); margin: 0 0 24px; display: block; }
-.manifesto-text {
-  font: 400 clamp(1.5rem, 2.8vw, 2.4rem)/1.5 var(--font-serif);
-  color: rgba(255,255,255,.92); margin: 0; padding: 0 24px;
-  max-width: 760px; margin: 0 auto; letter-spacing: .04em;
-}
-.manifesto-deco { position: absolute; font: 700 40vw/1 var(--font-serif); color: rgba(255,255,255,.015); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; white-space: nowrap; }
+.manifesto-eyebrow { font: 400 0.7rem/1 var(--font-sans); letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin: 0 0 24px; display: block; }
+.manifesto-text { font: 400 clamp(1.5rem, 2.8vw, 2.4rem)/1.5 var(--font-serif); color: rgba(255,255,255,0.92); margin: 0 auto; padding: 0 24px; max-width: 760px; letter-spacing: 0.04em; }
 
-/* ===== Region rankings — luxury ===== */
+/* ===== 區段標題 ===== */
 .rankings-section { padding: 88px 0 72px; }
-.section-eyebrow { font: 400 .72rem/1 var(--font-sans); letter-spacing: .26em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+.section-eyebrow { font: 400 0.72rem/1 var(--font-sans); letter-spacing: 0.26em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
 .section-heading { font: 600 clamp(1.6rem, 3vw, 2.2rem)/1.2 var(--font-serif); color: var(--secondary); margin: 0 0 8px; }
-.section-sub { font-size: .9rem; color: var(--text-muted); margin: 0 0 52px; }
-.rank-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-@media (max-width: 900px) { .rank-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .rank-grid { grid-template-columns: 1fr; } }
+.section-sub { font-size: 0.9rem; color: var(--text-muted); margin: 0 0 52px; }
 
-.rank-card {
-  position: relative; overflow: hidden;
-  background: #fff; border: 1px solid var(--border); border-radius: 20px;
-  padding: 36px 32px 28px; cursor: pointer;
-  transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s, border-color .3s, background .3s;
-  box-shadow: 0 2px 10px rgba(0,0,0,.05);
-}
-.rank-card:hover { transform: translateY(-7px); box-shadow: 0 24px 48px rgba(0,0,0,.12); border-color: var(--accent); background: #fffdf8; }
+/* ===== 排名卡 ===== */
+.rank-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.rank-card { position: relative; overflow: hidden; background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px 28px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16,1,0.3,1); box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: block; color: inherit; }
+.rank-card:hover { transform: translateY(-7px); box-shadow: 0 24px 48px rgba(0,0,0,0.12); border-color: var(--accent); background: #fffdf8; }
 .rank-card-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--accent) 0%, var(--primary) 100%); border-radius: 20px 0 0 20px; }
-.rank-num-bg { position: absolute; right: -16px; bottom: -24px; font: 700 10rem/1 var(--font-serif); color: rgba(0,0,0,.032); pointer-events: none; user-select: none; line-height: 1; }
-.rank-ordinal { font: 500 .7rem/1 var(--font-sans); letter-spacing: .2em; color: var(--accent); margin-bottom: 16px; display: block; }
+.rank-num-bg { position: absolute; right: -16px; bottom: -24px; font: 700 10rem/1 var(--font-serif); color: rgba(0,0,0,0.032); pointer-events: none; user-select: none; }
+.rank-ordinal { font: 500 0.7rem/1 var(--font-sans); letter-spacing: 0.2em; color: var(--accent); margin-bottom: 16px; display: block; }
 .rank-name { font: 600 clamp(1.8rem, 3vw, 2.6rem)/1.1 var(--font-serif); color: var(--secondary); margin: 0 0 10px; }
-.rank-prefectures { font-size: .8rem; color: var(--text-muted); margin: 0 0 24px; letter-spacing: .03em; line-height: 1.6; }
+.rank-prefectures { font-size: 0.8rem; color: var(--text-muted); margin: 0 0 24px; letter-spacing: 0.03em; line-height: 1.6; }
 .rank-bar-track { height: 3px; background: var(--border); border-radius: 4px; margin-bottom: 16px; overflow: hidden; }
 .rank-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 4px; }
-.rank-count { font: 400 .82rem/1 var(--font-sans); color: var(--text-muted); letter-spacing: .06em; }
+.rank-count { font: 400 0.82rem/1 var(--font-sans); color: var(--text-muted); letter-spacing: 0.06em; }
 .rank-count strong { color: var(--primary); font-weight: 700; font-size: 1rem; }
 
-/* ===== Spotlight section ===== */
-.spotlight-section { padding: 0 0 88px; }
-.spotlight-panel {
-  display: grid; grid-template-columns: 1fr 1fr; min-height: 440px;
-  border-radius: 24px; overflow: hidden; margin-bottom: 24px;
-  box-shadow: 0 8px 32px rgba(0,0,0,.1); cursor: pointer;
-  transition: box-shadow .3s, transform .3s cubic-bezier(.16,1,.3,1);
-}
-.spotlight-panel:hover { transform: translateY(-4px); box-shadow: 0 24px 56px rgba(0,0,0,.16); }
-.spotlight-panel.flipped { direction: rtl; }
-.spotlight-panel.flipped > * { direction: ltr; }
-.spotlight-img {
-  position: relative; overflow: hidden; min-height: 360px;
-}
-.spotlight-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.16,1,.3,1); }
-.spotlight-panel:hover .spotlight-img img { transform: scale(1.04); }
-.spotlight-img-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(26,10,12,.5) 0%, transparent 100%); }
-.spotlight-body {
-  background: var(--secondary); color: #fff;
-  padding: 52px 52px; display: flex; flex-direction: column; justify-content: center;
-}
-.spotlight-eyebrow { font: 400 .68rem/1 var(--font-sans); letter-spacing: .26em; text-transform: uppercase; color: var(--accent); margin: 0 0 20px; display: block; }
-.spotlight-title { font: 600 clamp(1.6rem, 2.5vw, 2.2rem)/1.25 var(--font-serif); margin: 0 0 10px; letter-spacing: .03em; }
-.spotlight-jp { font-size: .9rem; color: rgba(255,255,255,.55); margin: 0 0 24px; }
-.spotlight-meta { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 32px; font-size: .85rem; color: rgba(255,255,255,.7); }
-.spotlight-meta span { display: flex; align-items: center; gap: 6px; }
-.spotlight-cta {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 14px 28px; background: transparent;
-  border: 1px solid var(--accent); border-radius: 40px;
-  color: var(--accent); font: 500 .9rem/1 var(--font-sans);
-  letter-spacing: .08em; transition: all .2s; cursor: pointer; width: fit-content;
-}
-.spotlight-cta:hover { background: var(--accent); color: var(--secondary); }
-@media (max-width: 768px) {
-  .spotlight-panel, .spotlight-panel.flipped { grid-template-columns: 1fr; direction: ltr; }
-  .spotlight-body { padding: 36px 28px; }
-  .spotlight-img { min-height: 260px; }
-}
+/* ===== 麵包屑 ===== */
+.breadcrumb { padding: 16px 0; font-size: 0.85rem; color: var(--text-muted); }
+.breadcrumb a { color: var(--text-muted); }
+.breadcrumb a:hover { color: var(--primary); }
+.breadcrumb .sep { margin: 0 8px; color: var(--border); }
+.breadcrumb .current { color: var(--text); font-weight: 500; }
+.breadcrumb-light { padding-top: 0; }
+.breadcrumb-light a, .breadcrumb-light .sep, .breadcrumb-light .current { color: rgba(255,255,255,0.85); }
+.breadcrumb-light a:hover { color: var(--accent); }
 
-/* ===== Featured strip — fixed-width cards ===== */
-.featured-strip { padding: 72px 0; background: var(--bg); border-top: 1px solid var(--border); }
-.featured-scroll {
-  display: flex; gap: 20px;
-  overflow-x: auto; padding-bottom: 16px;
-  scrollbar-width: thin;
-}
-.featured-scroll::-webkit-scrollbar { height: 4px; }
-.featured-scroll::-webkit-scrollbar-track { background: var(--border); border-radius: 2px; }
-.featured-scroll::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
-.featured-scroll .product-card {
-  flex: 0 0 280px; width: 280px; min-width: 280px;
-}
-
-/* ===== Stats / region nav ===== */
+/* ===== 統計 ===== */
 .stats { display: flex; gap: 20px; margin: 48px 0; justify-content: center; flex-wrap: wrap; }
-.stat { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 24px 40px; text-align: center; min-width: 140px; box-shadow: var(--shadow); transition: all .2s; }
+.stat { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 24px 40px; text-align: center; min-width: 140px; box-shadow: var(--shadow); transition: all 0.2s; }
 .stat:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
 .stat-num { display: block; font: 600 2.6rem/1 var(--font-serif); color: var(--primary); }
-.stat-label { display: block; margin-top: 10px; font-size: .9rem; color: var(--text-muted); letter-spacing: .1em; }
+.stat-label { display: block; margin-top: 10px; font-size: 0.9rem; color: var(--text-muted); letter-spacing: 0.1em; }
 
+/* ===== 地區 pill ===== */
 .region-nav { display: flex; flex-wrap: wrap; gap: 10px; margin: 36px 0; justify-content: center; }
-.region-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; background: #fff; border: 1px solid var(--border); border-radius: 30px; font-size: .9rem; transition: all .2s; box-shadow: var(--shadow); cursor: pointer; }
+.region-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; background: #fff; border: 1px solid var(--border); border-radius: 30px; color: var(--text); font-size: 0.9rem; transition: all 0.2s; box-shadow: var(--shadow); }
 .region-pill:hover { background: var(--primary); color: #fff; border-color: var(--primary); transform: translateY(-1px); }
-.region-pill .ct { background: rgba(0,0,0,.08); padding: 2px 10px; border-radius: 12px; font-size: .75rem; color: var(--text-muted); }
-.region-pill:hover .ct { background: rgba(255,255,255,.25); color: #fff; }
+.region-pill-count, .region-pill .ct { background: rgba(0,0,0,0.08); padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; color: var(--text-muted); }
+.region-pill:hover .region-pill-count, .region-pill:hover .ct { background: rgba(255,255,255,0.25); color: #fff; }
 
-/* ===== Region block — editorial ===== */
+/* ===== 地區區塊 ===== */
 .region-block { margin: 64px 0; }
 .region-header { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 16px; border-bottom: 2px solid var(--secondary); margin-bottom: 32px; }
-.region-header h2 { font: 600 1.9rem/1.4 var(--font-serif); margin: 0; color: var(--secondary); cursor: pointer; }
-.region-header h2:hover { color: var(--primary); }
-.region-count { font-size: .85rem; color: var(--text-muted); letter-spacing: .05em; }
-
+.region-header h2 { font: 600 1.9rem/1.4 var(--font-serif); margin: 0; color: var(--secondary); }
+.region-header h2 a:hover { color: var(--primary); }
+.region-count { font-size: 0.85rem; color: var(--text-muted); letter-spacing: 0.05em; }
 .area-block { margin: 24px 0; }
-.area-name { font: 500 .78rem/1 var(--font-sans); color: var(--accent); letter-spacing: .18em; text-transform: uppercase; margin: 0 0 14px; padding: 0; border: none; }
+.area-name { font: 500 0.78rem/1 var(--font-sans); color: var(--accent); letter-spacing: 0.18em; text-transform: uppercase; margin: 0 0 14px; padding: 0; border: none; }
 
-/* Brewery entries — editorial cards */
-.brewery-entries { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-.brewery-entry {
-  display: flex; align-items: center; gap: 16px;
-  padding: 16px 20px; background: #fff;
-  border: 1px solid var(--border); border-radius: 12px;
-  cursor: pointer; transition: all .22s cubic-bezier(.16,1,.3,1);
-  box-shadow: 0 1px 3px rgba(0,0,0,.04);
-  position: relative; overflow: hidden;
-}
-.brewery-entry::before {
-  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-  background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
-  opacity: 0; transition: opacity .2s;
-}
-.brewery-entry:hover { transform: translateX(4px); border-color: var(--primary); box-shadow: 0 6px 20px rgba(114,47,55,.1); }
-.brewery-entry:hover::before { opacity: 1; }
+/* ===== 編輯型酒造卡片 ===== */
+.brewery-list, .brewery-entries { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.brewery-list li { list-style: none; }
+.brewery-list a, .brewery-entry { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: #fff; border: 1px solid var(--border); border-radius: 12px; transition: all 0.22s cubic-bezier(0.16,1,0.3,1); box-shadow: 0 1px 3px rgba(0,0,0,0.04); position: relative; overflow: hidden; color: var(--text); line-height: 1.4; }
+.brewery-list a::before, .brewery-entry::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%); opacity: 0; transition: opacity 0.2s; }
+.brewery-list a:hover, .brewery-entry:hover { transform: translateX(4px); border-color: var(--primary); box-shadow: 0 6px 20px rgba(114,47,55,0.1); }
+.brewery-list a:hover::before, .brewery-entry:hover::before { opacity: 1; }
 .brewery-entry-body { flex: 1; min-width: 0; }
-.brewery-entry-name { display: block; font: 600 1rem/1.4 var(--font-serif); color: var(--secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.brewery-entry-jp { display: block; margin-top: 3px; font-size: .75rem; color: var(--text-muted); }
-.brewery-entry-arrow { font-size: 1rem; color: var(--border); transition: color .2s, transform .2s; flex-shrink: 0; }
+.brewery-name, .brewery-entry-name { display: block; font: 600 1rem/1.4 var(--font-serif); color: var(--secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brewery-list a:hover .brewery-name, .brewery-entry:hover .brewery-entry-name { color: var(--primary); }
+.brewery-jp, .brewery-entry-jp { display: block; margin-top: 3px; font-size: 0.75rem; color: var(--text-muted); }
+.brewery-product-count, .brewery-entry-count { display: block; margin-top: 5px; font-size: 0.72rem; color: var(--accent); letter-spacing: 0.05em; font-weight: 500; }
+.brewery-entry-arrow { font-size: 1rem; color: var(--border); transition: all 0.2s; flex-shrink: 0; }
 .brewery-entry:hover .brewery-entry-arrow { color: var(--primary); transform: translateX(3px); }
-.brewery-entry-count { display: block; margin-top: 5px; font-size: .72rem; color: var(--accent); letter-spacing: .05em; font-weight: 500; }
 
-/* ===== Product hero — 3-zone grid ===== */
+/* ===== 產品 Hero - 三欄 ===== */
 .product-hero { padding: 56px 0 52px; border-bottom: 1px solid var(--border); }
 .product-hero-3col { display: grid; grid-template-columns: 1fr 260px 1fr; gap: 40px; align-items: center; }
-@media (max-width: 900px) { .product-hero-3col { grid-template-columns: 260px 1fr; } }
-@media (max-width: 600px) { .product-hero-3col { grid-template-columns: 1fr; } }
+
+/* ===== 圖片佔位元件 ===== */
 .bottle-slot-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.bottle-slot-label { font-size: .75rem; color: var(--text-muted); letter-spacing: .1em; }
-image-slot { display: block; width: 140px; height: 300px; }
+.bottle-slot-label { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.1em; font-family: monospace; }
+.image-slot { width: 240px; height: 340px; background: rgba(0,0,0,0.04); border-radius: 12px; border: 1.5px dashed rgba(0,0,0,0.25); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: rgba(0,0,0,0.55); padding: 12px; transition: all 0.2s; position: relative; overflow: hidden; }
+.image-slot:hover { border-color: var(--accent); background: rgba(201,169,97,0.05); }
+.image-slot svg { opacity: 0.45; width: 32px; height: 32px; }
+.image-slot-caption { font: 500 0.8rem/1.3 var(--font-sans); text-align: center; color: rgba(0,0,0,0.6); }
+.image-slot-spec { font: 400 0.72rem/1.3 var(--font-sans); color: rgba(0,0,0,0.4); font-family: monospace; letter-spacing: 0.05em; }
+.product-image { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; }
+
 .product-hero .product-title { font: 600 2.4rem/1.3 var(--font-serif); margin: 12px 0 4px; color: var(--secondary); }
 .product-hero .product-title-jp { margin: 0 0 16px; color: var(--text-muted); font-size: 1.1rem; }
 .product-hero .product-brewery-line { margin: 0 0 20px; font-size: 1rem; }
-.product-hero .product-brewery-line a { color: var(--primary); font-weight: 500; cursor: pointer; }
+.product-hero .product-brewery-line a { color: var(--primary); font-weight: 500; }
+.product-hero .product-brewery-line a:hover { text-decoration: underline; }
 .product-hero .product-brewery-line .sep { margin: 0 10px; color: var(--border); }
 
 .quick-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-.badge { display: inline-block; padding: 6px 14px; background: rgba(255,255,255,.7); color: var(--secondary); border: 1px solid var(--border); border-radius: 20px; font-size: .85rem; letter-spacing: .05em; backdrop-filter: blur(4px); }
-.badge.primary { background: var(--primary); color: #fff; border-color: var(--primary); font-weight: 500; }
+.badge { display: inline-block; padding: 6px 14px; background: rgba(255,255,255,0.7); color: var(--secondary); border: 1px solid var(--border); border-radius: 20px; font-size: 0.85rem; letter-spacing: 0.05em; backdrop-filter: blur(4px); }
+.badge.badge-primary { background: var(--primary); color: #fff; border-color: var(--primary); font-weight: 500; }
 
-/* Sake card */
+/* ===== SakeCard (簽名卡) ===== */
+.sake-card-wrapper { position: relative; }
 .sake-card { width: 240px; height: 340px; border-radius: 12px; box-shadow: var(--shadow-bottle); color: #fff; position: relative; overflow: hidden; }
-.sake-card::before { content: ""; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1px solid rgba(255,255,255,.25); border-radius: 8px; pointer-events: none; }
-.sake-inner { padding: 40px 24px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-.sake-label { font: 600 .75rem/1 var(--font-serif); letter-spacing: .3em; text-transform: uppercase; color: rgba(255,255,255,.7); margin-bottom: 32px; padding: 4px 14px; border: 1px solid rgba(255,255,255,.3); border-radius: 4px; }
-.sake-name { font: 600 1.4rem/1.3 var(--font-serif); margin-bottom: 8px; letter-spacing: .05em; }
-.sake-jp { font-size: .85rem; color: rgba(255,255,255,.7); margin-bottom: 20px; }
-.sake-divider { width: 40px; height: 1px; background: rgba(255,255,255,.4); margin: 20px 0; }
-.sake-brewery { font: 600 .95rem/1 var(--font-serif); margin-bottom: 4px; letter-spacing: .08em; }
-.sake-area { font-size: .8rem; color: rgba(255,255,255,.65); letter-spacing: .1em; }
+.sake-card::before { content: ""; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; pointer-events: none; }
+.sake-card-inner { padding: 40px 24px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.sake-card-label { font: 600 0.75rem/1 var(--font-serif); letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 32px; padding: 4px 14px; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; }
+.sake-card-name { font: 600 1.4rem/1.3 var(--font-serif); margin-bottom: 8px; letter-spacing: 0.05em; word-break: break-word; }
+.sake-card-jp { font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 20px; }
+.sake-card-divider { width: 40px; height: 1px; background: rgba(255,255,255,0.4); margin: 20px 0; }
+.sake-card-brewery { font: 600 0.95rem/1 var(--font-serif); margin-bottom: 4px; letter-spacing: 0.08em; }
+.sake-card-area { font-size: 0.8rem; color: rgba(255,255,255,0.65); letter-spacing: 0.1em; }
 
-/* Product grid + cards */
+/* Mini sake card */
+.mini-sake-card { width: 120px; height: 168px; border-radius: 8px; flex-shrink: 0; color: #fff; padding: 16px 12px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 8px 20px rgba(0,0,0,0.22); position: relative; }
+.mini-sake-card::before { content: ""; position: absolute; top: 7px; left: 7px; right: 7px; bottom: 7px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; pointer-events: none; }
+.mini-sake-label { font: 600 0.58rem/1 var(--font-serif); letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.62); margin-bottom: 12px; padding: 2px 6px; border: 1px solid rgba(255,255,255,0.22); border-radius: 3px; }
+.mini-sake-name { font: 600 0.9rem/1.3 var(--font-serif); margin-bottom: 8px; letter-spacing: 0.03em; word-break: break-word; }
+.mini-sake-divider { width: 24px; height: 1px; background: rgba(255,255,255,0.32); margin: 8px 0; }
+.mini-sake-brewery { font-size: 0.68rem; color: rgba(255,255,255,0.82); letter-spacing: 0.04em; }
+
+/* 圖片上傳提示 */
+.image-placeholder-hint { position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.7rem; letter-spacing: 0.05em; white-space: nowrap; opacity: 0; transition: opacity 0.2s; pointer-events: none; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+.sake-card-wrapper:hover .image-placeholder-hint, .image-slot:hover + .image-placeholder-hint { opacity: 0.9; }
+.image-placeholder-hint .hint-id { color: var(--accent); font-family: monospace; font-weight: 600; margin-right: 8px; }
+.image-placeholder-hint .hint-spec { color: rgba(255,255,255,0.75); }
+
+/* ===== 產品 grid ===== */
 .section-title { font: 600 1.6rem/1.4 var(--font-serif); color: var(--secondary); margin: 0 0 28px; padding-bottom: 14px; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 12px; }
-.section-count { font-size: .95rem; color: var(--text-muted); background: var(--bg); padding: 2px 10px; border-radius: 12px; font-weight: 400; }
+.section-count { font-size: 0.95rem; color: var(--text-muted); background: var(--bg); padding: 2px 10px; border-radius: 12px; font-weight: 400; }
 .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
 
-/* Fixed-height uniform card */
-.product-card {
-  background: #fff; border-radius: 12px; overflow: hidden;
-  box-shadow: var(--shadow-card); border: 1px solid var(--border); cursor: pointer;
-  transition: all .3s cubic-bezier(.16,1,.3,1);
-  display: flex; flex-direction: column;
-  width: 280px; flex-shrink: 0;
-  height: 440px;          /* ← fixed total height for every card */
-}
+.product-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-card); border: 1px solid var(--border); transition: all 0.3s cubic-bezier(0.16,1,0.3,1); display: flex; flex-direction: column; color: inherit; }
 .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-
-/* Visual zone — fixed height, centred */
-.product-card-visual {
-  height: 200px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center; padding: 20px;
-}
-
-/* Body zone — fills remainder, clips overflow */
-.product-card-body {
-  padding: 16px 20px;
-  flex: 1; min-height: 0;
-  display: flex; flex-direction: column;
-  overflow: hidden;
-}
-.product-card-name {
-  font: 600 1.05rem/1.35 var(--font-serif); margin: 0 0 3px; color: var(--secondary);
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-}
-.product-card-jp {
-  margin: 0 0 10px; color: var(--text-muted); font-size: .78rem;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  min-height: 1.1em;
-}  min-height: 1.2em;   /* ← always reserves one line even if empty */
-}
-.product-quickspec {
-  margin: 0 0 10px; font-size: .83rem;
-  border-top: 1px dashed var(--border); padding-top: 10px; flex: 1;
-}
+.product-card-visual { height: 200px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.product-card-img { max-height: 100%; max-width: 100%; object-fit: contain; }
+.product-card-body { padding: 16px 20px; flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.product-card-name { font: 600 1.05rem/1.35 var(--font-serif); margin: 0 0 3px; color: var(--secondary); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.product-card-jp { margin: 0 0 10px; color: var(--text-muted); font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 1.2em; }
+.product-quickspec { margin: 0 0 10px; font-size: 0.83rem; border-top: 1px dashed var(--border); padding-top: 10px; }
 .product-quickspec > div { display: flex; padding: 2px 0; }
 .product-quickspec dt { flex: 0 0 56px; color: var(--text-muted); margin: 0; }
 .product-quickspec dd { margin: 0; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tag-mini { display: inline-block; padding: 2px 10px; background: var(--bg); color: var(--text-muted); border-radius: 12px; font-size: .73rem; margin: 0 4px 4px 0; }
+.tag-mini { display: inline-block; padding: 2px 10px; background: var(--bg); color: var(--text-muted); border-radius: 12px; font-size: 0.73rem; margin: 0 4px 4px 0; }
+.flavor-tags-mini { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
 
-/* Mini sake card — uniform size */
-.mini-sake {
-  width: 120px; height: 168px; border-radius: 8px; flex-shrink: 0;
-  color: #fff; padding: 16px 12px; text-align: center;
-  display: flex; flex-direction: column; justify-content: center; align-items: center;
-  box-shadow: 0 8px 20px rgba(0,0,0,.22); position: relative;
-}
-.mini-sake::before { content: ""; position: absolute; top: 7px; left: 7px; right: 7px; bottom: 7px; border: 1px solid rgba(255,255,255,.2); border-radius: 4px; pointer-events: none; }
-.mini-sake-label { font: 600 .58rem/1 var(--font-serif); letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.62); margin-bottom: 12px; padding: 2px 6px; border: 1px solid rgba(255,255,255,.22); border-radius: 3px; }
-.mini-sake-name { font: 600 .9rem/1.3 var(--font-serif); margin-bottom: 8px; letter-spacing: .03em; word-break: break-all; }
-.mini-sake-div { width: 24px; height: 1px; background: rgba(255,255,255,.32); margin: 8px 0; }
-.mini-sake-brewery { font-size: .68rem; color: rgba(255,255,255,.82); letter-spacing: .04em; }
-
-/* Specs + radar + sections */
+/* ===== 產品詳細頁 ===== */
 .product-page { max-width: 800px; margin: 0 auto; }
 .product-detail { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 48px; box-shadow: var(--shadow-card); margin-bottom: 40px; }
 .product-section { margin: 32px 0; }
 .product-section:first-child { margin-top: 0; }
 .product-section h2 { font: 600 1.3rem/1.4 var(--font-serif); color: var(--primary); margin: 0 0 16px; padding-left: 14px; border-left: 4px solid var(--accent); }
 .product-section p { text-align: justify; color: var(--text); margin: 0; }
-.sake-specs { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; font-size: .95rem; }
-.sake-specs th { background: var(--bg); color: var(--secondary); padding: 12px 20px; text-align: left; width: 32%; font-weight: 500; letter-spacing: .05em; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); }
+
+/* 規格表 */
+.sake-specs { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+.sake-specs th { background: var(--bg); color: var(--secondary); padding: 12px 20px; text-align: left; width: 32%; font-weight: 500; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); }
 .sake-specs td { padding: 12px 20px; color: var(--text); background: #fff; border-bottom: 1px solid var(--border); }
 .sake-specs tr:last-child th, .sake-specs tr:last-child td { border-bottom: none; }
 
+/* 風味雷達圖 */
 .flavor-radar-container { display: grid; grid-template-columns: 1fr 200px; gap: 32px; align-items: center; background: var(--bg); padding: 24px; border-radius: 12px; border: 1px solid var(--border); }
 .flavor-radar { width: 100%; max-width: 320px; height: auto; margin: 0 auto; }
-.flavor-legend-item { display: flex; justify-content: space-between; font-size: .9rem; padding: 4px 0; border-bottom: 1px dashed var(--border); }
+.flavor-legend { display: grid; gap: 8px; }
+.flavor-legend-item { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 4px 0; border-bottom: 1px dashed var(--border); }
 .flavor-legend-item:last-child { border-bottom: none; }
+.flavor-legend-label { color: var(--text); font-weight: 500; }
 .flavor-legend-value { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.flavor-note { margin: 16px 0 0; font-size: 0.8rem; color: var(--text-muted); }
 
-.tag { display: inline-block; padding: 4px 12px; background: var(--bg); color: var(--primary); border: 1px solid var(--border); border-radius: 20px; font-size: .8rem; letter-spacing: .05em; margin: 0 6px 6px 0; }
+/* 風味標籤 */
+.flavor-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
+.tag { display: inline-block; padding: 4px 12px; background: var(--bg); color: var(--primary); border: 1px solid var(--border); border-radius: 20px; font-size: 0.8rem; letter-spacing: 0.05em; margin: 0 6px 6px 0; }
+
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); background: #fff; border: 1px dashed var(--border); border-radius: 12px; }
+
+.page-header { padding: 32px 0; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+.page-header h1 { font: 600 2.4rem/1.3 var(--font-serif); color: var(--secondary); margin: 0; }
+.page-header .subtitle { margin: 8px 0 0; color: var(--text-muted); font-size: 1rem; }
+
+/* ===== Site footer ===== */
+.site-footer { background: var(--secondary); color: rgba(255,255,255,0.7); padding: 36px 0 0; margin-top: 80px; font-size: 0.85rem; }
+.site-footer .container { padding-bottom: 36px; }
+.site-footer p { margin: 4px 0; }
+.site-footer a { color: var(--accent); }
+.site-footer a:hover { text-decoration: underline; }
+.footer-meta { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+
+/* ===== 底部固定警告條 (法規) ===== */
+.footer-warning-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; background: #2a2a2a; border-top: 3px solid #444; height: 10vh; min-height: 56px; max-height: 90px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 72px); }
+.footer-warning-text { color: #fff; font: 700 clamp(1rem, 2.8vw, 2.2rem)/1.2 var(--font-serif); white-space: nowrap; margin: 0; flex: 1; text-align: justify; text-align-last: justify; text-justify: inter-character; -webkit-text-align-last: justify; }
+.footer-warning-icon-wrap { flex-shrink: 0; display: flex; align-items: center; padding: 0 clamp(12px, 2vw, 32px); }
+.footer-warning-icon-wrap svg { width: clamp(36px, 5vh, 68px); height: clamp(36px, 5vh, 68px); }
+
+/* ===== RWD ===== */
+@media (max-width: 1024px) {
+    .container { padding: 0 20px; }
+    .rank-grid { grid-template-columns: repeat(2, 1fr); }
+    .product-hero-3col { grid-template-columns: 240px 1fr; gap: 32px; }
+    .flavor-radar-container { grid-template-columns: 1fr 180px; gap: 20px; }
+}
+@media (max-width: 900px) { .product-hero-3col { grid-template-columns: 260px 1fr; } }
+@media (max-width: 768px) {
+    .container { padding: 0 16px; }
+    .site-header { padding: 18px 0; }
+    .site-title { font-size: 1.3rem; }
+    .site-tagline { font-size: 0.8rem; }
+    .home-hero { min-height: 85vh; }
+    .home-hero .hero-content { padding: 56px 16px 100px; }
+    .brewery-hero { min-height: 280px; margin-bottom: 28px; }
+    .brewery-hero .hero-content { padding: 40px 16px; }
+    .hero-stats-strip { position: static; flex-wrap: wrap; }
+    .hero-stat { flex: 0 0 50%; border-right: 1px solid rgba(201,169,97,0.15); border-bottom: 1px solid rgba(201,169,97,0.1); padding: 16px; }
+    .hero-stat:nth-child(2) { border-right: none; }
+    .hero-stat-num { font-size: 1.8rem; }
+    .hero-search input { padding: 16px 24px; font-size: 0.95rem; }
+    .manifesto-strip { padding: 56px 0; }
+    .manifesto-text { font-size: clamp(1.2rem, 4vw, 1.6rem); }
+    .rankings-section { padding: 56px 0 48px; }
+    .rank-card { padding: 28px 24px 24px; }
+    .product-hero { padding: 32px 0 28px; }
+    .product-hero-3col { grid-template-columns: 1fr; gap: 24px; text-align: center; }
+    .product-hero .product-title { font-size: 1.7rem; }
+    .quick-badges { justify-content: center; }
+    .image-slot, .sake-card { width: 200px; height: 280px; margin: 0 auto; }
+    .region-header { flex-direction: column; align-items: flex-start; gap: 8px; padding-bottom: 12px; }
+    .region-header h2 { font-size: 1.5rem; }
+    .brewery-list, .brewery-entries { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .brewery-list a, .brewery-entry { padding: 12px; gap: 10px; }
+    .brewery-name, .brewery-entry-name { font-size: 0.92rem; }
+    .product-page { padding: 0 16px; }
+    .product-detail { padding: 28px 20px; border-radius: 8px; }
+    .product-section h2 { font-size: 1.15rem; }
+    .sake-specs th, .sake-specs td { display: block; width: 100%; border-right: none; padding: 8px 16px; }
+    .sake-specs th { background: var(--secondary); color: #fff; font-size: 0.8rem; letter-spacing: 0.08em; }
+    .sake-specs td { padding: 10px 16px 16px; font-weight: 500; }
+    .flavor-radar-container { grid-template-columns: 1fr; gap: 20px; padding: 20px 16px; }
+    .flavor-radar { max-width: 280px; }
+    .product-grid { grid-template-columns: 1fr; gap: 16px; }
+    .footer-warning-text { font-size: clamp(0.9rem, 4vw, 1.4rem); }
+}
+@media (max-width: 600px) {
+    .home-hero { min-height: 75vh; }
+    .hero-title { font-size: 1.9rem; }
+    .hero-sub { font-size: 0.9rem; }
+    .rank-grid { grid-template-columns: 1fr; }
+    .stats { gap: 10px; }
+    .stat { flex: 1 1 calc(50% - 8px); padding: 16px 12px; }
+    .stat-num { font-size: 1.7rem; }
+    .product-hero .product-title { font-size: 1.5rem; }
+    .image-slot, .sake-card { width: 180px; height: 250px; }
+    .region-pill { padding: 6px 12px; font-size: 0.8rem; }
+}
+@media (max-width: 380px) {
+    .container { padding: 0 12px; }
+    .hero-title { font-size: 1.6rem; }
+    .product-hero .product-title { font-size: 1.35rem; }
+    .image-slot, .sake-card { width: 160px; height: 220px; }
+    .brewery-list a, .brewery-entry { padding: 10px 8px; }
+    .brewery-name, .brewery-entry-name { font-size: 0.85rem; }
+    .product-detail { padding: 20px 16px; }
+    .flavor-radar { max-width: 240px; }
+    .breadcrumb { flex-wrap: wrap; line-height: 1.8; font-size: 0.8rem; }
+}
+@media (hover: none) {
+    .image-placeholder-hint { opacity: 0.6; }
+    .product-card:hover, .brewery-list a:hover, .brewery-entry:hover, .rank-card:hover { transform: none; }
+}
