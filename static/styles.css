@@ -103,6 +103,97 @@ img, svg { max-width: 100%; height: auto; }
 .manifesto-strip::after { margin: 32px auto 0; }
 .manifesto-eyebrow { font: 400 0.7rem/1 var(--font-sans); letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin: 0 0 24px; display: block; }
 .manifesto-text { font: 400 clamp(1.5rem, 2.8vw, 2.4rem)/1.5 var(--font-serif); color: rgba(255,255,255,0.92); margin: 0 auto; padding: 0 24px; max-width: 760px; letter-spacing: 0.04em; }
+.manifesto-sub { font-size: clamp(0.85rem, 1.4vw, 1rem); opacity: 0.6; letter-spacing: 0.04em; line-height: 2; display: block; margin-top: 16px; }
+.manifesto-deco { position: absolute; font: 700 40vw/1 var(--font-serif); color: rgba(255,255,255,0.015); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; white-space: nowrap; }
+
+/* ===== Hero 漂浮卡 (桌機右側) ===== */
+@keyframes card-float {
+    0%, 100% { transform: translateY(-55%) rotate(-7deg); }
+    50% { transform: translateY(-55%) translateY(-22px) rotate(-7deg); }
+}
+.hero-float-card {
+    position: absolute;
+    right: clamp(40px, 8%, 130px);
+    top: 50%;
+    z-index: 3;
+    pointer-events: none;
+    animation: card-float 6s ease-in-out infinite;
+    filter: drop-shadow(0 48px 64px rgba(0,0,0,0.7)) drop-shadow(0 0 48px rgba(201,169,97,0.18));
+}
+.float-card-inner {
+    width: 200px;
+    height: 280px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #722F37 0%, #3a181c 100%);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 32px 20px;
+}
+.float-card-inner::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    pointer-events: none;
+}
+.float-card-label {
+    font: 600 0.65rem/1 var(--font-serif);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    padding: 3px 10px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 3px;
+    margin-bottom: 24px;
+}
+.float-card-name {
+    font: 600 1.4rem/1.3 var(--font-serif);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+}
+.float-card-jp {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 16px;
+}
+.float-card-divider {
+    width: 32px;
+    height: 1px;
+    background: rgba(255,255,255,0.35);
+    margin: 12px 0;
+}
+.float-card-brewery {
+    font: 500 0.85rem/1 var(--font-serif);
+    letter-spacing: 0.08em;
+}
+.float-card-area {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.55);
+    margin-top: 6px;
+    letter-spacing: 0.14em;
+}
+
+/* 1100px 以下隱藏漂浮卡 */
+@media (max-width: 1100px) {
+    .hero-float-card { display: none; }
+}
+
+/* Hero 內容右側留漂浮卡空間(桌機) */
+.hero-content-with-card { padding-right: min(340px, 30%); }
+@media (max-width: 1100px) {
+    .hero-content-with-card { padding-right: 24px; }
+}
 
 /* ===== 區段標題 ===== */
 .rankings-section { padding: 88px 0 72px; }
