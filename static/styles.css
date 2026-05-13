@@ -215,6 +215,206 @@ img, svg { max-width: 100%; height: auto; }
 .rank-count { font: 400 0.82rem/1 var(--font-sans); color: var(--text-muted); letter-spacing: 0.06em; }
 .rank-count strong { color: var(--primary); font-weight: 700; font-size: 1rem; }
 
+/* ===== 銘柄英雄榜 (brand-rank) ===== */
+.brand-rank-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.brand-rank-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 24px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    color: inherit;
+}
+.brand-rank-row::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--accent) 0%, var(--primary) 100%);
+}
+.brand-rank-row:hover {
+    transform: translateX(6px);
+    background: rgba(255,255,255,0.1);
+    border-color: var(--accent);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+}
+.brand-rank-num {
+    font: 700 2rem/1 var(--font-serif);
+    color: rgba(255,255,255,0.2);
+    text-align: center;
+    transition: color 0.2s;
+}
+.brand-rank-row:hover .brand-rank-num { color: var(--accent); }
+.brand-rank-name {
+    font: 600 1.1rem/1.4 var(--font-serif);
+    color: #fff;
+    margin: 0 0 4px;
+}
+.brand-rank-meta {
+    font: 400 0.8rem/1.4 var(--font-sans);
+    color: rgba(255,255,255,0.5);
+    margin: 0;
+}
+.brand-rank-stars {
+    display: flex;
+    gap: 3px;
+}
+
+/* ===== 星級評分 ===== */
+.star {
+    font-size: 16px;
+    line-height: 1;
+}
+.star.full { color: #C9A961; }
+.star.empty { color: rgba(255,255,255,0.15); }
+
+/* ===== 獎項徽章 ===== */
+.awards-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+.award-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #2a1f08, #3d2f10);
+    border: 1px solid rgba(201,169,97,0.45);
+    color: #C9A961;
+    font: 500 0.78rem/1 var(--font-sans);
+    letter-spacing: 0.05em;
+}
+.award-badge::before { content: "🏆"; font-size: 0.85em; }
+
+/* ===== Spotlight 精選酒造 ===== */
+.spotlight-section { padding: 0 0 88px; }
+.spotlight-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 440px;
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+    color: inherit;
+}
+.spotlight-panel:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 56px rgba(0,0,0,0.16);
+}
+.spotlight-panel.flipped { direction: rtl; }
+.spotlight-panel.flipped > * { direction: ltr; }
+.spotlight-img {
+    position: relative;
+    overflow: hidden;
+    min-height: 360px;
+}
+.spotlight-img img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.spotlight-panel:hover .spotlight-img img { transform: scale(1.04); }
+.spotlight-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(26,10,12,0.5) 0%, transparent 100%);
+}
+.spotlight-body {
+    background: var(--secondary);
+    color: #fff;
+    padding: 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.spotlight-eyebrow {
+    font: 400 0.68rem/1 var(--font-sans);
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 20px;
+    display: block;
+}
+.spotlight-title {
+    font: 600 clamp(1.6rem, 2.5vw, 2.2rem)/1.25 var(--font-serif);
+    margin: 0 0 10px;
+    letter-spacing: 0.03em;
+}
+.spotlight-jp {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.55);
+    margin: 0 0 24px;
+}
+.spotlight-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 32px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.7);
+}
+.spotlight-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.spotlight-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: 40px;
+    color: var(--accent);
+    font: 500 0.9rem/1 var(--font-sans);
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+    width: fit-content;
+}
+.spotlight-panel:hover .spotlight-cta {
+    background: var(--accent);
+    color: var(--secondary);
+}
+@media (max-width: 768px) {
+    .spotlight-panel, .spotlight-panel.flipped {
+        grid-template-columns: 1fr;
+        direction: ltr;
+    }
+    .spotlight-body { padding: 36px 28px; }
+    .spotlight-img { min-height: 260px; }
+    .brand-rank-row {
+        grid-template-columns: 40px 1fr auto;
+        padding: 16px;
+        gap: 12px;
+    }
+    .brand-rank-num { font-size: 1.5rem; }
+    .brand-rank-name { font-size: 0.95rem; }
+    .brand-rank-stars { gap: 1px; }
+    .brand-rank-stars .star { font-size: 13px; }
+}
+
 /* ===== 麵包屑 ===== */
 .breadcrumb { padding: 16px 0; font-size: 0.85rem; color: var(--text-muted); }
 .breadcrumb a { color: var(--text-muted); }
