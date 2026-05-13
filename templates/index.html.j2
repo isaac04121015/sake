@@ -148,8 +148,19 @@
       </p>
       <div class="brand-rank-grid">
         {% for product in featured_products[:10] %}
+        {% set theme = product._theme %}
         <a href="{{ page_path }}products/{{ product.product_id | safe_id }}.html" class="brand-rank-row">
           <div class="brand-rank-num">{{ "%02d"|format(loop.index) }}</div>
+          <div class="brand-rank-thumb">
+            {% if product._authorized_image %}
+              <img src="{{ page_path }}{{ product._authorized_image }}" alt="{{ product.name_zhtw or product.name_jp }}">
+            {% else %}
+              <div class="brand-rank-thumb-card" style="background: linear-gradient(180deg, {{ theme.primary }} 0%, {{ theme.secondary }} 100%);">
+                <span class="thumb-card-label">{{ theme.label }}</span>
+                <span class="thumb-card-name">{{ product.name_zhtw or product.name_jp }}</span>
+              </div>
+            {% endif %}
+          </div>
           <div>
             <p class="brand-rank-name">{{ product.name_zhtw or product.name_jp }}</p>
             <p class="brand-rank-meta">
