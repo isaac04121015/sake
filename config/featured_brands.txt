@@ -1,0 +1,26 @@
+# 精選銘柄清單 (Featured Brands)
+#
+# 格式:product_id | 星數(1-5) | 獎項清單(用逗號分隔,可選)
+#
+# 規則:
+# - 每行一筆,用 `|` 分隔欄位
+# - product_id 從 data/products.csv 找,例如 sn_101
+# - 星數填 1-5 之間的整數
+# - 獎項可以填多個,用逗號分隔,例如 "IWC2024金賞,SAKE COMPETITION 2024"
+# - # 開頭的行會被忽略
+# - 空行會被忽略
+# - 清空整個檔案 = 不顯示銘柄英雄榜
+#
+# 想知道 product_id 怎麼找?
+# - 打開酒款頁網址最後就是 product_id,例如 .../products/sn_101.html → sn_101
+# - 或打開 data/products.csv 第一欄
+#
+# === 範例(請替換成你想推薦的銘柄)===
+sn_101 | 5 | IWC2024金賞, SAKE COMPETITION 2024
+sn_220 | 5 | 全國新酒鑑評會金賞
+sn_415 | 4 | IWC2023金賞
+sn_502 | 5
+sn_603 | 4 | 燗酒大賞2024
+sn_750 | 5 | SAKE COMPETITION 2024 純米吟釀部門
+sn_888 | 4 | IWC2024銀賞
+sn_915 | 5 | 全國新酒鑑評會金賞, IWC2023金賞
