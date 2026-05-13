@@ -137,6 +137,76 @@
     </section>
   </div>
 
+  {# ===== 銘柄英雄榜 - 黑底得獎排行 ===== #}
+  {% if featured_products %}
+  <div style="background: var(--secondary); padding: 72px 0;">
+    <div class="container">
+      <p class="section-eyebrow" style="color: var(--accent);">銘柄英雄榜</p>
+      <h2 class="section-heading" style="color: #fff; margin-bottom: 8px;">精選推薦銘柄</h2>
+      <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5); margin: 0 0 40px; letter-spacing: 0.04em;">
+        依星級推薦與國際競賽得獎數綜合排名
+      </p>
+      <div class="brand-rank-grid">
+        {% for product in featured_products[:10] %}
+        <a href="{{ page_path }}products/{{ product.product_id | safe_id }}.html" class="brand-rank-row">
+          <div class="brand-rank-num">{{ "%02d"|format(loop.index) }}</div>
+          <div>
+            <p class="brand-rank-name">{{ product.name_zhtw or product.name_jp }}</p>
+            <p class="brand-rank-meta">
+              {{ product.brewery_name_jp }} ·
+              {{ product.area_zhtw or product.area_jp }}{% if product.sake_type %} ·
+              {{ product.sake_type }}{% endif %}
+            </p>
+            {% if product._awards %}
+            <p class="brand-rank-meta" style="margin-top: 4px; color: var(--accent);">
+              🏆 {{ product._awards[:2] | join(' · ') }}{% if product._awards|length > 2 %} +{{ product._awards|length - 2 }}{% endif %}
+            </p>
+            {% endif %}
+          </div>
+          <div class="brand-rank-stars">
+            {% for i in range(5) %}
+              <span class="star {% if i < product._stars %}full{% else %}empty{% endif %}">★</span>
+            {% endfor %}
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {# ===== 精選酒造 Spotlight ===== #}
+  {% if spotlight_breweries %}
+  <div class="container">
+    <section class="spotlight-section">
+      <p class="section-eyebrow">精選酒造</p>
+      <h2 class="section-heading" style="margin-bottom: 36px;">值得深探的名門</h2>
+      {% for brewery in spotlight_breweries %}
+      <a href="{{ page_path }}breweries/{{ brewery.brewery_id | safe_id }}.html"
+         class="spotlight-panel{% if loop.index % 2 == 0 %} flipped{% endif %}">
+        <div class="spotlight-img">
+          <img src="{{ brewery._hero_image }}" alt="{{ brewery.name_jp }}" loading="lazy">
+          <div class="spotlight-img-overlay"></div>
+        </div>
+        <div class="spotlight-body">
+          <span class="spotlight-eyebrow">精選酒造</span>
+          <h3 class="spotlight-title">{{ brewery.name_zhtw or brewery.name_jp }}</h3>
+          {% if brewery.name_zhtw and brewery.name_zhtw != brewery.name_jp %}
+          <p class="spotlight-jp">{{ brewery.name_jp }}</p>
+          {% endif %}
+          <div class="spotlight-meta">
+            <span>📍 {{ brewery.area_zhtw or brewery.area_jp }}</span>
+            {% if brewery.founded_year %}<span>🏯 創業 {{ brewery.founded_year }}</span>{% endif %}
+            <span>🍶 {{ brewery._products | length }} 款銘柄</span>
+          </div>
+          <span class="spotlight-cta">探索銘柄 &nbsp;›</span>
+        </div>
+      </a>
+      {% endfor %}
+    </section>
+  </div>
+  {% endif %}
+
   {# ===== 各地區酒造 - 統一網格 (照 Claude Design 不分 area 子組) ===== #}
   <div class="container">
     {% for region in regions %}
