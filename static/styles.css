@@ -223,10 +223,10 @@ img, svg { max-width: 100%; height: auto; }
 }
 .brand-rank-row {
     display: grid;
-    grid-template-columns: 56px 1fr auto;
+    grid-template-columns: 56px 70px 1fr auto;
     align-items: center;
     gap: 20px;
-    padding: 20px 24px;
+    padding: 16px 24px;
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 16px;
@@ -235,6 +235,55 @@ img, svg { max-width: 100%; height: auto; }
     position: relative;
     overflow: hidden;
     color: inherit;
+}
+
+/* 銘柄英雄榜縮圖 */
+.brand-rank-thumb {
+    width: 70px;
+    height: 95px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+.brand-rank-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.brand-rank-thumb-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 6px;
+    color: #fff;
+    position: relative;
+}
+.brand-rank-thumb-card::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 3px;
+    pointer-events: none;
+}
+.thumb-card-label {
+    font: 600 0.5rem/1 var(--font-serif);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 6px;
+}
+.thumb-card-name {
+    font: 600 0.65rem/1.2 var(--font-serif);
+    word-break: break-word;
 }
 .brand-rank-row::before {
     content: "";
@@ -405,14 +454,20 @@ img, svg { max-width: 100%; height: auto; }
     .spotlight-body { padding: 36px 28px; }
     .spotlight-img { min-height: 260px; }
     .brand-rank-row {
-        grid-template-columns: 40px 1fr auto;
-        padding: 16px;
-        gap: 12px;
+        grid-template-columns: 36px 50px 1fr auto;
+        padding: 12px;
+        gap: 10px;
     }
-    .brand-rank-num { font-size: 1.5rem; }
-    .brand-rank-name { font-size: 0.95rem; }
+    .brand-rank-num { font-size: 1.3rem; }
+    .brand-rank-thumb {
+        width: 50px;
+        height: 68px;
+    }
+    .brand-rank-name { font-size: 0.9rem; }
+    .brand-rank-meta { font-size: 0.72rem; }
     .brand-rank-stars { gap: 1px; }
-    .brand-rank-stars .star { font-size: 13px; }
+    .brand-rank-stars .star { font-size: 11px; }
+    .thumb-card-name { font-size: 0.55rem; }
 }
 
 /* ===== 麵包屑 ===== */
@@ -501,6 +556,31 @@ img, svg { max-width: 100%; height: auto; }
 .sake-card-area { font-size: 0.8rem; color: rgba(255,255,255,0.65); letter-spacing: 0.1em; }
 
 /* Mini sake card */
+.mini-sake-card-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.mini-image-hint {
+    margin-top: 6px;
+    padding: 2px 8px;
+    background: rgba(0,0,0,0.6);
+    color: var(--accent);
+    font-family: monospace;
+    font-size: 0.65rem;
+    border-radius: 10px;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.product-card:hover .mini-image-hint { opacity: 0.85; }
+.product-card-img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
 .mini-sake-card { width: 120px; height: 168px; border-radius: 8px; flex-shrink: 0; color: #fff; padding: 16px 12px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 8px 20px rgba(0,0,0,0.22); position: relative; }
 .mini-sake-card::before { content: ""; position: absolute; top: 7px; left: 7px; right: 7px; bottom: 7px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; pointer-events: none; }
 .mini-sake-label { font: 600 0.58rem/1 var(--font-serif); letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.62); margin-bottom: 12px; padding: 2px 6px; border: 1px solid rgba(255,255,255,0.22); border-radius: 3px; }
