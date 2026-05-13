@@ -37,6 +37,87 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 ROOT = Path(__file__).parent.parent
 DATA_DIR = ROOT / "data"
+CONFIG_DIR = ROOT / "config"
+
+
+def load_featured_brands(path: Path) -> dict:
+    """載入精選銘柄清單 featured_brands.txt
+    格式: product_id | 星數 | 獎項清單
+    回傳 dict: { product_id: {'stars': N, 'awards': [...]} }
+    """
+    if not path.exists():
+        return {}
+    result = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = [p.strip() for p in line.split("|")]
+        if not parts[0]:
+            continue
+        product_id = parts[0]
+        stars = 0
+        awards = []
+        if len(parts) >= 2 and parts[1]:
+            try:
+                stars = max(0, min(5, int(parts[1])))
+            except ValueError:
+                stars = 0
+        if len(parts) >= 3 and parts[2]:
+            awards = [a.strip() for a in parts[2].split(",") if a.strip()]
+        result[product_id] = {"stars": stars, "awards": awards}
+    return result
+
+
+def load_featured_breweries(path: Path) -> list[str]:
+    """載入精選酒造清單 featured_breweries.txt
+    格式: 每行一個日文酒造名 (可帶 # 註解)
+    回傳 list[str]: 日文酒造名稱清單
+    """
+    if not path.exists():
+        return []
+    result = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        # 去除 # 後面的註解
+        if "#" in line:
+            line = line.split("#")[0]
+        line = line.strip()
+        if not line:
+            continue
+        result.append(line)
+    return result
+
+
+def pick_daily_spotlight(featured_names: list[str], breweries: list[dict], n: int = 2) -> list[dict]:
+    """根據日期 hash 從精選清單中選 n 家酒造輪流展示。
+    每天日期不同 → 自動換不同 spotlight。"""
+    if not featured_names:
+        return []
+
+    # 用 brewery name_jp 比對清單
+    name_to_brewery = {b.get("name_jp", "").strip(): b for b in breweries if b.get("name_jp")}
+
+    # 找到清單中實際存在的酒造
+    matched = []
+    for name in featured_names:
+        b = name_to_brewery.get(name.strip())
+        if b:
+            matched.append(b)
+
+    if not matched:
+        return []
+
+    # 根據今天的 day-of-year hash 選 n 家
+    day = datetime.now().timetuple().tm_yday
+    if len(matched) <= n:
+        return matched
+
+    selected = []
+    for i in range(n):
+        idx = (day + i * 7) % len(matched)  # 用 *7 讓兩個間隔不太近
+        selected.append(matched[idx])
+
+    return selected
 TEMPLATES_DIR = ROOT / "templates"
 STATIC_DIR = ROOT / "static"
 
@@ -200,12 +281,35 @@ def build_data_model() -> dict:
     # 索引
     brewery_by_id = {b["brewery_id"]: b for b in breweries}
     products_by_brewery = defaultdict(list)
+
+    # 載入精選清單
+    featured_brands = load_featured_brands(CONFIG_DIR / "featured_brands.txt")
+    featured_brewery_names = load_featured_breweries(CONFIG_DIR / "featured_breweries.txt")
+
     for p in products:
         # 為每個 product 附加視覺主題 + 授權圖檢查
         p["_theme"] = classify_sake_visual(p)
         p["_authorized_image"] = has_authorized_image(p.get("product_id", ""))
         p["_hero_image"] = get_hero_image(p.get("brewery_id", ""))
+        # 附加精選評分(如有)
+        pid = p.get("product_id", "")
+        if pid in featured_brands:
+            p["_stars"] = featured_brands[pid]["stars"]
+            p["_awards"] = featured_brands[pid]["awards"]
+        else:
+            p["_stars"] = 0
+            p["_awards"] = []
         products_by_brewery[p["brewery_id"]].append(p)
+
+    # 計算「銘柄英雄榜」清單(有星數的銘柄,按 stars*10 + awards 數量排序)
+    featured_products = [p for p in products if p.get("_stars", 0) > 0]
+    featured_products.sort(
+        key=lambda p: (p.get("_stars", 0) * 10 + len(p.get("_awards", [])), p.get("product_id", "")),
+        reverse=True,
+    )
+    # 對每個 featured product 附加酒造資料,讓模板能用
+    for p in featured_products:
+        p["_brewery"] = brewery_by_id.get(p.get("brewery_id", ""))
 
     # 按 region 分組
     regions = defaultdict(lambda: defaultdict(list))
@@ -234,6 +338,13 @@ def build_data_model() -> dict:
             "brewery_count": sum(len(b) for b in areas_sorted.values()),
         })
 
+    # 計算每日 spotlight 酒造輪播
+    spotlight_breweries = pick_daily_spotlight(featured_brewery_names, breweries, n=2)
+    # 為 spotlight 酒造補上 hero image + 旗下產品
+    for b in spotlight_breweries:
+        b["_hero_image"] = get_hero_image(b.get("brewery_id", ""))
+        b["_products"] = products_by_brewery.get(b["brewery_id"], [])
+
     return {
         "regions": sorted_regions,
         "breweries": breweries,
@@ -242,6 +353,8 @@ def build_data_model() -> dict:
         "products_by_brewery": dict(products_by_brewery),
         "total_breweries": len(breweries),
         "total_products": len(products),
+        "featured_products": featured_products,
+        "spotlight_breweries": spotlight_breweries,
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
     }
 
