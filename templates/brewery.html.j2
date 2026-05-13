@@ -58,13 +58,18 @@
     <a href="{{ page_path }}products/{{ product.product_id | safe_id }}.html" class="product-card">
       <div class="product-card-visual" style="background: {{ theme.bg_gradient }};">
         {% if product._authorized_image %}
+          {# 有授權圖時直接顯示真照片 #}
           <img src="{{ page_path }}{{ product._authorized_image }}" alt="{{ product.name_zhtw or product.name_jp }}" class="product-card-img">
         {% else %}
-          <div class="mini-sake-card" style="background: linear-gradient(180deg, {{ theme.primary }} 0%, {{ theme.secondary }} 100%);">
-            <div class="mini-sake-label">{{ theme.label }}</div>
-            <div class="mini-sake-name">{{ product.name_zhtw or product.name_jp }}</div>
-            <div class="mini-sake-divider"></div>
-            <div class="mini-sake-brewery">{{ product.brewery_name_jp }}</div>
+          {# 沒圖時顯示 CSS 設計卡片 + 上傳提示 #}
+          <div class="mini-sake-card-wrapper">
+            <div class="mini-sake-card" style="background: linear-gradient(180deg, {{ theme.primary }} 0%, {{ theme.secondary }} 100%);">
+              <div class="mini-sake-label">{{ theme.label }}</div>
+              <div class="mini-sake-name">{{ product.name_zhtw or product.name_jp }}</div>
+              <div class="mini-sake-divider"></div>
+              <div class="mini-sake-brewery">{{ product.brewery_name_jp }}</div>
+            </div>
+            <div class="mini-image-hint">{{ product.product_id }}</div>
           </div>
         {% endif %}
       </div>
