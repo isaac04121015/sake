@@ -85,7 +85,7 @@ img, svg { max-width: 100%; height: auto; }
 .search-result-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
 
 /* Hero 玻璃霧化統計條 */
-.hero-stats-strip { position: absolute; bottom: 0; left: 0; right: 0; z-index: 3; background: rgba(10,6,4,0.45); backdrop-filter: blur(18px) saturate(1.4); border-top: 1px solid rgba(201,169,97,0.22); display: flex; justify-content: center; }
+.hero-stats-strip { position: absolute; bottom: 0; left: 0; right: 0; z-index: 1; background: rgba(10,6,4,0.45); backdrop-filter: blur(18px) saturate(1.4); border-top: 1px solid rgba(201,169,97,0.22); display: flex; justify-content: center; }
 .hero-stat { flex: 0 1 220px; text-align: center; padding: 22px 24px; border-right: 1px solid rgba(201,169,97,0.15); }
 .hero-stat:last-child { border-right: none; }
 .hero-stat-num { display: block; font: 600 2.4rem/1 var(--font-serif); color: var(--accent); letter-spacing: -0.01em; }
