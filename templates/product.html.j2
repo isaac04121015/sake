@@ -17,10 +17,12 @@
 
 {% set theme = product._theme %}
 
-{# ===== 三欄 Hero ===== #}
+{# ===== 三欄 Hero (照 Claude Design) ===== #}
 <section class="product-hero" style="background: {{ theme.bg_gradient }};">
   <div class="container">
-    <nav class="breadcrumb">
+
+    {# 麵包屑 - 置於 hero 區頂部 #}
+    <nav class="breadcrumb breadcrumb-hero-top">
       <a href="{{ page_path }}index.html">首頁</a>
       <span class="sep">›</span>
       {% if brewery.region_zhtw %}
@@ -32,8 +34,47 @@
 
     <div class="product-hero-3col">
 
-      {# 左欄:酒款資訊 #}
-      <div>
+      {# 左欄:圖片佔位區 (image-slot 風格) #}
+      <div class="bottle-slot-wrap">
+        <span class="bottle-slot-label">酒瓶照片</span>
+        {% if product._authorized_image %}
+          {# 有授權圖時直接顯示 #}
+          <div class="image-slot image-slot-filled">
+            <img src="{{ page_path }}{{ product._authorized_image }}" alt="{{ product.name_zhtw or product.name_jp }}">
+          </div>
+        {% else %}
+          {# 沒圖時:顯示虛線框 + 上傳提示 (visual only) #}
+          <div class="image-slot image-slot-empty">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <path d="m21 15-5-5L5 21"/>
+            </svg>
+            <div class="image-slot-caption">拖曳酒瓶照片至此</div>
+            <div class="image-slot-spec">{{ product.product_id }} · 600×800px</div>
+          </div>
+        {% endif %}
+      </div>
+
+      {# 中欄:CSS 設計卡片 #}
+      <div class="sake-card-zone">
+        <div class="sake-card" style="background: linear-gradient(180deg, {{ theme.primary }} 0%, {{ theme.secondary }} 100%);">
+          <div class="sake-card-inner">
+            <div class="sake-card-label">{{ theme.label }}</div>
+            <div class="sake-card-name">{{ product.name_zhtw or product.name_jp }}</div>
+            {% if product.name_zhtw and product.name_zhtw != product.name_jp %}
+            <div class="sake-card-jp">{{ product.name_jp }}</div>
+            {% endif %}
+            <div class="sake-card-divider"></div>
+            <div class="sake-card-brewery">{{ product.brewery_name_jp }}</div>
+            <div class="sake-card-area">{{ product.area_zhtw or product.area_jp }}</div>
+          </div>
+        </div>
+      </div>
+
+      {# 右欄:資訊區 (不再有麵包屑) #}
+      <div class="product-info-col">
         <h1 class="product-title">{{ product.name_zhtw or product.name_jp }}</h1>
         {% if product.name_zhtw and product.name_zhtw != product.name_jp %}
         <p class="product-title-jp">{{ product.name_jp }}</p>
@@ -45,74 +86,31 @@
           <span>{{ product.area_zhtw or product.area_jp }}</span>
         </p>
 
-        <div class="quick-badges">
+        {# 星級評分 (來自精選銘柄清單) #}
+        {% if product._stars and product._stars > 0 %}
+        <div class="star-row">
+          {% for i in range(5) %}
+            <span class="star {% if i < product._stars %}full{% else %}empty{% endif %}" style="font-size: 20px;">★</span>
+          {% endfor %}
+          <span class="star-label">{{ product._stars }}/5 推薦</span>
+        </div>
+        {% endif %}
+
+        {# 獎項徽章 #}
+        {% if product._awards %}
+        <div class="awards-list">
+          {% for award in product._awards %}
+          <span class="award-badge">{{ award }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="quick-badges" style="margin-top: 20px;">
           {% if product.sake_type %}<span class="badge badge-primary">{{ product.sake_type }}</span>{% endif %}
           {% if product.rice_variety %}<span class="badge">{{ product.rice_variety }}</span>{% endif %}
           {% if product.seimaibuai %}<span class="badge">精米 {{ product.seimaibuai }}%</span>{% endif %}
           {% if product.abv %}<span class="badge">{{ product.abv }}% ABV</span>{% endif %}
         </div>
-      </div>
-
-      {# 中欄:圖片區 (圖片佔位 / 真實圖片 / CSS 卡片) #}
-      <div class="bottle-slot-wrap">
-        {% if product._authorized_image %}
-          {# 有授權圖時直接顯示 #}
-          <img src="{{ page_path }}{{ product._authorized_image }}" alt="{{ product.name_zhtw or product.name_jp }}" class="product-image" style="max-width: 260px; max-height: 340px;">
-        {% else %}
-          {# 沒圖時:預設顯示 CSS 設計卡片 #}
-          <div class="sake-card-wrapper">
-            <div class="sake-card" style="background: linear-gradient(180deg, {{ theme.primary }} 0%, {{ theme.secondary }} 100%);">
-              <div class="sake-card-inner">
-                <div class="sake-card-label">{{ theme.label }}</div>
-                <div class="sake-card-name">{{ product.name_zhtw or product.name_jp }}</div>
-                {% if product.name_zhtw and product.name_zhtw != product.name_jp %}
-                <div class="sake-card-jp">{{ product.name_jp }}</div>
-                {% endif %}
-                <div class="sake-card-divider"></div>
-                <div class="sake-card-brewery">{{ product.brewery_name_jp }}</div>
-                <div class="sake-card-area">{{ product.area_zhtw or product.area_jp }}</div>
-              </div>
-            </div>
-            <div class="image-placeholder-hint">
-              <span class="hint-id">{{ product.product_id }}</span>
-              <span class="hint-spec">建議 600×800px</span>
-            </div>
-          </div>
-        {% endif %}
-        <span class="bottle-slot-label">{{ product.product_id }}</span>
-      </div>
-
-      {# 右欄:風味雷達圖 (有資料才顯示) #}
-      {% set has_flavor = product.flavor_f1_華やか and product.flavor_f1_華やか|float(0) > 0 %}
-      <div>
-        {% if has_flavor %}
-        {% set axes = [
-          ('華麗', product.flavor_f1_華やか),
-          ('芳醇', product.flavor_f2_芳醇),
-          ('厚重', product.flavor_f3_重厚),
-          ('穩重', product.flavor_f4_穏やか),
-          ('辛口', product.flavor_f5_ドライ),
-          ('輕快', product.flavor_f6_軽快)
-        ] %}
-        {% set xs = [0, 0.866, 0.866, 0, -0.866, -0.866] %}
-        {% set ys = [-1, -0.5, 0.5, 1, 0.5, -0.5] %}
-        <svg viewBox="0 0 300 300" class="flavor-radar" xmlns="http://www.w3.org/2000/svg" style="max-width: 240px;">
-          {% for r in [30, 60, 90, 120] %}
-          <polygon points="{% for i in range(6) %}{{ 150 + r * xs[i] }},{{ 150 + r * ys[i] }} {% endfor %}" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
-          {% endfor %}
-          {% for i in range(6) %}
-          <line x1="150" y1="150" x2="{{ 150 + 120 * xs[i] }}" y2="{{ 150 + 120 * ys[i] }}" stroke="rgba(0,0,0,0.1)" stroke-width="1"/>
-          {% endfor %}
-          <polygon points="{% for i in range(6) %}{% set v = axes[i][1]|float(0) %}{{ 150 + 120 * v * xs[i] }},{{ 150 + 120 * v * ys[i] }} {% endfor %}" fill="{{ theme.primary }}" fill-opacity="0.3" stroke="{{ theme.primary }}" stroke-width="2"/>
-          {% for i in range(6) %}
-          {% set v = axes[i][1]|float(0) %}
-          <circle cx="{{ 150 + 120 * v * xs[i] }}" cy="{{ 150 + 120 * v * ys[i] }}" r="4" fill="{{ theme.primary }}"/>
-          {% endfor %}
-          {% for i in range(6) %}
-          <text x="{{ 150 + 145 * xs[i] }}" y="{{ 150 + 145 * ys[i] }}" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="500" fill="#2C2C2C" font-family="Noto Sans TC, sans-serif">{{ axes[i][0] }}</text>
-          {% endfor %}
-        </svg>
-        {% endif %}
       </div>
 
     </div>
@@ -163,7 +161,19 @@
   </table>
 </section>
 
+{# 風味雷達圖 - 完整版,只在主內容區出現一次 #}
+{% set has_flavor = product.flavor_f1_華やか and product.flavor_f1_華やか|float(0) > 0 %}
 {% if has_flavor %}
+{% set axes = [
+  ('華麗', product.flavor_f1_華やか),
+  ('芳醇', product.flavor_f2_芳醇),
+  ('厚重', product.flavor_f3_重厚),
+  ('穩重', product.flavor_f4_穏やか),
+  ('辛口', product.flavor_f5_ドライ),
+  ('輕快', product.flavor_f6_軽快)
+] %}
+{% set xs = [0, 0.866, 0.866, 0, -0.866, -0.866] %}
+{% set ys = [-1, -0.5, 0.5, 1, 0.5, -0.5] %}
 <section class="product-section">
   <h2>風味輪廓</h2>
   <div class="flavor-radar-container">
