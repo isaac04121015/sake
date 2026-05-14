@@ -1,0 +1,71 @@
+name: 2️⃣ Quick Deploy (快速重建 HTML,30 秒)
+# ============================================================
+# 用途:用既有 CSV 重新建置 HTML,30 秒搞定。
+#       完全不抓資料、不跑 AI、不打外部 API。
+#
+# 何時要跑這個:
+#   - 改了模板 (templates/*.html.j2)
+#   - 改了 CSS (static/styles.css)
+#   - 改了 JS (static/search.js)
+#   - 改了 build_static_site.py
+#   - 改了 featured_brands.txt / featured_breweries.txt 想立刻看效果
+#   - 任何「視覺/邏輯」的修改
+#
+# ❌ 不要跑這個來抓新資料 → 改用 Sync 那個 workflow
+# ============================================================
+
+on:
+  workflow_dispatch:
+  # 只有以下檔案有異動時才會自動跑 deploy
+  push:
+    branches: [main]
+    paths:
+      - "templates/**"           # 模板 (html.j2)
+      - "static/**"              # CSS / JS / 圖片
+      - "scripts/build_static_site.py"   # 建置腳本
+      - "config/**"              # featured 清單 / 翻譯等
+      - "data/regions_zhtw.json" # 地區翻譯
+      - "data/flavor_tags_zhtw.json"     # 風味標籤翻譯
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # ===== 只跑 build,不抓資料 =====
+      - name: Build static site (using existing CSV)
+        run: python scripts/build_static_site.py --output-dir dist
+
+      # ===== 上傳到 Pages =====
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
