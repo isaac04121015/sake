@@ -75,10 +75,10 @@ img, svg { max-width: 100%; height: auto; }
 .hero-anim-4 { animation: hero-fade-up 0.9s ease both 0.75s; }
 .hero-bokeh { position: absolute; border-radius: 50%; z-index: 2; pointer-events: none; background: radial-gradient(circle, rgba(201,169,97,0.95) 0%, rgba(201,169,97,0.25) 55%, transparent 70%); animation: bokeh-float var(--dur, 4s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
 
-.hero-search { max-width: 560px; margin: 0 auto; position: relative; }
+.hero-search { max-width: 560px; margin: 0 auto; position: relative; z-index: 50; }
 .hero-search input { width: 100%; padding: 20px 32px; border: none; border-radius: 50px; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); font: 400 1rem/1 var(--font-sans); color: var(--text); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
 .hero-search input:focus { outline: none; background: #fff; box-shadow: 0 0 0 3px rgba(201,169,97,0.5), 0 12px 40px rgba(0,0,0,0.25); }
-.search-results { position: absolute; top: 100%; left: 0; right: 0; margin-top: 8px; background: #fff; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.35); max-height: 400px; overflow-y: auto; z-index: 10; text-align: left; }
+.search-results { position: absolute; top: 100%; left: 0; right: 0; margin-top: 8px; background: #fff; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.35); max-height: 400px; overflow-y: auto; z-index: 100; text-align: left; }
 .search-results a { display: block; padding: 12px 20px; color: var(--text); border-bottom: 1px solid var(--border); }
 .search-results a:last-child { border-bottom: none; }
 .search-results a:hover { background: var(--bg); color: var(--primary); }
@@ -368,8 +368,11 @@ img, svg { max-width: 100%; height: auto; }
     transform: translateY(-4px);
     box-shadow: 0 24px 56px rgba(0,0,0,0.16);
 }
-.spotlight-panel.flipped { direction: rtl; }
-.spotlight-panel.flipped > * { direction: ltr; }
+.spotlight-panel.flipped {
+    /* 用 grid 的方式倒過來,而不是 direction:rtl(那會讓子元素的絕對定位錯亂) */
+}
+.spotlight-panel.flipped .spotlight-img { order: 2; }
+.spotlight-panel.flipped .spotlight-body { order: 1; }
 .spotlight-img {
     position: relative;
     overflow: hidden;
@@ -449,7 +452,10 @@ img, svg { max-width: 100%; height: auto; }
 @media (max-width: 768px) {
     .spotlight-panel, .spotlight-panel.flipped {
         grid-template-columns: 1fr;
-        direction: ltr;
+    }
+    .spotlight-panel.flipped .spotlight-img,
+    .spotlight-panel.flipped .spotlight-body {
+        order: initial;
     }
     .spotlight-body { padding: 36px 28px; }
     .spotlight-img { min-height: 260px; }
