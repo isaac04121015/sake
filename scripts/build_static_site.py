@@ -90,7 +90,8 @@ def load_featured_breweries(path: Path) -> list[str]:
 
 def pick_daily_spotlight(featured_names: list[str], breweries: list[dict], n: int = 2) -> list[dict]:
     """根據日期 hash 從精選清單中選 n 家酒造輪流展示。
-    每天日期不同 → 自動換不同 spotlight。"""
+    每天日期不同 → 自動換不同 spotlight。
+    並確保 spotlight 之間 hero image 不重複。"""
     if not featured_names:
         return []
 
@@ -112,10 +113,38 @@ def pick_daily_spotlight(featured_names: list[str], breweries: list[dict], n: in
     if len(matched) <= n:
         return matched
 
+    # 選不重複的 n 家,並確保 hero image 也不重複
     selected = []
-    for i in range(n):
-        idx = (day + i * 7) % len(matched)  # 用 *7 讓兩個間隔不太近
-        selected.append(matched[idx])
+    used_images = set()
+    images_count = len(UNSPLASH_HERO_IMAGES)
+    offset = 0
+    while len(selected) < n and offset < len(matched) * 2:
+        idx = (day + offset * 7) % len(matched)
+        candidate = matched[idx]
+        # 跳過已選過的酒造
+        if candidate.get("brewery_id") in {b.get("brewery_id") for b in selected}:
+            offset += 1
+            continue
+        # 計算這家的 hero image 索引
+        bid = candidate.get("brewery_id", "")
+        try:
+            img_idx = int(bid) % images_count
+        except (ValueError, TypeError):
+            img_idx = hash(bid) % images_count
+        # 如果圖片重複,且還有圖可選,試著換索引
+        if img_idx in used_images and len(used_images) < images_count:
+            offset += 1
+            continue
+        used_images.add(img_idx)
+        selected.append(candidate)
+        offset += 1
+
+    # 萬一上面邏輯沒選到 n 家(可能酒造太少),用簡單方式補
+    if len(selected) < n:
+        for i in range(n - len(selected)):
+            idx = (day + (len(selected) + i) * 7) % len(matched)
+            if matched[idx] not in selected:
+                selected.append(matched[idx])
 
     return selected
 TEMPLATES_DIR = ROOT / "templates"
