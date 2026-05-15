@@ -218,6 +218,38 @@
 {% endif %}
 
 </article>
+
+{# ===== 相似酒款推薦 ===== #}
+{% if similar_products %}
+<section class="similar-section">
+  <h2 class="similar-heading">喜歡這款酒嗎?</h2>
+  <p class="similar-sub">為你推薦風味相近的銘柄</p>
+  <div class="similar-grid">
+    {% for sim in similar_products %}
+    {% set sim_theme = sim._theme %}
+    <a href="{{ page_path }}products/{{ sim.product_id | safe_id }}.html" class="similar-card">
+      <div class="similar-card-visual" style="background: {{ sim_theme.bg_gradient }};">
+        {% if sim._authorized_image %}
+          <img src="{{ page_path }}{{ sim._authorized_image }}" alt="{{ sim.name_zhtw or sim.name_jp }}" class="similar-card-img">
+        {% else %}
+          <div class="similar-mini-card" style="background: linear-gradient(180deg, {{ sim_theme.primary }} 0%, {{ sim_theme.secondary }} 100%);">
+            <div class="similar-mini-label">{{ sim_theme.label }}</div>
+            <div class="similar-mini-name">{{ sim.name_zhtw or sim.name_jp }}</div>
+          </div>
+        {% endif %}
+      </div>
+      <div class="similar-card-body">
+        <h3 class="similar-card-name">{{ sim.name_zhtw or sim.name_jp }}</h3>
+        <p class="similar-card-meta">{{ sim.brewery_name_jp }}</p>
+        {% if sim.sake_type %}
+        <p class="similar-card-type">{{ sim.sake_type }}</p>
+        {% endif %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
 </main>
 
 <footer class="site-footer">
