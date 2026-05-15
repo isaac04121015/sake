@@ -374,6 +374,15 @@ def build_data_model() -> dict:
         b["_hero_image"] = get_hero_image(b.get("brewery_id", ""))
         b["_products"] = products_by_brewery.get(b["brewery_id"], [])
 
+    # ===== 風味分群 (依 6 軸風味雷達) =====
+    flavor_groups = compute_flavor_groups(products)
+
+    # ===== 地區風味平均 =====
+    region_flavor_stats = compute_region_flavor_stats(products, sorted_regions)
+
+    # ===== 為每款酒計算相似推薦 =====
+    similar_products_map = compute_similar_products(products, top_n=4)
+
     return {
         "regions": sorted_regions,
         "breweries": breweries,
@@ -384,8 +393,140 @@ def build_data_model() -> dict:
         "total_products": len(products),
         "featured_products": featured_products,
         "spotlight_breweries": spotlight_breweries,
+        "flavor_groups": flavor_groups,
+        "region_flavor_stats": region_flavor_stats,
+        "similar_products_map": similar_products_map,
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
     }
+
+
+def get_flavor_vector(product: dict) -> list[float]:
+    """取得單一酒款的 6 軸風味向量。沒有風味資料的回傳 None。"""
+    try:
+        f1 = float(product.get("flavor_f1_華やか", 0) or 0)
+        f2 = float(product.get("flavor_f2_芳醇", 0) or 0)
+        f3 = float(product.get("flavor_f3_重厚", 0) or 0)
+        f4 = float(product.get("flavor_f4_穏やか", 0) or 0)
+        f5 = float(product.get("flavor_f5_ドライ", 0) or 0)
+        f6 = float(product.get("flavor_f6_軽快", 0) or 0)
+        # 全為 0 視為沒有資料
+        if all(v == 0 for v in [f1, f2, f3, f4, f5, f6]):
+            return None
+        return [f1, f2, f3, f4, f5, f6]
+    except (ValueError, TypeError):
+        return None
+
+
+def compute_flavor_groups(products: list[dict]) -> dict:
+    """根據 6 軸風味把酒款分群,每群選代表性酒款。
+    群組設計:
+    - hanayaka (華麗系): F1 最強的酒款
+    - houjun (芳醇系): F2 最強
+    - jukou (厚重系): F3 最強
+    - odayaka (穩重系): F4 最強
+    - dry (辛口系): F5 最強
+    - keikai (輕快系): F6 最強
+    """
+    groups = {
+        "hanayaka": {"axis": 0, "label_zh": "華麗系", "desc": "華麗芳香、入口輕快,適合入門品飲", "products": []},
+        "houjun":   {"axis": 1, "label_zh": "芳醇系", "desc": "豐厚米香、餘韻深長,搭餐萬用", "products": []},
+        "jukou":    {"axis": 2, "label_zh": "厚重系", "desc": "厚實濃郁、層次豐富,適合搭重口味料理", "products": []},
+        "odayaka":  {"axis": 3, "label_zh": "穩重系", "desc": "平衡內斂、易飲百搭,日常餐酒首選", "products": []},
+        "dry":      {"axis": 4, "label_zh": "辛口系", "desc": "乾淨利落、餘韻清爽,適合海鮮", "products": []},
+        "keikai":   {"axis": 5, "label_zh": "輕快系", "desc": "輕盈爽快、低酒精感,適合餐前", "products": []},
+    }
+
+    # 為每款酒算出「最突出的軸」+ 該軸的分數
+    for p in products:
+        vec = get_flavor_vector(p)
+        if not vec:
+            continue
+        max_idx = vec.index(max(vec))
+        max_val = vec[max_idx]
+        # 必須突出度足夠 (該軸值 > 0.6) 才算入分群
+        if max_val < 0.6:
+            continue
+        # 找到對應的 group key
+        for key, g in groups.items():
+            if g["axis"] == max_idx:
+                g["products"].append({**p, "_flavor_score": max_val})
+                break
+
+    # 每群依分數排序取前 10
+    for g in groups.values():
+        g["products"].sort(key=lambda p: p["_flavor_score"], reverse=True)
+        g["products"] = g["products"][:10]
+        g["count"] = len(g["products"])
+
+    return groups
+
+
+def compute_region_flavor_stats(products: list[dict], sorted_regions: list[dict]) -> list[dict]:
+    """為每個地區算 6 軸風味的平均值。"""
+    region_data = {}
+    for p in products:
+        region = (p.get("region_zhtw") or "").strip()
+        if not region:
+            continue
+        vec = get_flavor_vector(p)
+        if not vec:
+            continue
+        if region not in region_data:
+            region_data[region] = {"vectors": [], "count": 0}
+        region_data[region]["vectors"].append(vec)
+        region_data[region]["count"] += 1
+
+    result = []
+    for region in sorted_regions:
+        name = region["name"]
+        if name not in region_data or region_data[name]["count"] < 3:
+            continue
+        vectors = region_data[name]["vectors"]
+        n = len(vectors)
+        avg = [sum(v[i] for v in vectors) / n for i in range(6)]
+        # 找出該地區最突出的軸
+        max_idx = avg.index(max(avg))
+        axis_labels = ["華麗", "芳醇", "厚重", "穩重", "辛口", "輕快"]
+        result.append({
+            "name": name,
+            "brewery_count": region["brewery_count"],
+            "product_count": n,
+            "avg_flavor": avg,
+            "dominant_axis": axis_labels[max_idx],
+            "dominant_value": avg[max_idx],
+        })
+
+    return result
+
+
+def compute_similar_products(products: list[dict], top_n: int = 4) -> dict:
+    """為每款有風味的酒款計算最相似的 N 款 (歐幾里得距離)。
+    回傳 {product_id: [similar_product_dicts]}
+    """
+    # 先過濾出有風味資料的酒款
+    products_with_flavor = []
+    for p in products:
+        vec = get_flavor_vector(p)
+        if vec:
+            products_with_flavor.append((p, vec))
+
+    if not products_with_flavor:
+        return {}
+
+    similar_map = {}
+    for p1, v1 in products_with_flavor:
+        distances = []
+        for p2, v2 in products_with_flavor:
+            if p1["product_id"] == p2["product_id"]:
+                continue
+            # 歐幾里得距離
+            dist = sum((a - b) ** 2 for a, b in zip(v1, v2)) ** 0.5
+            distances.append((dist, p2))
+        # 取最近的 top_n 個
+        distances.sort(key=lambda x: x[0])
+        similar_map[p1["product_id"]] = [d[1] for d in distances[:top_n]]
+
+    return similar_map
 
 
 def render_pages(data: dict, output_dir: Path, env: Environment) -> None:
@@ -444,11 +585,13 @@ def render_pages(data: dict, output_dir: Path, env: Environment) -> None:
     tpl = env.get_template("product.html.j2")
     for product in data["products"]:
         brewery = data["brewery_by_id"].get(product.get("brewery_id"), {})
+        similar = data["similar_products_map"].get(product["product_id"], [])
         out = output_dir / "products" / f"{safe_id(product['product_id'])}.html"
         out.write_text(
             tpl.render(
                 product=product,
                 brewery=brewery,
+                similar_products=similar,
                 generated_at=data["generated_at"],
                 page_path="../",
             ),
