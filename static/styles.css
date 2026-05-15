@@ -523,6 +523,351 @@ img, svg { max-width: 100%; height: auto; }
     .thumb-card-name { font-size: 0.55rem; }
 }
 
+/* ===== 風味分群區塊 ===== */
+.flavor-section { padding: 88px 0 60px; }
+.flavor-group-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+}
+.flavor-group-card {
+    padding: 24px 20px;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid var(--border);
+    transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+    text-align: center;
+    color: var(--text);
+    display: block;
+}
+.flavor-group-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+}
+.flavor-card-hanayaka { border-top: 4px solid #E91E63; }  /* 華麗 - 粉紅 */
+.flavor-card-houjun   { border-top: 4px solid #FF9800; }  /* 芳醇 - 橘黃 */
+.flavor-card-jukou    { border-top: 4px solid #795548; }  /* 厚重 - 咖啡 */
+.flavor-card-odayaka  { border-top: 4px solid #9CCC65; }  /* 穩重 - 嫩綠 */
+.flavor-card-dry      { border-top: 4px solid #2196F3; }  /* 辛口 - 藍 */
+.flavor-card-keikai   { border-top: 4px solid #4DB6AC; }  /* 輕快 - 青綠 */
+.flavor-group-label {
+    display: block;
+    font: 600 1.2rem/1.2 var(--font-serif);
+    color: var(--secondary);
+    margin-bottom: 8px;
+}
+.flavor-group-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 0 0 12px;
+    line-height: 1.6;
+}
+.flavor-group-count {
+    display: inline-block;
+    padding: 3px 10px;
+    background: var(--bg);
+    border-radius: 12px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+}
+
+/* 風味群展開區 */
+.flavor-group-block {
+    margin: 48px 0;
+    padding: 28px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+.flavor-group-heading {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 0 0 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--border);
+}
+.flavor-group-tag {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font: 600 0.9rem/1.4 var(--font-serif);
+    color: #fff;
+    border-top: 0;
+}
+.flavor-group-tag.flavor-card-hanayaka { background: #E91E63; }
+.flavor-group-tag.flavor-card-houjun   { background: #FF9800; }
+.flavor-group-tag.flavor-card-jukou    { background: #795548; }
+.flavor-group-tag.flavor-card-odayaka  { background: #689F38; }
+.flavor-group-tag.flavor-card-dry      { background: #1976D2; }
+.flavor-group-tag.flavor-card-keikai   { background: #00897B; }
+.flavor-group-heading-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    font-family: var(--font-sans);
+}
+.flavor-products-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+}
+.flavor-product-card {
+    color: inherit;
+    transition: transform 0.2s;
+    display: block;
+}
+.flavor-product-card:hover { transform: translateY(-3px); }
+.flavor-product-visual {
+    height: 140px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+}
+.flavor-product-visual img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+.flavor-mini-card {
+    width: 80px;
+    height: 110px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 6px;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.flavor-mini-card span {
+    font: 600 0.5rem/1 var(--font-serif);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 6px;
+}
+.flavor-mini-card strong {
+    font: 600 0.65rem/1.3 var(--font-serif);
+    word-break: break-word;
+}
+.flavor-product-name {
+    font: 600 0.85rem/1.3 var(--font-serif);
+    color: var(--secondary);
+    margin: 0 0 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.flavor-product-brewery {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ===== 地區風味地圖 ===== */
+.region-flavor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 36px;
+}
+.region-flavor-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    color: inherit;
+    transition: all 0.25s;
+    display: block;
+}
+.region-flavor-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+}
+.region-flavor-name {
+    font: 600 1.4rem/1.2 var(--font-serif);
+    color: var(--secondary);
+    margin: 0 0 4px;
+}
+.region-flavor-stat {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0 0 16px;
+}
+.region-flavor-dominant {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 8px 14px;
+    background: var(--bg);
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+.region-flavor-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+}
+.region-flavor-axis {
+    font: 600 1rem/1 var(--font-serif);
+    color: var(--primary);
+}
+.region-flavor-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.region-flavor-bar-row {
+    display: grid;
+    grid-template-columns: 40px 1fr 36px;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+}
+.region-flavor-bar-label {
+    color: var(--text);
+    font-weight: 500;
+}
+.region-flavor-bar-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.region-flavor-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--primary));
+    border-radius: 3px;
+}
+.region-flavor-bar-value {
+    font-family: monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+/* ===== 相似酒款推薦 (產品頁底部) ===== */
+.similar-section {
+    max-width: 1100px;
+    margin: 60px auto 80px;
+    padding: 0 24px;
+}
+.similar-heading {
+    font: 600 1.6rem/1.4 var(--font-serif);
+    color: var(--secondary);
+    margin: 0 0 4px;
+    text-align: center;
+}
+.similar-sub {
+    text-align: center;
+    color: var(--text-muted);
+    margin: 0 0 32px;
+    font-size: 0.95rem;
+}
+.similar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+.similar-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.25s;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+}
+.similar-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+    border-color: var(--accent);
+}
+.similar-card-visual {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+.similar-card-img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+.similar-mini-card {
+    width: 100px;
+    height: 140px;
+    border-radius: 6px;
+    color: #fff;
+    padding: 12px 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+.similar-mini-label {
+    font: 600 0.55rem/1 var(--font-serif);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 10px;
+}
+.similar-mini-name {
+    font: 600 0.75rem/1.3 var(--font-serif);
+    word-break: break-word;
+}
+.similar-card-body { padding: 14px 16px; }
+.similar-card-name {
+    font: 600 0.95rem/1.3 var(--font-serif);
+    color: var(--secondary);
+    margin: 0 0 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.similar-card-meta {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: 0 0 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.similar-card-type {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--bg);
+    color: var(--primary);
+    border-radius: 10px;
+    font-size: 0.72rem;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .flavor-group-grid { grid-template-columns: repeat(2, 1fr); }
+    .flavor-group-block { padding: 20px 16px; }
+    .flavor-products-row { grid-template-columns: repeat(2, 1fr); }
+    .region-flavor-grid { grid-template-columns: 1fr; }
+    .similar-grid { grid-template-columns: 1fr; }
+}
+
 /* ===== 麵包屑 ===== */
 .breadcrumb { padding: 16px 0; font-size: 0.85rem; color: var(--text-muted); }
 .breadcrumb a { color: var(--text-muted); }
