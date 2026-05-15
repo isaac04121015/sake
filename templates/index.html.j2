@@ -137,6 +137,98 @@
     </section>
   </div>
 
+  {# ===== 風味分群 - 依風味雷達分類 ===== #}
+  {% if flavor_groups %}
+  <div class="container">
+    <section class="flavor-section">
+      <p class="section-eyebrow">風味分群</p>
+      <h2 class="section-heading">依風味挑選你的酒</h2>
+      <p class="section-sub">不確定要喝什麼?從風味類型開始探索</p>
+
+      <div class="flavor-group-grid">
+        {% for key, group in flavor_groups.items() %}
+        {% if group.count > 0 %}
+        <a href="#flavor-{{ key }}" class="flavor-group-card flavor-card-{{ key }}">
+          <span class="flavor-group-label">{{ group.label_zh }}</span>
+          <p class="flavor-group-desc">{{ group.desc }}</p>
+          <span class="flavor-group-count">{{ group.count }} 款</span>
+        </a>
+        {% endif %}
+        {% endfor %}
+      </div>
+
+      {# 展開每群代表酒款 #}
+      {% for key, group in flavor_groups.items() %}
+      {% if group.products|length > 0 %}
+      <div class="flavor-group-block" id="flavor-{{ key }}">
+        <h3 class="flavor-group-heading">
+          <span class="flavor-group-tag flavor-card-{{ key }}">{{ group.label_zh }}</span>
+          <span class="flavor-group-heading-text">{{ group.desc }}</span>
+        </h3>
+        <div class="flavor-products-row">
+          {% for p in group.products[:6] %}
+          {% set p_theme = p._theme %}
+          <a href="{{ page_path }}products/{{ p.product_id | safe_id }}.html" class="flavor-product-card">
+            <div class="flavor-product-visual" style="background: {{ p_theme.bg_gradient }};">
+              {% if p._authorized_image %}
+                <img src="{{ page_path }}{{ p._authorized_image }}" alt="{{ p.name_zhtw or p.name_jp }}">
+              {% else %}
+                <div class="flavor-mini-card" style="background: linear-gradient(180deg, {{ p_theme.primary }} 0%, {{ p_theme.secondary }} 100%);">
+                  <span>{{ p_theme.label }}</span>
+                  <strong>{{ p.name_zhtw or p.name_jp }}</strong>
+                </div>
+              {% endif %}
+            </div>
+            <p class="flavor-product-name">{{ p.name_zhtw or p.name_jp }}</p>
+            <p class="flavor-product-brewery">{{ p.brewery_name_jp }}</p>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+
+    </section>
+  </div>
+  {% endif %}
+
+  {# ===== 地區風味地圖 ===== #}
+  {% if region_flavor_stats %}
+  <div style="background: #fff; padding: 80px 0; border-top: 1px solid var(--border);">
+    <div class="container">
+      <p class="section-eyebrow">地區風味地圖</p>
+      <h2 class="section-heading">各地風土的味覺特徵</h2>
+      <p class="section-sub">數據來源:{{ total_products }} 款銘柄的 Sakenowa 風味整體</p>
+
+      <div class="region-flavor-grid">
+        {% for r in region_flavor_stats %}
+        <a href="{{ page_path }}regions/{{ r.name | safe_id }}/" class="region-flavor-card">
+          <h3 class="region-flavor-name">{{ r.name }}</h3>
+          <p class="region-flavor-stat">{{ r.product_count }} 款銘柄分析</p>
+          <div class="region-flavor-dominant">
+            <span class="region-flavor-label">主導風味</span>
+            <span class="region-flavor-axis">{{ r.dominant_axis }}</span>
+          </div>
+          {# 6 軸小型雷達顯示 #}
+          <div class="region-flavor-bars">
+            {% set axis_labels = ['華麗', '芳醇', '厚重', '穩重', '辛口', '輕快'] %}
+            {% for i in range(6) %}
+            <div class="region-flavor-bar-row">
+              <span class="region-flavor-bar-label">{{ axis_labels[i] }}</span>
+              <div class="region-flavor-bar-track">
+                <div class="region-flavor-bar-fill" style="width: {{ (r.avg_flavor[i] * 100) | int }}%;"></div>
+              </div>
+              <span class="region-flavor-bar-value">{{ "%.2f"|format(r.avg_flavor[i]) }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
   {# ===== 銘柄英雄榜 - 黑底得獎排行 ===== #}
   {% if featured_products %}
   <div style="background: var(--secondary); padding: 72px 0;">
