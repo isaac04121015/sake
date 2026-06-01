@@ -1,4 +1,4 @@
-Spec fetch failures (generated 2026-05-31T17:44:04.698179+00:00)
+Spec fetch failures (generated 2026-06-01T22:39:11.764209+00:00)
 ============================================================
 金滴酒造 / 新十津川: no_website
 金滴酒造 / 金滴彗星: no_website
