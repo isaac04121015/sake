@@ -1,20 +1,20 @@
 {
-  "fetched_at": "2026-06-17T16:53:51.749355+00:00",
+  "fetched_at": "2026-06-18T16:55:09.385674+00:00",
   "endpoints": {
     "areas": {
       "count": 48,
       "file": "areas.json"
     },
     "breweries": {
-      "count": 1733,
+      "count": 1748,
       "file": "breweries.json"
     },
     "brands": {
-      "count": 3167,
+      "count": 3250,
       "file": "brands.json"
     },
     "flavor-charts": {
-      "count": 1355,
+      "count": 1335,
       "file": "flavor-charts.json"
     },
     "flavor-tags": {
@@ -22,7 +22,7 @@
       "file": "flavor-tags.json"
     },
     "brand-flavor-tags": {
-      "count": 2831,
+      "count": 2968,
       "file": "brand-flavor-tags.json"
     },
     "rankings": {
