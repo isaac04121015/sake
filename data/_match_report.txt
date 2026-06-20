@@ -1,4 +1,4 @@
-Match report (generated 2026-06-19T16:31:20.737809+00:00)
+Match report (generated 2026-06-20T15:45:12.195284+00:00)
 Mode: all
 ============================================================
 Sakenowa total: 1748 breweries / 3250 brands

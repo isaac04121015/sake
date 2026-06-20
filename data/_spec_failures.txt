@@ -1,4 +1,4 @@
-Spec fetch failures (generated 2026-06-19T16:31:20.982087+00:00)
+Spec fetch failures (generated 2026-06-20T15:45:12.458027+00:00)
 ============================================================
 金滴酒造 / 新十津川: no_website
 金滴酒造 / 金滴彗星: no_website
@@ -45,8 +45,8 @@ Spec fetch failures (generated 2026-06-19T16:31:20.982087+00:00)
 松緑酒造 / 六根: no_website
 八戸酒類 / 蔵物語: no_website
 八戸酒類 / 八鶴: no_website
+八戸酒類 / 菊駒: no_website
 八戸酒類 / 如空: no_website
 八戸酒類 / りんごぽむぽむ: no_website
 八戸酒類 / あおりんごぽむぽむ: no_website
 八戸酒類 / 三戸のどんべり: no_website
-八戸酒類 / 五醸: no_website
