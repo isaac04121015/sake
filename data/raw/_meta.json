@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-27T16:14:58.765182+00:00",
+  "fetched_at": "2026-07-28T16:03:57.275658+00:00",
   "endpoints": {
     "areas": {
       "count": 48,
@@ -14,7 +14,7 @@
       "file": "brands.json"
     },
     "flavor-charts": {
-      "count": 1344,
+      "count": 1345,
       "file": "flavor-charts.json"
     },
     "flavor-tags": {
