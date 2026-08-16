@@ -7689,7 +7689,7 @@
     {
       "id": 1966,
       "name": "やまとそずく",
-      "breweryId": 1029
+      "breweryId": 69
     },
     {
       "id": 1967,
@@ -8839,7 +8839,7 @@
     {
       "id": 2370,
       "name": "香り燗漫",
-      "breweryId": 1124
+      "breweryId": 77
     },
     {
       "id": 2371,
@@ -13924,7 +13924,7 @@
     {
       "id": 4015,
       "name": "竜巻",
-      "breweryId": 1029
+      "breweryId": 69
     },
     {
       "id": 4018,
@@ -16340,6 +16340,11 @@
       "id": 123777,
       "name": "黒松白扇",
       "breweryId": 417
+    },
+    {
+      "id": 123818,
+      "name": "ESHIKOTO",
+      "breweryId": 371
     }
   ]
 }
