@@ -16345,6 +16345,21 @@
       "id": 123818,
       "name": "ESHIKOTO",
       "breweryId": 371
+    },
+    {
+      "id": 123906,
+      "name": "深然",
+      "breweryId": 1391
+    },
+    {
+      "id": 123910,
+      "name": "磊峡",
+      "breweryId": 1947
+    },
+    {
+      "id": 123912,
+      "name": "磊眞",
+      "breweryId": 1947
     }
   ]
 }
