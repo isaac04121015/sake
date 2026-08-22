@@ -16365,6 +16365,21 @@
       "id": 123965,
       "name": "多島海",
       "breweryId": 657
+    },
+    {
+      "id": 124116,
+      "name": "荷札酒",
+      "breweryId": 294
+    },
+    {
+      "id": 124117,
+      "name": "多賀",
+      "breweryId": 1331
+    },
+    {
+      "id": 124118,
+      "name": "BRILLIANCE",
+      "breweryId": 294
     }
   ]
 }
