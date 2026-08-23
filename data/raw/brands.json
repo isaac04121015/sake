@@ -3157,11 +3157,6 @@
       "breweryId": 501
     },
     {
-      "id": 678,
-      "name": "長寿",
-      "breweryId": 501
-    },
-    {
       "id": 679,
       "name": "梅のいおり",
       "breweryId": 501
@@ -5524,7 +5519,7 @@
     {
       "id": 1299,
       "name": "千代鶴",
-      "breweryId": 870
+      "breweryId": 1739
     },
     {
       "id": 1300,
@@ -16380,6 +16375,31 @@
       "id": 124118,
       "name": "BRILLIANCE",
       "breweryId": 294
+    },
+    {
+      "id": 124177,
+      "name": "高尾山",
+      "breweryId": 1739
+    },
+    {
+      "id": 124178,
+      "name": "世かい鷹",
+      "breweryId": 205
+    },
+    {
+      "id": 124179,
+      "name": "千歳",
+      "breweryId": 1056
+    },
+    {
+      "id": 124187,
+      "name": "大多喜城",
+      "breweryId": 1517
+    },
+    {
+      "id": 124188,
+      "name": "我論",
+      "breweryId": 324
     }
   ]
 }

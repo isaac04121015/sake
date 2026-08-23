@@ -1,5 +1,5 @@
-Match report (generated 2026-08-22T14:18:30.165580+00:00)
+Match report (generated 2026-08-23T14:19:55.182933+00:00)
 Mode: all
 ============================================================
-Sakenowa total: 1746 breweries / 3276 brands
-Produced: 1698 breweries / 3015 products
+Sakenowa total: 1744 breweries / 3280 brands
+Produced: 1696 breweries / 3019 products
