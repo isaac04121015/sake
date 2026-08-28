@@ -5539,7 +5539,7 @@
     {
       "id": 1304,
       "name": "雪小町",
-      "breweryId": 790
+      "breweryId": 1475
     },
     {
       "id": 1305,
@@ -8215,11 +8215,6 @@
       "id": 2149,
       "name": "丹澤山",
       "breweryId": 237
-    },
-    {
-      "id": 2150,
-      "name": "ささのは さらさら",
-      "breweryId": 102
     },
     {
       "id": 2151,
@@ -16400,6 +16395,56 @@
       "id": 124188,
       "name": "我論",
       "breweryId": 324
+    },
+    {
+      "id": 124426,
+      "name": "あたみ",
+      "breweryId": 1358
+    },
+    {
+      "id": 124429,
+      "name": "福顔",
+      "breweryId": 284
+    },
+    {
+      "id": 124430,
+      "name": "磯千鳥",
+      "breweryId": 1453
+    },
+    {
+      "id": 124432,
+      "name": "花雪",
+      "breweryId": 1540
+    },
+    {
+      "id": 124433,
+      "name": "AZM",
+      "breweryId": 1331
+    },
+    {
+      "id": 124435,
+      "name": "弐式",
+      "breweryId": 261
+    },
+    {
+      "id": 124437,
+      "name": "古昔の美酒",
+      "breweryId": 1948
+    },
+    {
+      "id": 124469,
+      "name": "OCEAN99",
+      "breweryId": 874
+    },
+    {
+      "id": 124470,
+      "name": "松尾自慢",
+      "breweryId": 874
+    },
+    {
+      "id": 124471,
+      "name": "寒菊 Occasional",
+      "breweryId": 874
     }
   ]
 }
