@@ -16460,6 +16460,16 @@
       "id": 125084,
       "name": "五神",
       "breweryId": 1432
+    },
+    {
+      "id": 125739,
+      "name": "Ryok",
+      "breweryId": 647
+    },
+    {
+      "id": 125741,
+      "name": "八上姫",
+      "breweryId": 618
     }
   ]
 }
