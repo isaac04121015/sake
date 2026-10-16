@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-10-15T18:00:05.357430+00:00",
+  "fetched_at": "2026-10-16T17:47:42.849583+00:00",
   "endpoints": {
     "areas": {
       "count": 48,
@@ -10,7 +10,7 @@
       "file": "breweries.json"
     },
     "brands": {
-      "count": 3303,
+      "count": 3304,
       "file": "brands.json"
     },
     "flavor-charts": {
@@ -22,7 +22,7 @@
       "file": "flavor-tags.json"
     },
     "brand-flavor-tags": {
-      "count": 3023,
+      "count": 3024,
       "file": "brand-flavor-tags.json"
     },
     "rankings": {
